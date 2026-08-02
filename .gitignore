@@ -1,9 +1,13 @@
-# 编辑器
+# 原始分页数据（量大，仅本地保留，不入库）
+data/raw/
+
+# cookies 等敏感凭据（不入库）
+data/xq_cookie.txt
+
+# 编辑器 / 临时
 .vscode/
 .idea/
 *.swp
-
-# 临时
 *.log
 .DS_Store
 __pycache__/

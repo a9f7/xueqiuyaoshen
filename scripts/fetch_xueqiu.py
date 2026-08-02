@@ -1,175 +1,242 @@
 #!/usr/bin/env python3
+"""雪球 user_timeline 抓取（playwright 反检测版）。
+
+用法：
+  # 抓最旧的 N 页未抓取数据（自动化增量用，默认 15 页）
+  python fetch_xueqiu.py --batch 15
+
+  # 抓指定区间
+  python fetch_xueqiu.py 286 320
+
+  # 仅抓公开 page=1（无 cookies 时）
+  python fetch_xueqiu.py
+
+cookies 来源（按优先级）：
+  1. 环境变量 XQ_COOKIE
+  2. 文件 data/xq_cookie.txt
+  3. 无 cookies → 只抓 page=1（公开）
 """
-雪球 user_timeline 抓取脚本（playwright 反检测版）
-- 优先用环境变量 XQ_COOKIE 注入登录态，可抓 page=1..810
-- 无 cookie 时只能抓 page=1 公开数据
-- 按页写入 data/raw/page_{N}.json
-- 限流（HTTP 405）时自动停止，等待下次再跑
-"""
-import argparse
-import json
-import os
-import random
 import sys
+import os
+import json
 import time
-from pathlib import Path
+import random
+import argparse
+from playwright.sync_api import sync_playwright
 
-try:
-    from playwright.sync_api import sync_playwright
-except ImportError:
-    print("playwright required: pip install playwright && playwright install chromium", file=sys.stderr)
-    sys.exit(2)
-
+# 默认 cookies 文件（不入库）
+HERE = os.path.dirname(os.path.abspath(__file__))
+COOKIE_FILE = os.path.join(HERE, "..", "data", "xq_cookie.txt")
+OUT_DIR = os.path.join(HERE, "..", "data", "raw")
+CHROME_PATH = r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe"
 USER_ID = 2292705444
-API = "https://xueqiu.com/v4/statuses/user_timeline.json"
-UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36"
-
-# 从以下位置找 Chrome：playwright 默认 / 系统 Chrome / Edge
-CHROME_CANDIDATES = [
-    r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe",
-    r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-    r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-]
+BATCH_PER_BROWSER = 30  # 每个浏览器会话最多抓多少页（避免渲染器崩溃）
+FALLBACK_MAXPAGE = 810
 
 
-def find_chrome():
-    for p in CHROME_CANDIDATES:
-        if Path(p).exists():
-            return p
-    return None  # 用 playwright 默认
+def load_cookie_str():
+    if os.environ.get("XQ_COOKIE"):
+        return os.environ["XQ_COOKIE"].strip()
+    if os.path.exists(COOKIE_FILE):
+        with open(COOKIE_FILE, encoding="utf-8") as f:
+            s = f.read().strip()
+            if s:
+                return s
+    return ""
 
 
 def parse_cookies(cookie_str):
     cookies = []
-    if not cookie_str:
-        return cookies
-    for part in cookie_str.split(";"):
+    for part in cookie_str.split(';'):
         part = part.strip()
-        if not part or "=" not in part:
+        if '=' not in part:
             continue
-        name, _, value = part.partition("=")
+        name, _, value = part.partition('=')
         cookies.append({
-            "name": name.strip(),
-            "value": value.strip(),
-            "domain": ".xueqiu.com",
-            "path": "/",
-            "secure": False,
-            "httpOnly": False,
-            "expires": -1,
+            'name': name.strip(),
+            'value': value.strip(),
+            'domain': '.xueqiu.com',
+            'path': '/',
+            'secure': False,
+            'httpOnly': False,
+            'expires': -1,
         })
     return cookies
 
 
-def has_login(jar):
-    return any(k in jar for k in ("xq_a_token", "xqat", "xq_id_token", "xq_is_login"))
+def existing_pages():
+    if not os.path.isdir(OUT_DIR):
+        return set()
+    s = set()
+    for fn in os.listdir(OUT_DIR):
+        if fn.startswith("page_") and fn.endswith(".json"):
+            try:
+                s.add(int(fn[5:-5]))
+            except ValueError:
+                pass
+    return s
 
 
-def fetch_range(start_page, end_page, cookie_str, out_dir, request_delay=3.0):
-    """抓 page=start_page..end_page（连续页）。遇到 405 限流立即停止。"""
-    Path(out_dir).mkdir(parents=True, exist_ok=True)
-    cookies = parse_cookies(cookie_str)
-    has_login_cookie = has_login({c['name'] for c in cookies})
-
+def fetch_batch(start, end, cookie_str):
+    """启动一个全新浏览器会话，抓 [start,end] 中尚未存在的页。返回 (saved, stopped)。"""
+    saved = 0
+    stopped = False
     with sync_playwright() as p:
-        launch_kwargs = dict(
+        browser = p.chromium.launch(
+            executable_path=CHROME_PATH,
             headless=True,
             args=[
                 '--disable-blink-features=AutomationControlled',
                 '--no-sandbox',
                 '--disable-dev-shm-usage',
+                '--disable-infobars',
+                '--disable-features=IsolateOrigins,site-per-process',
+                '--disable-setuid-sandbox',
                 '--lang=zh-CN',
             ],
             chromium_sandbox=False,
         )
-        chrome_path = find_chrome()
-        if chrome_path:
-            launch_kwargs['executable_path'] = chrome_path
-
-        browser = p.chromium.launch(**launch_kwargs)
         ctx = browser.new_context(
             viewport={'width': 1920, 'height': 1080},
-            user_agent=UA,
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
             locale='zh-CN',
             timezone_id='Asia/Shanghai',
             ignore_https_errors=True,
+            extra_http_headers={'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8'},
         )
         ctx.add_init_script("""
             Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
             window.chrome = { runtime: {}, csi: () => {}, loadTimes: () => {} };
             Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
             Object.defineProperty(navigator, 'languages', {get: () => ['zh-CN', 'zh', 'en']});
+            const _toString = Function.prototype.toString;
+            Function.prototype.toString = function() {
+                if (this === Function.prototype.toString) return _toString.call(_toString);
+                return _toString.call(this);
+            };
         """)
-        if cookies:
-            ctx.add_cookies(cookies)
-            print(f"[init] injected {len(cookies)} cookies (login={has_login_cookie})", file=sys.stderr, flush=True)
-        else:
-            print("[init] no cookies, can only fetch page=1", file=sys.stderr, flush=True)
-
+        if cookie_str:
+            ctx.add_cookies(parse_cookies(cookie_str))
         page = ctx.new_page()
 
         # 暖身
         try:
+            page.goto("https://www.baidu.com/", wait_until="domcontentloaded", timeout=20000)
+            time.sleep(2)
+        except Exception:
+            pass
+        try:
             page.goto("https://xueqiu.com/", wait_until="domcontentloaded", timeout=30000)
-            time.sleep(3)
-            if has_login_cookie:
-                page.goto(f"https://xueqiu.com/u/{USER_ID}", wait_until="domcontentloaded", timeout=30000)
-                time.sleep(2)
+            time.sleep(4)
         except Exception as e:
-            print(f"[warmup] err: {e}", file=sys.stderr, flush=True)
+            print(f"  [warn] warmup homepage: {e}", flush=True)
+        try:
+            page.goto(f"https://xueqiu.com/u/{USER_ID}", wait_until="domcontentloaded", timeout=30000)
+            time.sleep(4)
+        except Exception as e:
+            print(f"  [warn] warmup profile: {e}", flush=True)
 
-        ok = 0
-        rate_limited = False
-        for pno in range(start_page, end_page + 1):
-            api_url = f"{API}?user_id={USER_ID}&page={pno}&type=0&count=20"
+        for pno in range(start, end + 1):
+            out_file = os.path.join(OUT_DIR, f"page_{pno}.json")
+            if os.path.exists(out_file):
+                continue
+            api_url = f"https://xueqiu.com/v4/statuses/user_timeline.json?user_id={USER_ID}&page={pno}&type=0&count=20"
             try:
                 data = page.evaluate("""async (url) => {
-                    const r = await fetch(url, {credentials: 'include'});
-                    const t = await r.text();
-                    try { return {ok: r.ok, status: r.status, json: JSON.parse(t)}; }
-                    catch (e) { return {ok: r.ok, status: r.status, text: t.slice(0, 300)}; }
+                    const ctrl = new AbortController();
+                    const timer = setTimeout(() => ctrl.abort(), 15000);
+                    try {
+                        const r = await fetch(url, {credentials: 'include', signal: ctrl.signal});
+                        const t = await r.text();
+                        clearTimeout(timer);
+                        try { return {ok: r.ok, status: r.status, json: JSON.parse(t)}; }
+                        catch (e) { return {ok: r.ok, status: r.status, text: t.slice(0, 500)}; }
+                    } catch (e) {
+                        clearTimeout(timer);
+                        return {ok: false, status: 0, text: 'FETCH_ERR: ' + e.message};
+                    }
                 }""", api_url)
                 success = data.get('ok') and isinstance(data.get('json'), dict) and 'statuses' in data['json']
                 if success:
-                    statuses = data['json']['statuses']
-                    out_file = os.path.join(out_dir, f"page_{pno}.json")
                     with open(out_file, 'w', encoding='utf-8') as f:
                         json.dump(data['json'], f, ensure_ascii=False, indent=2)
-                    print(f"  page={pno}: {len(statuses)} statuses, total={data['json'].get('total')}, maxPage={data['json'].get('maxPage')}", flush=True)
-                    ok += 1
-                else:
-                    code = data.get('status', '?')
-                    print(f"  page={pno}: FAIL {code} (likely rate-limited, stopping)", file=sys.stderr, flush=True)
-                    rate_limited = True
+                    print(f"  page={pno}: {len(data['json']['statuses'])} statuses, total={data['json'].get('total')}, maxPage={data['json'].get('maxPage')}", flush=True)
+                    saved += 1
+                elif data.get('status') == 405:
+                    print(f"  [405 LIMIT] page={pno} rate limit. Stopping batch.", flush=True)
+                    stopped = True
                     break
+                else:
+                    body = str(data.get('text', ''))[:80]
+                    print(f"  page={pno}: FAIL status={data.get('status')} {body}", flush=True)
+                    # 访问验证 / WAF 挑战：停止本批，避免浪费
+                    if '访问验证' in body or 'aliyun_waf' in body:
+                        stopped = True
+                        break
             except Exception as e:
-                print(f"  page={pno}: ERR {e}", file=sys.stderr, flush=True)
-                break
-            time.sleep(request_delay + random.uniform(0, 1.5))
+                print(f"  page={pno}: ERR {e}", flush=True)
+                break  # 渲染器崩溃，本批终止（下批重开浏览器）
+            time.sleep(random.uniform(1.5, 3))
 
-        print(f"[done] {ok}/{end_page-start_page+1} pages saved (range {start_page}..{end_page}) rate_limited={rate_limited}", file=sys.stderr, flush=True)
-        browser.close()
-        return ok, rate_limited
+        try:
+            browser.close()
+        except Exception:
+            pass
+    return saved, stopped
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--pages", default="1-5", help="页码范围 e.g. 1-30")
-    ap.add_argument("--out", default="data/raw", help="输出目录")
-    ap.add_argument("--delay", type=float, default=3.0, help="请求间隔秒数")
-    ap.add_argument("--cookie-env", default="XQ_COOKIE", help="cookies 环境变量名")
-    ap.add_argument("--cookie-file", default=None, help="cookies 文件路径（优先于 env）")
+    ap.add_argument("start", type=int, nargs="?", default=None)
+    ap.add_argument("end", type=int, nargs="?", default=None)
+    ap.add_argument("--batch", type=int, default=15, help="自动模式下抓最旧的 N 页")
     args = ap.parse_args()
 
-    start, end = (int(x) for x in args.pages.split("-"))
+    os.makedirs(OUT_DIR, exist_ok=True)
+    cookie_str = load_cookie_str()
 
-    cookie_str = ""
-    if args.cookie_file and os.path.exists(args.cookie_file):
-        cookie_str = Path(args.cookie_file).read_text(encoding="utf-8").strip()
+    # 决定区间
+    if args.start is not None:
+        start, end = args.start, (args.end if args.end is not None else args.start)
     else:
-        cookie_str = os.environ.get(args.cookie_env, "")
+        # 自动模式：找最旧的未抓取页
+        have = existing_pages()
+        # 从 page=1 往后找第一个缺口
+        start = 1
+        while start in have:
+            start += 1
+        end = start + args.batch - 1
+        # 不知道 maxPage 时给个上限保护
+        end = min(end, FALLBACK_MAXPAGE)
+        print(f"[auto] oldest missing = page {start}, fetching {start}..{end}", flush=True)
 
-    ok, rl = fetch_range(start, end, cookie_str, args.out, args.delay)
-    sys.exit(0 if ok > 0 or rl else 1)
+    if not cookie_str:
+        # 无 cookies：只抓公开 page=1
+        if start != 1:
+            print("[info] 无 cookies，仅抓公开 page=1", flush=True)
+            start, end = 1, 1
+        else:
+            end = 1
+
+    print(f"[run] cookies={'YES' if cookie_str else 'NO'} range={start}..{end}", flush=True)
+    total_saved = 0
+    lo = start
+    while lo <= end:
+        hi = min(lo + BATCH_PER_BROWSER - 1, end)
+        # 整段已抓则跳过
+        if all(os.path.exists(os.path.join(OUT_DIR, f"page_{p}.json")) for p in range(lo, hi + 1)):
+            lo = hi + 1
+            continue
+        print(f"[batch] {lo}..{hi}", flush=True)
+        saved, stopped = fetch_batch(lo, hi, cookie_str)
+        total_saved += saved
+        print(f"[batch done] saved={saved} cumulative={total_saved}", flush=True)
+        if stopped:
+            print("[STOP] WAF 限流/验证，停止。", flush=True)
+            break
+        lo = hi + 1
+        time.sleep(random.uniform(5, 10))
+    print(f"[ALL DONE] saved this run: {total_saved}", flush=True)
 
 
 if __name__ == "__main__":
