@@ -40,6 +40,9 @@ def normalize(s):
     mentions = re.findall(r"回复\[@([^\]]+)\]|@([\w\u4e00-\u9fa5]+)", desc)
     mentioned = list(dict.fromkeys([m[0] or m[1] for m in mentions if (m[0] or m[1])]))[:5]
     target = s.get("target") or ""
+    uid = user.get("id") or s.get("user_id") or 2292705444
+    sid = s.get("id")
+    url = f"https://xueqiu.com{target}" if target else (f"https://xueqiu.com/{uid}/{sid}" if sid else "")
     return {
         "id": s.get("id"),
         "created_at": s.get("created_at"),
@@ -60,7 +63,7 @@ def normalize(s):
         "mentioned": mentioned,
         "pic": s.get("pic", "") or "",
         "target": target,
-        "url": f"https://xueqiu.com{target}" if target else "",
+        "url": url,
         "screen_name": user.get("screen_name", "metalslime"),
         "user_id": user.get("id", 2292705444),
     }
