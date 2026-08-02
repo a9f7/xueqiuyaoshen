@@ -1,65 +1,70 @@
-# 雪球药神 · metalslime 发言归档
+# 雪球药神 metalslime 全量发言归档
 
-> 雪球博主 [metalslime](https://xueqiu.com/u/2292705444)（药神）发言归档与搜索站点。
-> 数据每 12 小时由 GitHub Action 自动增量更新。
+自动化监控 metalslime（雪球 ID: 2292705444）的所有发言，部署在 GitHub Pages。
 
-## 在线访问
+## 📊 数据概况
 
-- GitHub Pages: https://a9f7.github.io/xueqiuyaoshen/
+- **博主**：metalslime（雪球药神）
+- **主页**：<https://xueqiu.com/u/2292705444>
+- **状态**：24.5 万粉丝，3 万+ 发言
+- **归档覆盖**：约 170 页 / 3297 条最新发言（2025-07 ~ 2026-08）
 
-## 功能
+## 🌐 在线访问
 
-- 博主信息卡 + 收录统计
-- 时间线展示（按时间倒序）
-- 全文搜索（内容 / 股票代码 / @提及）
-- 来源 / 类型筛选
-- 股票板块标签
-- 长文折叠展开
-- 原帖链接跳转
+<https://a9f7.github.io/xueqiuyaoshen/>
 
-## 目录结构
+## 🛠️ 数据结构
 
 ```
 xueqiuyaoshen/
-├── index.html                    # 单页应用
+├── index.html          # 单页应用（时间线 + 搜索 + 筛选）
 ├── data/
-│   ├── posts.json                # 归一化后的发言列表
-│   ├── posts_raw.json            # 原始去重后的发言
-│   ├── user.json                 # 博主元信息
-│   └── raw/
-│       └── page_{N}.json         # 每页原始 API 响应
+│   ├── posts.json      # 归一化后的发言列表
+│   ├── posts_raw.json  # 雪球 API 原始数据
+│   ├── user.json       # 博主元信息
+│   └── raw/page_*.json # 原始分页数据
 ├── scripts/
-│   ├── fetch_xueqiu.py           # 抓取脚本（GitHub Action 调用）
-│   ├── normalize_posts.py        # 合并去重 + 归一化
-│   └── summarize.py              # 生成 markdown 摘要
-└── .github/workflows/
-    └── fetch-and-publish.yml     # 每 12 小时抓取 + 部署
+│   ├── fetch_xueqiu.py # playwright 反检测抓取
+│   ├── normalize_posts.py
+│   └── summarize.py
+└── summary.md          # 最新发言摘要
 ```
 
-## 自动更新
+## 🔄 自动化更新
 
-GitHub Action（`.github/workflows/fetch-and-publish.yml`）每 12 小时（UTC 0:00 / 12:00）执行：
+每天 8:30 + 20:30 由 WorkBuddy automation 触发：
+1. 抓取雪球 page=1..5
+2. 合并去重 + 归一化
+3. 重新生成 `index.html` 数据
+4. 推送到 GitHub → 触发 GitHub Pages 部署
+5. 通过企业微信推送摘要
 
-1. 用 `XQ_COOKIE` secret 抓取最新 5 页（约 100 条）
-2. 与 `data/raw/` 已有数据合并去重
-3. 重新生成 `posts.json` / `user.json` / `summary.md`
-4. commit 并推送
-5. 部署到 GitHub Pages
+## 🔐 抓取原理
 
-## 本地运行
+雪球 API `v4/statuses/user_timeline.json` 在 `page>=2` 时要求登录。
+- **page=1**：公开，无需 cookies
+- **page>=2**：需要登录 cookies，且 WAF 会做浏览器指纹判定
 
-```bash
-pip install requests
-python scripts/fetch_xueqiu.py --pages 5        # 需要 XQ_COOKIE 环境变量
-python scripts/normalize_posts.py              # 合并归一化
-python scripts/summarize.py > summary.md      # 生成摘要
-```
+### Cookies 注入
 
-## 数据来源
+1. 浏览器登录 <https://xueqiu.com>
+2. F12 → Network → 任意请求 → 复制 `Cookie` 头
+3. 写入环境变量 `XQ_COOKIE`
+4. 运行：
+   ```bash
+   XQ_COOKIE="cookiesu=...; xq_a_token=..." \
+   python scripts/fetch_xueqiu.py --pages 1-200
+   ```
 
-- 雪球 user_timeline API：`/v4/statuses/user_timeline.json?user_id=2292705444&page=N&type=0&count=20`
-- page=1 公开可访问；page≥2 需登录 cookies（通过 `XQ_COOKIE` secret 注入）
+### WAF 反检测
 
-## 许可
+脚本使用 `playwright` + `chromium`，自动注入反检测脚本：
+- 移除 `navigator.webdriver`
+- 补 `window.chrome` / `navigator.plugins` / `navigator.languages`
+- 完整 1920x1080 视口 + `zh-CN` locale + `Asia/Shanghai` timezone
 
-数据归雪球网与博主本人所有，本项目仅用于个人跟踪研究。
+## 📈 已知限制
+
+- 雪球 API 限流：连续抓 ~170 页后返回 HTTP 405，需等待 30+ 分钟
+- cookies 过期：用户重新登录后需更新 `XQ_COOKIE`
+- 全量 16194 条发言（810 页）需多次抓取累积
