@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>雪球药神 · metalslime 发言归档</title>
-<meta name="description" content="雪球博主 metalslime（药神）发言归档与搜索，由 GitHub Action 每 12 小时增量更新。">
+<meta name="description" content="雪球博主 metalslime（药神）发言归档与搜索，按月分块加载，由自动化任务每 12 小时增量更新。">
 <style>
   :root {
     --bg: #f6f7f9;
@@ -102,7 +102,18 @@
     font-size: 13px;
     outline: none;
     color: var(--ink-2);
+    max-width: 200px;
   }
+  .toolbar button {
+    border: 1px solid var(--line);
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .toolbar button:hover { border-color: var(--link); color: var(--link); }
   .toolbar .meta { margin-left: auto; color: var(--ink-3); font-size: 12px; }
 
   /* Timeline */
@@ -129,6 +140,7 @@
   .post .head .time { color: var(--ink-2); font-weight: 500; }
   .post .head .id { color: var(--ink-3); }
   .post .head .src { padding: 1px 6px; background: var(--line-2); border-radius: 4px; font-size: 11px; }
+  .post .head .loc { color: var(--ink-3); }
   .post .text {
     margin: 8px 0 10px;
     white-space: pre-wrap;
@@ -180,11 +192,12 @@
   </div>
 
   <div class="notice">
-    📌 <b>历史正在累积中</b> —— 雪球 API 对未登录访问只返回首页 20 条，历史全量（约 1.6 万条）通过 GitHub Action 每 12 小时增量回填；当前页面为最新窗口的数据。
+    📌 <b>按月分块加载</b> —— 数据已按月份切分为小文件，首屏仅加载索引（约 2KB）+ 最新月份；选择月份或点「加载全部」可查看更早历史。全量约 1.6 万条由自动化任务每 12 小时增量回填。
   </div>
 
   <div class="toolbar">
     <input type="search" id="q" placeholder="搜索发言内容、股票代码、@提及…">
+    <select id="month"><option value="">全部已加载月份</option></select>
     <select id="src">
       <option value="">全部来源</option>
     </select>
@@ -194,13 +207,14 @@
       <option value="2">长文</option>
       <option value="1">转发</option>
     </select>
+    <button id="loadAll">加载全部</button>
     <div class="meta" id="meta">加载中…</div>
   </div>
 
   <div class="timeline" id="timeline"></div>
 
   <footer>
-    数据每 12 小时由 GitHub Action 自动更新 ·
+    数据每 12 小时自动更新 ·
     <a href="https://github.com/a9f7/xueqiuyaoshen" target="_blank" rel="noopener">源码仓库</a>
   </footer>
 </div>
@@ -216,38 +230,76 @@
     const pad = n => String(n).padStart(2, "0");
     return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
-  function fmtDate(ts) {
+  function fmtYM(ts) {
     if (!ts) return "";
     const d = new Date(ts);
     if (isNaN(d.getTime())) return "";
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2, "0")}`;
   }
   function esc(s) {
     return (s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
   }
 
   let allPosts = [];
-  let filtered = [];
+  let loadedMonths = new Set();
+  let postIndex = null;
+
+  async function loadMonth(file) {
+    if (loadedMonths.has(file)) return;
+    const arr = await fetch("data/" + file, { cache: "no-cache" }).then(r => r.json());
+    allPosts = allPosts.concat(arr);
+    loadedMonths.add(file);
+    allPosts.sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+  }
+
+  function buildMonthSelect() {
+    const sel = $("#month");
+    sel.innerHTML = `<option value="">全部已加载月份</option>`;
+    (postIndex.months || []).forEach(m => {
+      const o = document.createElement("option");
+      o.value = m.ym;
+      o.textContent = `${m.ym}（${m.count}）`;
+      sel.appendChild(o);
+    });
+  }
+
+  function paintStats() {
+    const total = postIndex ? postIndex.total : allPosts.length;
+    const months = postIndex ? postIndex.months : [];
+    $("#stat-total").textContent = total;
+    $("#stat-original").textContent = postIndex && postIndex.orig != null ? postIndex.orig : allPosts.filter(p => String(p.type) === "0").length;
+    $("#stat-repost").textContent = postIndex && postIndex.repost != null ? postIndex.repost : allPosts.filter(p => String(p.type) === "1").length;
+    $("#stat-range").textContent = months.length ? `${months[months.length - 1].ym} → ${months[0].ym}` : "--";
+
+    const sources = Array.from(new Set(allPosts.map(p => p.source).filter(Boolean))).sort();
+    const sel = $("#src");
+    sel.innerHTML = `<option value="">全部来源</option>`;
+    sources.forEach(s => {
+      const o = document.createElement("option");
+      o.value = s; o.textContent = s;
+      sel.appendChild(o);
+    });
+  }
 
   function render() {
     const q = $("#q").value.trim().toLowerCase();
     const src = $("#src").value;
     const tp = $("#type").value;
-    filtered = allPosts.filter(p => {
+    const ym = $("#month").value;
+    const filtered = allPosts.filter(p => {
+      if (ym && fmtYM(p.created_at) !== ym) return false;
       if (src && p.source !== src) return false;
       if (tp && String(p.type) !== tp) return false;
       if (q) {
         const hay = [
           p.text || "",
-          p.description || "",
           (p.stockCorrelation || []).join(" "),
-          (p.mentioned || []).join(" "),
         ].join(" ").toLowerCase();
         if (!hay.includes(q)) return false;
       }
       return true;
     });
-    $("#meta").textContent = `共 ${filtered.length} / ${allPosts.length} 条`;
+    $("#meta").textContent = `共 ${filtered.length} / 已加载 ${allPosts.length}（总 ${postIndex ? postIndex.total : allPosts.length}）条`;
 
     const tl = $("#timeline");
     if (filtered.length === 0) {
@@ -257,13 +309,15 @@
     tl.innerHTML = filtered.map(p => {
       const longText = (p.text || "").length > 280;
       const tags = (p.stockCorrelation || []).map(t => `<span class="tag">${esc(t)}</span>`).join("");
-      const url = p.url || `https://xueqiu.com${p.target || ""}`;
+      const url = p.url || `https://xueqiu.com/2292705444/${p.id}`;
+      const loc = p.ip_location ? `<span class="loc">📍 ${esc(p.ip_location)}</span>` : "";
       return `
         <article class="post">
           <div class="head">
             <span class="time">${esc(fmtTime(p.created_at))}</span>
             <span class="id">#${p.id}</span>
-            <span class="src">${esc(p.source || "雪球")}</span>
+            ${p.source ? `<span class="src">${esc(p.source)}</span>` : ""}
+            ${loc}
             <a class="link" href="${esc(url)}" target="_blank" rel="noopener">原帖 ↗</a>
           </div>
           <div class="text ${longText ? "collapsed" : ""}" data-id="${p.id}">${esc(p.text || "")}</div>
@@ -288,42 +342,15 @@
     });
   }
 
-  function paintStats() {
-    const total = allPosts.length;
-    const orig = allPosts.filter(p => String(p.type) === "0").length;
-    const repost = allPosts.filter(p => String(p.type) === "1").length;
-    const ts = allPosts.map(p => p.created_at).filter(Boolean);
-    const range = ts.length ? `${fmtDate(Math.min(...ts))} → ${fmtDate(Math.max(...ts))}` : "--";
-    $("#stat-total").textContent = total;
-    $("#stat-original").textContent = orig;
-    $("#stat-repost").textContent = repost;
-    $("#stat-range").textContent = range;
-
-    const sources = Array.from(new Set(allPosts.map(p => p.source).filter(Boolean))).sort();
-    const sel = $("#src");
-    sources.forEach(s => {
-      const o = document.createElement("option");
-      o.value = s; o.textContent = s;
-      sel.appendChild(o);
-    });
-  }
-
   async function load() {
     try {
-      const [posts, user] = await Promise.all([
-        fetch("data/posts.json", { cache: "no-cache" }).then(r => r.json()),
-        fetch("data/user.json", { cache: "no-cache" }).then(r => r.json()),
-      ]);
-      allPosts = posts;
-      // 描述叠加（用 user 信息）
-      const heroSub = document.querySelector(".hero .sub");
-      if (user && user.followers_count) {
-        heroSub.innerHTML = `
-          <a href="${esc(user.profile)}" target="_blank" rel="noopener">${esc(user.profile)}</a>
-          &nbsp;·&nbsp; 粉丝 ${user.followers_count.toLocaleString()} &nbsp;·&nbsp; 发言 ${(user.status_count || 0).toLocaleString()}
-        `;
-      }
+      postIndex = await fetch("data/posts_index.json", { cache: "no-cache" }).then(r => r.json());
       paintStats();
+      buildMonthSelect();
+      // 默认加载最新 2 个月
+      const recent = (postIndex.months || []).slice(0, 2);
+      await Promise.all(recent.map(m => loadMonth(m.file)));
+      $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（最新 ${recent.length} 个月）`;
       render();
     } catch (e) {
       $("#timeline").innerHTML = `<div class="empty">数据加载失败：${esc(String(e))}</div>`;
@@ -333,6 +360,24 @@
   $("#q").addEventListener("input", render);
   $("#src").addEventListener("change", render);
   $("#type").addEventListener("change", render);
+  $("#month").addEventListener("change", async (e) => {
+    const ym = e.target.value;
+    if (!ym) { render(); return; }
+    const m = postIndex && postIndex.months.find(x => x.ym === ym);
+    if (!m) return;
+    if (!loadedMonths.has(m.file)) {
+      $("#meta").textContent = "加载中…";
+      await loadMonth(m.file);
+    }
+    render();
+  });
+  $("#loadAll").addEventListener("click", async () => {
+    if (!postIndex) return;
+    $("#meta").textContent = "加载全部月份中…";
+    await Promise.all(postIndex.months.map(m => loadMonth(m.file)));
+    $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（全部）`;
+    render();
+  });
 
   load();
 </script>
