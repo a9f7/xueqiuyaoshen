@@ -1,0 +1,10 @@
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 临时
+*.log
+.DS_Store
+__pycache__/
+*.pyc

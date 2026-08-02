@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雪球药神 · metalslime 发言归档</title>
+<meta name="description" content="雪球博主 metalslime（药神）发言归档与搜索，由 GitHub Action 每 12 小时增量更新。">
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --panel: #ffffff;
+    --ink: #1f2330;
+    --ink-2: #5f6776;
+    --ink-3: #8b94a3;
+    --line: #e7e9ee;
+    --line-2: #f0f2f5;
+    --accent: #c0392b;
+    --accent-soft: #fdecea;
+    --link: #1f6feb;
+    --tag: #eef2ff;
+    --tag-ink: #3949ab;
+    --green: #0f9d58;
+    --shadow: 0 1px 2px rgba(15, 20, 30, .04), 0 4px 16px rgba(15, 20, 30, .04);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 24px 18px 80px; }
+
+  /* Header */
+  .hero {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 26px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: linear-gradient(135deg, #c0392b, #e67e22);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 600; flex-shrink: 0;
+  }
+  .hero h1 { margin: 0 0 4px; font-size: 20px; font-weight: 600; }
+  .hero .sub { color: var(--ink-2); font-size: 13px; }
+  .hero .sub a { color: var(--link); text-decoration: none; }
+  .hero .sub a:hover { text-decoration: underline; }
+  .hero .stats { display: flex; gap: 22px; margin-left: auto; flex-wrap: wrap; }
+  .hero .stat { text-align: right; }
+  .hero .stat .v { font-size: 18px; font-weight: 600; color: var(--ink); }
+  .hero .stat .l { font-size: 12px; color: var(--ink-3); }
+
+  /* Notice */
+  .notice {
+    margin-top: 14px;
+    padding: 12px 16px;
+    background: var(--accent-soft);
+    border: 1px solid #f5c6c0;
+    border-radius: 10px;
+    color: #8a2b1f;
+    font-size: 13px;
+  }
+  .notice b { color: var(--accent); }
+
+  /* Toolbar */
+  .toolbar {
+    margin-top: 18px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    box-shadow: var(--shadow);
+  }
+  .toolbar input[type=search] {
+    flex: 1 1 240px;
+    min-width: 180px;
+    border: 1px solid var(--line);
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+  .toolbar input[type=search]:focus { border-color: var(--link); background: #fff; }
+  .toolbar select {
+    border: 1px solid var(--line);
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+    outline: none;
+    color: var(--ink-2);
+  }
+  .toolbar .meta { margin-left: auto; color: var(--ink-3); font-size: 12px; }
+
+  /* Timeline */
+  .timeline { margin-top: 18px; position: relative; padding-left: 22px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--line);
+  }
+  .post {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .post::before {
+    content: ""; position: absolute; left: -22px; top: 18px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--accent);
+  }
+  .post .head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; color: var(--ink-3); font-size: 12px; }
+  .post .head .time { color: var(--ink-2); font-weight: 500; }
+  .post .head .id { color: var(--ink-3); }
+  .post .head .src { padding: 1px 6px; background: var(--line-2); border-radius: 4px; font-size: 11px; }
+  .post .text {
+    margin: 8px 0 10px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: var(--ink);
+    font-size: 14.5px;
+    line-height: 1.75;
+  }
+  .post .text.collapsed { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+  .post .expand { color: var(--link); cursor: pointer; font-size: 12px; user-select: none; }
+  .post .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .post .tags .tag {
+    background: var(--tag); color: var(--tag-ink);
+    font-size: 12px; padding: 2px 8px; border-radius: 4px;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  .post .metrics { display: flex; gap: 14px; margin-top: 10px; color: var(--ink-3); font-size: 12px; }
+  .post .metrics span b { color: var(--ink-2); font-weight: 500; }
+  .post .link { color: var(--ink-3); font-size: 12px; text-decoration: none; }
+  .post .link:hover { color: var(--link); text-decoration: underline; }
+
+  .empty { text-align: center; color: var(--ink-3); padding: 60px 0; }
+
+  footer {
+    margin-top: 30px; text-align: center; color: var(--ink-3); font-size: 12px;
+  }
+  footer a { color: var(--ink-2); text-decoration: none; }
+  footer a:hover { color: var(--link); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="avatar">药</div>
+    <div>
+      <h1>metalslime · 雪球药神</h1>
+      <div class="sub">
+        <a href="https://xueqiu.com/u/2292705444" target="_blank" rel="noopener">xueqiu.com/u/2292705444</a>
+        &nbsp;·&nbsp; 创新药与 AI 产业链观察
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v" id="stat-total">--</div><div class="l">已收录发言</div></div>
+      <div class="stat"><div class="v" id="stat-original">--</div><div class="l">原创</div></div>
+      <div class="stat"><div class="v" id="stat-repost">--</div><div class="l">转发</div></div>
+      <div class="stat"><div class="v" id="stat-range">--</div><div class="l">时间跨度</div></div>
+    </div>
+  </div>
+
+  <div class="notice">
+    📌 <b>历史正在累积中</b> —— 雪球 API 对未登录访问只返回首页 20 条，历史全量（约 1.6 万条）通过 GitHub Action 每 12 小时增量回填；当前页面为最新窗口的数据。
+  </div>
+
+  <div class="toolbar">
+    <input type="search" id="q" placeholder="搜索发言内容、股票代码、@提及…">
+    <select id="src">
+      <option value="">全部来源</option>
+    </select>
+    <select id="type">
+      <option value="">全部类型</option>
+      <option value="0">原创</option>
+      <option value="2">长文</option>
+      <option value="1">转发</option>
+    </select>
+    <div class="meta" id="meta">加载中…</div>
+  </div>
+
+  <div class="timeline" id="timeline"></div>
+
+  <footer>
+    数据每 12 小时由 GitHub Action 自动更新 ·
+    <a href="https://github.com/a9f7/xueqiuyaoshen" target="_blank" rel="noopener">源码仓库</a>
+  </footer>
+</div>
+
+<script>
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+
+  function fmtTime(ts) {
+    if (!ts) return "";
+    const d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    const pad = n => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+  function fmtDate(ts) {
+    if (!ts) return "";
+    const d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  }
+  function esc(s) {
+    return (s || "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  }
+
+  let allPosts = [];
+  let filtered = [];
+
+  function render() {
+    const q = $("#q").value.trim().toLowerCase();
+    const src = $("#src").value;
+    const tp = $("#type").value;
+    filtered = allPosts.filter(p => {
+      if (src && p.source !== src) return false;
+      if (tp && String(p.type) !== tp) return false;
+      if (q) {
+        const hay = [
+          p.text || "",
+          p.description || "",
+          (p.stockCorrelation || []).join(" "),
+          (p.mentioned || []).join(" "),
+        ].join(" ").toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+    $("#meta").textContent = `共 ${filtered.length} / ${allPosts.length} 条`;
+
+    const tl = $("#timeline");
+    if (filtered.length === 0) {
+      tl.innerHTML = `<div class="empty">没有匹配的发言</div>`;
+      return;
+    }
+    tl.innerHTML = filtered.map(p => {
+      const longText = (p.text || "").length > 280;
+      const tags = (p.stockCorrelation || []).map(t => `<span class="tag">${esc(t)}</span>`).join("");
+      const url = p.url || `https://xueqiu.com${p.target || ""}`;
+      return `
+        <article class="post">
+          <div class="head">
+            <span class="time">${esc(fmtTime(p.created_at))}</span>
+            <span class="id">#${p.id}</span>
+            <span class="src">${esc(p.source || "雪球")}</span>
+            <a class="link" href="${esc(url)}" target="_blank" rel="noopener">原帖 ↗</a>
+          </div>
+          <div class="text ${longText ? "collapsed" : ""}" data-id="${p.id}">${esc(p.text || "")}</div>
+          ${longText ? `<span class="expand" data-id="${p.id}">展开全文 ↓</span>` : ""}
+          ${tags ? `<div class="tags">${tags}</div>` : ""}
+          <div class="metrics">
+            <span><b>${p.reply_count || 0}</b> 回复</span>
+            <span><b>${p.like_count || 0}</b> 赞</span>
+            <span><b>${p.retweet_count || 0}</b> 转发</span>
+            <span><b>${p.fav_count || 0}</b> 收藏</span>
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    $$(".expand", tl).forEach(el => {
+      el.addEventListener("click", () => {
+        const t = tl.querySelector(`.text[data-id="${el.dataset.id}"]`);
+        if (t) t.classList.remove("collapsed");
+        el.remove();
+      });
+    });
+  }
+
+  function paintStats() {
+    const total = allPosts.length;
+    const orig = allPosts.filter(p => String(p.type) === "0").length;
+    const repost = allPosts.filter(p => String(p.type) === "1").length;
+    const ts = allPosts.map(p => p.created_at).filter(Boolean);
+    const range = ts.length ? `${fmtDate(Math.min(...ts))} → ${fmtDate(Math.max(...ts))}` : "--";
+    $("#stat-total").textContent = total;
+    $("#stat-original").textContent = orig;
+    $("#stat-repost").textContent = repost;
+    $("#stat-range").textContent = range;
+
+    const sources = Array.from(new Set(allPosts.map(p => p.source).filter(Boolean))).sort();
+    const sel = $("#src");
+    sources.forEach(s => {
+      const o = document.createElement("option");
+      o.value = s; o.textContent = s;
+      sel.appendChild(o);
+    });
+  }
+
+  async function load() {
+    try {
+      const [posts, user] = await Promise.all([
+        fetch("data/posts.json", { cache: "no-cache" }).then(r => r.json()),
+        fetch("data/user.json", { cache: "no-cache" }).then(r => r.json()),
+      ]);
+      allPosts = posts;
+      // 描述叠加（用 user 信息）
+      const heroSub = document.querySelector(".hero .sub");
+      if (user && user.followers_count) {
+        heroSub.innerHTML = `
+          <a href="${esc(user.profile)}" target="_blank" rel="noopener">${esc(user.profile)}</a>
+          &nbsp;·&nbsp; 粉丝 ${user.followers_count.toLocaleString()} &nbsp;·&nbsp; 发言 ${(user.status_count || 0).toLocaleString()}
+        `;
+      }
+      paintStats();
+      render();
+    } catch (e) {
+      $("#timeline").innerHTML = `<div class="empty">数据加载失败：${esc(String(e))}</div>`;
+    }
+  }
+
+  $("#q").addEventListener("input", render);
+  $("#src").addEventListener("change", render);
+  $("#type").addEventListener("change", render);
+
+  load();
+</script>
+</body>
+</html>
