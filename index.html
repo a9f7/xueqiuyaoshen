@@ -191,6 +191,81 @@
   footer { margin-top: 30px; text-align: center; color: var(--ink-3); font-size: 12px; }
   footer a { color: var(--ink-2); text-decoration: none; }
   footer a:hover { color: var(--link); text-decoration: underline; }
+
+  /* 首席视角 */
+  .analyst {
+    margin-top: 16px; background: linear-gradient(180deg, #fffdfb 0%, #ffffff 100%);
+    border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 20px;
+    box-shadow: var(--shadow);
+  }
+  .analyst .an-head { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+  .analyst .an-title { font-size: 16px; font-weight: 600; color: var(--ink); }
+  .analyst .an-title .dot { color: var(--accent); }
+  .analyst .an-sub { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+  .analyst .an-verdict {
+    margin-left: auto; max-width: 420px; font-size: 13px; line-height: 1.6;
+    color: #8a2b1f; background: var(--accent-soft); border: 1px solid #f5c6c0;
+    border-radius: 10px; padding: 8px 12px; font-weight: 500;
+  }
+  .analyst .an-body { margin-top: 14px; }
+  .analyst .an-narrative { font-size: 13.5px; line-height: 1.85; color: var(--ink); }
+  .analyst .an-narrative p { margin: 0 0 10px; }
+  .analyst .an-narrative p:last-child { margin-bottom: 0; }
+  .analyst .an-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .analyst .an-card { border: 1px solid var(--line-2); border-radius: 10px; padding: 12px 14px; background: #fcfcfd; }
+  .analyst .an-card-h { font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
+  .analyst .an-bars { display: flex; flex-direction: column; gap: 6px; }
+  .analyst .an-bar { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .analyst .an-bar .nm { width: 64px; flex-shrink: 0; color: var(--ink-2); text-align: right; }
+  .analyst .an-bar .track { flex: 1; height: 14px; background: var(--line-2); border-radius: 7px; overflow: hidden; }
+  .analyst .an-bar .fill { height: 100%; background: linear-gradient(90deg, #e67e22, #c0392b); border-radius: 7px; }
+  .analyst .an-bar .ct { width: 34px; flex-shrink: 0; color: var(--ink-3); text-align: right; }
+  .analyst .an-stance { display: flex; flex-wrap: wrap; gap: 6px; }
+  .analyst .an-stance .s {
+    font-size: 12.5px; padding: 3px 10px; border-radius: 20px; color: #fff; font-weight: 500;
+  }
+  .analyst .an-stance .s.bull { background: var(--accent); }
+  .analyst .an-stance .s.bear { background: var(--green); }
+  .analyst .an-stance .s.neu { background: #8b94a3; }
+  .analyst .an-stance .s.risk { background: var(--orange); }
+  .analyst .an-stance .s.rev { background: var(--blue); }
+  .analyst .an-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .analyst .an-chips .c {
+    font-size: 12px; padding: 2px 9px; border-radius: 20px; border: 1px solid var(--line);
+    background: #fff; color: var(--ink-2);
+  }
+  .analyst .an-chips .c b { color: var(--ink); }
+  .analyst .an-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+  .analyst .an-post {
+    border: 1px solid var(--line-2); border-radius: 9px; padding: 9px 11px; margin-bottom: 8px;
+    background: #fff; font-size: 12.5px;
+  }
+  .analyst .an-post:last-child { margin-bottom: 0; }
+  .analyst .an-post .ph { display: flex; gap: 8px; align-items: center; color: var(--ink-3); font-size: 11.5px; margin-bottom: 4px; }
+  .analyst .an-post .ph .eng { margin-left: auto; color: var(--accent); font-weight: 600; }
+  .analyst .an-post .pt { color: var(--ink); line-height: 1.6; }
+  .analyst .an-post .pt a { color: var(--link); text-decoration: none; }
+  .analyst .an-post .ptags { margin-top: 4px; display: flex; gap: 5px; flex-wrap: wrap; }
+  .analyst .an-post .ptags span { font-size: 11px; color: var(--tag-ink); background: var(--tag); padding: 1px 6px; border-radius: 4px; }
+  .analyst .an-sig {
+    border-left: 3px solid var(--accent); background: #fcf6f4; border-radius: 0 8px 8px 0;
+    padding: 8px 11px; margin-bottom: 8px; font-size: 13px; line-height: 1.7; color: var(--ink);
+  }
+  .analyst .an-sig:last-child { margin-bottom: 0; }
+  .analyst .an-sig a { color: var(--ink-3); font-size: 11px; text-decoration: none; margin-left: 6px; }
+  .analyst .an-sig a:hover { color: var(--link); }
+
+  .loadmore {
+    display: block; margin: 16px auto 0; padding: 9px 22px; font-size: 13px;
+    border: 1px solid var(--line); background: #fafbfc; border-radius: 20px; color: var(--ink-2); cursor: pointer;
+  }
+  .loadmore:hover { border-color: var(--link); color: var(--link); }
+  .loadmore[hidden] { display: none; }
+
+  @media (max-width: 720px) {
+    .analyst .an-grid, .analyst .an-cols { grid-template-columns: 1fr; }
+    .analyst .an-verdict { margin-left: 0; max-width: none; }
+  }
 </style>
 </head>
 <body>
@@ -218,6 +293,43 @@
     📌 <b>原贴 + 评论 + 转发 全收录</b> —— 评论/转发已内嵌「被评论/被转的原文」便于理解上下文；并新增
     <b>自选股变化追踪</b>（点上方「自选股变化」）。数据按月分块，首屏仅加载索引+最新月，自动化每 12 小时增量回填。
   </div>
+
+  <section class="analyst" id="analyst" style="display:none">
+    <div class="an-head">
+      <div>
+        <div class="an-title"><span class="dot">●</span> 首席视角 · 近 <span id="an-days">15</span> 天发言解读</div>
+        <div class="an-sub" id="an-sub"></div>
+      </div>
+      <div class="an-verdict" id="an-verdict"></div>
+    </div>
+    <div class="an-body">
+      <div class="an-narrative" id="an-narrative"></div>
+      <div class="an-grid">
+        <div class="an-card">
+          <div class="an-card-h">核心主线（行业主题）</div>
+          <div class="an-bars" id="an-industry"></div>
+        </div>
+        <div class="an-card">
+          <div class="an-card-h">多空立场</div>
+          <div class="an-stance" id="an-stance"></div>
+          <div class="an-card-h" style="margin-top:12px">视角层级</div>
+          <div class="an-chips" id="an-persp"></div>
+          <div class="an-card-h" style="margin-top:12px">地域偏好</div>
+          <div class="an-chips" id="an-region"></div>
+        </div>
+      </div>
+      <div class="an-cols">
+        <div class="an-col">
+          <div class="an-card-h">🔥 最热发言</div>
+          <div id="an-top"></div>
+        </div>
+        <div class="an-col">
+          <div class="an-card-h">💡 关键信号</div>
+          <div id="an-signals"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <div class="toolbar">
     <input type="search" id="q" placeholder="搜索发言/评论内容、股票代码、@提及…">
@@ -247,6 +359,7 @@
   </div>
 
   <div class="timeline" id="timeline"></div>
+  <button id="loadMore" class="loadmore" hidden>加载更多</button>
 
   <footer>
     数据每 12 小时自动更新 ·
@@ -287,6 +400,8 @@
   let postIndex = null;
   let activeTags = new Set();
   let tagIndex = null;
+  let renderLimit = 60;
+  let lastFilterKey = "";
 
   async function loadTagIndex() {
     try {
@@ -371,14 +486,20 @@
       return true;
     });
     const tagHint = activeTags.size ? ` · 标签[${Array.from(activeTags).join("+")}]` : "";
-    $("#meta").textContent = `共 ${filtered.length} / 已加载 ${allPosts.length}（总 ${postIndex ? postIndex.total : allPosts.length}）条${tagHint}`;
+    const totalAll = postIndex ? postIndex.total : allPosts.length;
+    $("#meta").textContent = `共 ${filtered.length} / 已加载 ${allPosts.length}（总 ${totalAll}）条${tagHint}`;
 
     const tl = $("#timeline");
     if (filtered.length === 0) {
       tl.innerHTML = `<div class="empty">没有匹配的内容</div>`;
+      $("#loadMore").hidden = true;
       return;
     }
-    tl.innerHTML = filtered.map(p => {
+    // 渲染上限：筛选条件变化则重置，避免一次性渲染上千张卡片拖慢首屏
+    const fkey = q + "|" + ym + "|" + kind + "|" + Array.from(activeTags).sort().join(",");
+    if (fkey !== lastFilterKey) { renderLimit = 60; lastFilterKey = fkey; }
+    const visible = filtered.slice(0, renderLimit);
+    tl.innerHTML = visible.map(p => {
       const longText = (p.text || "").length > 280;
       const k = p.kind || "post";
       const klabel = { post: "原贴", comment: "评论", repost: "转发" }[k] || k;
@@ -436,6 +557,14 @@
         render();
       });
     });
+
+    const lm = $("#loadMore");
+    if (filtered.length > renderLimit) {
+      lm.hidden = false;
+      lm.textContent = `加载更多（还剩 ${filtered.length - renderLimit} 条）`;
+    } else {
+      lm.hidden = true;
+    }
   }
 
   function cssEscape(s) {
@@ -530,17 +659,95 @@
       paintStats();
       buildMonthSelect();
       loadTagIndex();
-      const recent = (postIndex.months || []).slice(0, 2);
-      await Promise.all(recent.map(m => loadMonth(m.file)));
-      $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（最新 ${recent.length} 个月）`;
+      loadAnalyst();   // 非阻塞：小文件，独立渲染，不拖慢时间线
+      const months = postIndex.months || [];
+      // 先加载最新 1 个月（首屏最快），渲染后再后台补齐第 2 个月
+      if (months[0]) await loadMonth(months[0].file);
       render();
+      $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（最新月）`;
+      if (months[1]) {
+        loadMonth(months[1].file).then(() => {
+          render();
+          $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（最新 2 月）`;
+        });
+      }
     } catch (e) {
       $("#timeline").innerHTML = `<div class="empty">数据加载失败：${esc(String(e))}</div>`;
     }
   }
 
-  $("#q").addEventListener("input", render);
+  // 首席视角：加载并渲染 analysis_recent.json
+  async function loadAnalyst() {
+    try {
+      const d = await fetch("data/analysis_recent.json", { cache: "no-cache" }).then(r => r.json());
+      renderAnalyst(d);
+      $("#analyst").style.display = "block";
+    } catch (e) { /* 分析数据缺失不阻断主流程 */ }
+  }
+
+  function renderAnalyst(d) {
+    const w = d.window || {};
+    $("#an-days").textContent = w.days || 15;
+    $("#an-sub").textContent =
+      `${w.start || "?"} – ${w.end || "?"} · 共 ${d.counts ? d.counts.total : "?"} 条发言` +
+      `（原贴 ${d.counts ? d.counts.post : "?"} / 评论 ${d.counts ? d.counts.comment : "?"}）` +
+      ` · 更新于 ${d.updated || ""}`;
+    if (d.headline) $("#an-verdict").textContent = d.headline;
+    // 叙述
+    $("#an-narrative").innerHTML = (d.narrative || []).map(p => `<p>${esc(p)}</p>`).join("");
+    // 行业条形
+    const ind = (d.dims && d.dims.industry) || [];
+    const maxInd = ind.length ? ind[0].count : 1;
+    $("#an-industry").innerHTML = ind.slice(0, 8).map(t => `
+      <div class="an-bar">
+        <span class="nm">${esc(t.tag)}</span>
+        <span class="track"><span class="fill" style="width:${Math.max(6, Math.round(t.count / maxInd * 100))}%"></span></span>
+        <span class="ct">${t.count}</span>
+      </div>`).join("") || `<div class="an-sub">（无）</div>`;
+    // 立场
+    const ss = d.stance_summary || {};
+    const stanceMeta = [
+      ["看多", "bull"], ["看空", "bear"], ["中性", "neu"], ["风险提示", "risk"], ["复盘", "rev"]
+    ];
+    $("#an-stance").innerHTML = stanceMeta.map(([k, cls]) =>
+      (ss[k] ? `<span class="s ${cls}">${k} ${ss[k]}</span>` : "")
+    ).join("");
+    // 视角 + 地域 chips
+    const chipHtml = arr => (arr || []).slice(0, 6).map(t =>
+      `<span class="c">${esc(t.tag)} <b>${t.count}</b></span>`).join("");
+    $("#an-persp").innerHTML = chipHtml(d.dims && d.dims.perspective) || `<span class="c">—</span>`;
+    $("#an-region").innerHTML = chipHtml(d.dims && d.dims.region) || `<span class="c">—</span>`;
+    // 最热发言
+    $("#an-top").innerHTML = (d.top_posts || []).slice(0, 5).map(p => {
+      const dt = fmtDate(p.created_at);
+      const tags = (p.tags || []).slice(0, 3).map(t => `<span>${esc(t)}</span>`).join("");
+      return `<div class="an-post">
+        <div class="ph"><span>${dt}</span><span>${p.kind === "comment" ? "评论" : p.kind === "repost" ? "转发" : "原贴"}</span><span class="eng">🔥 ${p.engagement}</span></div>
+        <div class="pt">${esc(p.text)} <a href="${esc(p.url)}" target="_blank" rel="noopener">↗</a></div>
+        ${tags ? `<div class="ptags">${tags}</div>` : ""}
+      </div>`;
+    }).join("") || `<div class="an-sub">（无）</div>`;
+    // 关键信号
+    $("#an-signals").innerHTML = (d.signals || []).map(s => {
+      const dt = fmtDate(s.created_at);
+      return `<div class="an-sig">${esc(s.text)}<a href="${esc(s.url)}" target="_blank" rel="noopener">${dt} ↗</a></div>`;
+    }).join("") || `<div class="an-sub">（无）</div>`;
+  }
+
+  // 防抖搜索
+  let _qTimer = null;
+  $("#q").addEventListener("input", () => {
+    if (_qTimer) clearTimeout(_qTimer);
+    _qTimer = setTimeout(render, 200);
+  });
   $("#kind").addEventListener("change", render);
+  $("#loadMore").addEventListener("click", () => {
+    renderLimit += 60;
+    render();
+    // 滚到新加载区域底部附近，避免跳回顶部
+    const tl = $("#timeline");
+    if (tl.lastElementChild) tl.lastElementChild.scrollIntoView({ block: "end" });
+  });
   $("#month").addEventListener("change", async (e) => {
     const ym = e.target.value;
     if (!ym) { render(); return; }
@@ -562,6 +769,7 @@
     if (!postIndex) return;
     $("#meta").textContent = "加载全部月份中…";
     await Promise.all(postIndex.months.map(m => loadMonth(m.file)));
+    renderLimit = allPosts.length + 1;   // 加载全部后不再截断
     $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（全部）`;
     render();
   });
