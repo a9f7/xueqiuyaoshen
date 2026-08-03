@@ -33,6 +33,21 @@ def get_ip(meta):
     m = re.search(r'"ip_location"\s*:\s*"([^"]+)"', meta)
     return m.group(1) if m else ""
 
+def local_images(pic):
+    """从 pic 字段（逗号分隔 URL 串）提取本地相对路径列表 images/<seg>。"""
+    out = []
+    if not pic:
+        return out
+    for u in pic.split(","):
+        u = u.strip()
+        if not u:
+            continue
+        seg = u.split('!')[0].rstrip('/').split('/')[-1]
+        if seg:
+            out.append("images/" + seg)
+    return out
+
+
 def normalize(s):
     user = s.get("user") or {}
     text = strip_html(s.get("text") or "") or strip_html(s.get("description") or "")
@@ -43,6 +58,7 @@ def normalize(s):
     uid = user.get("id") or s.get("user_id") or 2292705444
     sid = s.get("id")
     url = f"https://xueqiu.com{target}" if target else (f"https://xueqiu.com/{uid}/{sid}" if sid else "")
+    pic = s.get("pic", "") or ""
     return {
         "id": s.get("id"),
         "created_at": s.get("created_at"),
@@ -61,7 +77,8 @@ def normalize(s):
         "ip_location": get_ip(s.get("meta_keywords")),
         "stockCorrelation": s.get("stockCorrelation", []) or [],
         "mentioned": mentioned,
-        "pic": s.get("pic", "") or "",
+        "pic": pic,
+        "images": local_images(pic),
         "target": target,
         "url": url,
         "screen_name": user.get("screen_name", "metalslime"),

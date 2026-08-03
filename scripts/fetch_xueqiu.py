@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""雪球 user_timeline 抓取（playwright 反检测版）。
+"""雪球 user_timeline 抓取（playwright 反检测版，支持多 cookie 轮换）。
 
 用法：
   # 抓最旧的 N 页未抓取数据（自动化增量用，默认 15 页）
@@ -12,9 +12,15 @@
   python fetch_xueqiu.py
 
 cookies 来源（按优先级）：
-  1. 环境变量 XQ_COOKIE
-  2. 文件 data/xq_cookie.txt
-  3. 无 cookies → 只抓 page=1（公开）
+  1. 环境变量 XQ_COOKIE（单条）
+  2. 文件 data/xq_cookies.txt（多行，每行一组 cookie，轮换使用）
+  3. 文件 data/xq_cookie.txt（单条，兼容旧版）
+  4. 无 cookies → 只抓 page=1（公开）
+
+轮换策略：
+  - 每个浏览器会话（≤30 页）轮流使用池里下一个 cookie
+  - 某 cookie 触发 405/访问验证 → 进入冷却（默认 30 分钟），切换下一个
+  - 所有 cookie 都冷却 → 停止，避免加剧风控
 """
 import sys
 import os
@@ -26,23 +32,40 @@ from playwright.sync_api import sync_playwright
 
 # 默认 cookies 文件（不入库）
 HERE = os.path.dirname(os.path.abspath(__file__))
+COOKIE_POOL_FILE = os.path.join(HERE, "..", "data", "xq_cookies.txt")
 COOKIE_FILE = os.path.join(HERE, "..", "data", "xq_cookie.txt")
 OUT_DIR = os.path.join(HERE, "..", "data", "raw")
 CHROME_PATH = r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe"
 USER_ID = 2292705444
 BATCH_PER_BROWSER = 30  # 每个浏览器会话最多抓多少页（避免渲染器崩溃）
 FALLBACK_MAXPAGE = 810
+COOLDOWN_SEC = 1800  # 触发风控后该 cookie 冷却 30 分钟
 
 
-def load_cookie_str():
+def load_cookie_pool():
+    """返回 cookie 字符串列表（去重、去空）。"""
+    pool = []
     if os.environ.get("XQ_COOKIE"):
-        return os.environ["XQ_COOKIE"].strip()
-    if os.path.exists(COOKIE_FILE):
+        pool.append(os.environ["XQ_COOKIE"].strip())
+    if os.path.exists(COOKIE_POOL_FILE):
+        with open(COOKIE_POOL_FILE, encoding="utf-8") as f:
+            for line in f:
+                s = line.strip()
+                if s:
+                    pool.append(s)
+    if not pool and os.path.exists(COOKIE_FILE):
         with open(COOKIE_FILE, encoding="utf-8") as f:
             s = f.read().strip()
             if s:
-                return s
-    return ""
+                pool.append(s)
+    # 去重保持顺序
+    seen = set()
+    uniq = []
+    for s in pool:
+        if s not in seen:
+            seen.add(s)
+            uniq.append(s)
+    return uniq
 
 
 def parse_cookies(cookie_str):
@@ -163,7 +186,7 @@ def fetch_batch(start, end, cookie_str):
                     print(f"  page={pno}: {len(data['json']['statuses'])} statuses, total={data['json'].get('total')}, maxPage={data['json'].get('maxPage')}", flush=True)
                     saved += 1
                 elif data.get('status') == 405:
-                    print(f"  [405 LIMIT] page={pno} rate limit. Stopping batch.", flush=True)
+                    print(f"  [405 LIMIT] page={pno} rate limit. cookie cooldown.", flush=True)
                     stopped = True
                     break
                 else:
@@ -193,47 +216,68 @@ def main():
     args = ap.parse_args()
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    cookie_str = load_cookie_str()
+    pool = load_cookie_pool()
+    if not pool:
+        print("[warn] 无 cookies，仅抓公开 page=1", flush=True)
+    print(f"[run] cookie pool 共 {len(pool)} 组", flush=True)
 
     # 决定区间
     if args.start is not None:
         start, end = args.start, (args.end if args.end is not None else args.start)
     else:
-        # 自动模式：找最旧的未抓取页
         have = existing_pages()
-        # 从 page=1 往后找第一个缺口
         start = 1
         while start in have:
             start += 1
         end = start + args.batch - 1
-        # 不知道 maxPage 时给个上限保护
         end = min(end, FALLBACK_MAXPAGE)
         print(f"[auto] oldest missing = page {start}, fetching {start}..{end}", flush=True)
 
-    if not cookie_str:
-        # 无 cookies：只抓公开 page=1
+    if not pool:
         if start != 1:
             print("[info] 无 cookies，仅抓公开 page=1", flush=True)
             start, end = 1, 1
         else:
             end = 1
 
-    print(f"[run] cookies={'YES' if cookie_str else 'NO'} range={start}..{end}", flush=True)
+    cooldown = {}  # idx -> 冷却截止时间戳
+    idx = 0
     total_saved = 0
     lo = start
     while lo <= end:
+        # 跳过已抓
+        while lo <= end and os.path.exists(os.path.join(OUT_DIR, f"page_{lo}.json")):
+            lo += 1
+        if lo > end:
+            break
         hi = min(lo + BATCH_PER_BROWSER - 1, end)
-        # 整段已抓则跳过
-        if all(os.path.exists(os.path.join(OUT_DIR, f"page_{p}.json")) for p in range(lo, hi + 1)):
-            lo = hi + 1
-            continue
-        print(f"[batch] {lo}..{hi}", flush=True)
-        saved, stopped = fetch_batch(lo, hi, cookie_str)
+
+        # 选一个可用 cookie（轮转 + 跳过冷却）
+        chosen = None
+        for _ in range(len(pool)):
+            i = idx % len(pool)
+            if cooldown.get(i, 0) <= time.time():
+                chosen = i
+                idx = i + 1
+                break
+            idx += 1
+        if chosen is None:
+            print("[STOP] 所有 cookies 均冷却中，停止。", flush=True)
+            break
+
+        print(f"[batch] pages {lo}..{hi} | cookie#{chosen} ({'有' if pool else '无'})", flush=True)
+        saved, stopped = fetch_batch(lo, hi, pool[chosen])
         total_saved += saved
         print(f"[batch done] saved={saved} cumulative={total_saved}", flush=True)
         if stopped:
-            print("[STOP] WAF 限流/验证，停止。", flush=True)
-            break
+            cooldown[chosen] = time.time() + COOLDOWN_SEC
+            # 重新定位 lo 到本批第一个未抓页，用下一个 cookie 重试
+            while lo <= hi and os.path.exists(os.path.join(OUT_DIR, f"page_{lo}.json")):
+                lo += 1
+            if all(cooldown.get(i, 0) > time.time() for i in range(len(pool))):
+                print("[STOP] 全部 cookies 冷却，停止。", flush=True)
+                break
+            continue
         lo = hi + 1
         time.sleep(random.uniform(5, 10))
     print(f"[ALL DONE] saved this run: {total_saved}", flush=True)

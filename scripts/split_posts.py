@@ -21,7 +21,7 @@ MONTHS = DATA / "months"
 KEEP = [
     "id", "created_at", "source", "type", "text",
     "ip_location", "reply_count", "retweet_count", "fav_count",
-    "like_count", "stockCorrelation", "url",
+    "like_count", "stockCorrelation", "url", "images",
 ]
 
 
