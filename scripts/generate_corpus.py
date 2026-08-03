@@ -50,6 +50,10 @@ def write_month(prefix, ym, items, title):
         stk = p.get("stocks") or p.get("stockCorrelation") or []
         if stk:
             buf.append("股票: " + " ".join(stk))
+        # 语义标签
+        tags = p.get("tags") or []
+        if tags:
+            buf.append("标签: " + " ".join(tags))
         imgs = p.get("images") or []
         if imgs:
             buf.append("[图] " + " ; ".join(imgs))

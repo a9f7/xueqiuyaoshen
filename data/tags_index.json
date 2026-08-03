@@ -1,0 +1,232 @@
+{
+  "updated": "2026-08-03T15:45:20Z",
+  "total_tagged": 18733,
+  "distinct_tags": 45,
+  "tags": [
+    {
+      "tag": "行情点评",
+      "count": 6101,
+      "dim": "ctype"
+    },
+    {
+      "tag": "股票",
+      "count": 4001,
+      "dim": "asset"
+    },
+    {
+      "tag": "答疑",
+      "count": 3940,
+      "dim": "ctype"
+    },
+    {
+      "tag": "宏观",
+      "count": 3906,
+      "dim": "perspective"
+    },
+    {
+      "tag": "科技",
+      "count": 3395,
+      "dim": "industry"
+    },
+    {
+      "tag": "美国",
+      "count": 3395,
+      "dim": "region"
+    },
+    {
+      "tag": "中国",
+      "count": 3379,
+      "dim": "region"
+    },
+    {
+      "tag": "看多",
+      "count": 2993,
+      "dim": "stance"
+    },
+    {
+      "tag": "微观",
+      "count": 2880,
+      "dim": "perspective"
+    },
+    {
+      "tag": "个股分析",
+      "count": 2639,
+      "dim": "ctype"
+    },
+    {
+      "tag": "医药",
+      "count": 2500,
+      "dim": "industry"
+    },
+    {
+      "tag": "消费",
+      "count": 2189,
+      "dim": "industry"
+    },
+    {
+      "tag": "金融",
+      "count": 2079,
+      "dim": "industry"
+    },
+    {
+      "tag": "其他",
+      "count": 1930,
+      "dim": "other"
+    },
+    {
+      "tag": "中观",
+      "count": 1722,
+      "dim": "perspective"
+    },
+    {
+      "tag": "看空",
+      "count": 1714,
+      "dim": "stance"
+    },
+    {
+      "tag": "复盘",
+      "count": 1230,
+      "dim": "stance"
+    },
+    {
+      "tag": "随笔",
+      "count": 1177,
+      "dim": "ctype"
+    },
+    {
+      "tag": "数据",
+      "count": 1137,
+      "dim": "ctype"
+    },
+    {
+      "tag": "互联网",
+      "count": 753,
+      "dim": "industry"
+    },
+    {
+      "tag": "地产",
+      "count": 739,
+      "dim": "industry"
+    },
+    {
+      "tag": "中国香港",
+      "count": 723,
+      "dim": "region"
+    },
+    {
+      "tag": "新能源",
+      "count": 670,
+      "dim": "industry"
+    },
+    {
+      "tag": "能源",
+      "count": 574,
+      "dim": "industry"
+    },
+    {
+      "tag": "黄金有色",
+      "count": 468,
+      "dim": "industry"
+    },
+    {
+      "tag": "商品",
+      "count": 455,
+      "dim": "asset"
+    },
+    {
+      "tag": "政策解读",
+      "count": 452,
+      "dim": "ctype"
+    },
+    {
+      "tag": "传媒游戏",
+      "count": 450,
+      "dim": "industry"
+    },
+    {
+      "tag": "外汇",
+      "count": 392,
+      "dim": "asset"
+    },
+    {
+      "tag": "全球",
+      "count": 378,
+      "dim": "region"
+    },
+    {
+      "tag": "风险提示",
+      "count": 344,
+      "dim": "stance"
+    },
+    {
+      "tag": "日本",
+      "count": 295,
+      "dim": "region"
+    },
+    {
+      "tag": "债券",
+      "count": 208,
+      "dim": "asset"
+    },
+    {
+      "tag": "汽车",
+      "count": 191,
+      "dim": "industry"
+    },
+    {
+      "tag": "ETF",
+      "count": 190,
+      "dim": "asset"
+    },
+    {
+      "tag": "欧洲",
+      "count": 145,
+      "dim": "region"
+    },
+    {
+      "tag": "新兴市场",
+      "count": 144,
+      "dim": "region"
+    },
+    {
+      "tag": "基建机械",
+      "count": 137,
+      "dim": "industry"
+    },
+    {
+      "tag": "军工",
+      "count": 113,
+      "dim": "industry"
+    },
+    {
+      "tag": "期权",
+      "count": 107,
+      "dim": "asset"
+    },
+    {
+      "tag": "中性",
+      "count": 93,
+      "dim": "stance"
+    },
+    {
+      "tag": "教育",
+      "count": 82,
+      "dim": "industry"
+    },
+    {
+      "tag": "通信",
+      "count": 76,
+      "dim": "industry"
+    },
+    {
+      "tag": "农业",
+      "count": 52,
+      "dim": "industry"
+    },
+    {
+      "tag": "加密货币",
+      "count": 34,
+      "dim": "asset"
+    }
+  ]
+}

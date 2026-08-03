@@ -81,6 +81,26 @@
   .toolbar button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
   .toolbar .meta { margin-left: auto; color: var(--ink-3); font-size: 12px; }
 
+  /* 标签筛选 */
+  .tagfilter {
+    margin-top: 12px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 16px; display: flex; gap: 10px;
+    align-items: flex-start; flex-wrap: wrap; box-shadow: var(--shadow);
+  }
+  .tagfilter .tf-label { font-size: 12px; color: var(--ink-3); padding-top: 4px; flex-shrink: 0; }
+  .tagfilter .tf-chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+  .tagfilter .tf-chips .chip {
+    font-size: 12px; padding: 3px 10px; border-radius: 20px; border: 1px solid var(--line);
+    background: #fafbfc; color: var(--ink-2); cursor: pointer; user-select: none; white-space: nowrap;
+  }
+  .tagfilter .tf-chips .chip:hover { border-color: var(--link); color: var(--link); }
+  .tagfilter .tf-chips .chip.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .tagfilter .tf-clear {
+    font-size: 12px; padding: 3px 10px; border: 1px solid var(--line); background: #fafbfc;
+    border-radius: 8px; color: var(--ink-3); cursor: pointer; flex-shrink: 0;
+  }
+  .tagfilter .tf-clear:hover { border-color: var(--accent); color: var(--accent); }
+
   /* 自选股面板 */
   .selfstock {
     margin-top: 16px; background: var(--panel); border: 1px solid var(--line);
@@ -155,8 +175,9 @@
   .post .tags { display: flex; gap: 6px; flex-wrap: wrap; }
   .post .tags .tag {
     background: var(--tag); color: var(--tag-ink); font-size: 12px; padding: 2px 8px; border-radius: 4px;
-    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; cursor: pointer;
   }
+  .post .tags .tag:hover { filter: brightness(0.95); text-decoration: underline; }
   .post .imgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; margin-top: 10px; }
   .post .imgs a { display: block; border-radius: 6px; overflow: hidden; background: var(--line); }
   .post .imgs img { width: 100%; height: 110px; object-fit: cover; display: block; cursor: zoom-in; transition: transform .15s; }
@@ -212,6 +233,12 @@
     <div class="meta" id="meta">加载中…</div>
   </div>
 
+  <div class="tagfilter" id="tagfilter">
+    <span class="tf-label">标签筛选</span>
+    <div class="tf-chips" id="tf-chips"></div>
+    <button class="tf-clear" id="tfClear">清除</button>
+  </div>
+
   <div class="selfstock" id="selfstock">
     <h2>自选股 / 关注股票变化</h2>
     <div class="ss-sub" id="ss-sub"></div>
@@ -258,6 +285,38 @@
   let allPosts = [];
   let loadedMonths = new Set();
   let postIndex = null;
+  let activeTags = new Set();
+  let tagIndex = null;
+
+  async function loadTagIndex() {
+    try {
+      tagIndex = await fetch("data/tags_index.json", { cache: "no-cache" }).then(r => r.json());
+      renderTagFilter();
+    } catch (e) { /* 标签索引缺失不阻断主流程 */ }
+  }
+
+  function renderTagFilter() {
+    const box = $("#tf-chips");
+    if (!tagIndex) return;
+    // 过滤掉「其他」噪声桶，且只显示出现次数较多的标签，避免过长
+    const tags = (tagIndex.tags || []).filter(t => t.tag !== "其他" && t.count >= 20);
+    box.innerHTML = tags.map(t =>
+      `<span class="chip" data-tag="${esc(t.tag)}" title="${t.count} 条">${esc(t.tag)} <span style="opacity:.55">${t.count}</span></span>`
+    ).join("");
+    $$(".chip", box).forEach(el => {
+      el.addEventListener("click", () => {
+        const t = el.dataset.tag;
+        if (activeTags.has(t)) { activeTags.delete(t); el.classList.remove("active"); }
+        else { activeTags.add(t); el.classList.add("active"); }
+        render();
+      });
+    });
+    $("#tfClear").onclick = () => {
+      activeTags.clear();
+      $$(".chip", box).forEach(c => c.classList.remove("active"));
+      render();
+    };
+  }
 
   async function loadMonth(file) {
     if (loadedMonths.has(file)) return;
@@ -295,6 +354,10 @@
     const filtered = allPosts.filter(p => {
       if (ym && fmtYM(p.created_at) !== ym) return false;
       if (kind && p.kind !== kind) return false;
+      if (activeTags.size) {
+        const pt = p.tags || [];
+        for (const t of activeTags) { if (!pt.includes(t)) return false; }  // AND 过滤
+      }
       if (q) {
         const hay = [
           p.text || "",
@@ -307,7 +370,8 @@
       }
       return true;
     });
-    $("#meta").textContent = `共 ${filtered.length} / 已加载 ${allPosts.length}（总 ${postIndex ? postIndex.total : allPosts.length}）条`;
+    const tagHint = activeTags.size ? ` · 标签[${Array.from(activeTags).join("+")}]` : "";
+    $("#meta").textContent = `共 ${filtered.length} / 已加载 ${allPosts.length}（总 ${postIndex ? postIndex.total : allPosts.length}）条${tagHint}`;
 
     const tl = $("#timeline");
     if (filtered.length === 0) {
@@ -318,9 +382,7 @@
       const longText = (p.text || "").length > 280;
       const k = p.kind || "post";
       const klabel = { post: "原贴", comment: "评论", repost: "转发" }[k] || k;
-      const tags = ((p.stockCorrelation || []).concat(p.stocks || [])).filter(Boolean)
-        .filter((v, i, a) => a.indexOf(v) === i)
-        .map(t => `<span class="tag">${esc(t)}</span>`).join("");
+      const semTags = (p.tags || []).map(t => `<span class="tag" data-tag="${esc(t)}">${esc(t)}</span>`).join("");
       const url = p.url || (p.original && p.original.url) || `https://xueqiu.com/2292705444/${p.id}`;
       const loc = p.ip_location ? `<span class="loc">📍 ${esc(p.ip_location)}</span>` : "";
       const ctx = p.original ? `
@@ -344,7 +406,7 @@
           ${ctx}
           <div class="text ${longText ? "collapsed" : ""}" data-id="${p.id}">${esc(p.text || "")}</div>
           ${longText ? `<span class="expand" data-id="${p.id}">展开全文 ↓</span>` : ""}
-          ${tags ? `<div class="tags">${tags}</div>` : ""}
+          ${semTags ? `<div class="tags">${semTags}</div>` : ""}
           ${(p.images && p.images.length) ? `<div class="imgs">${p.images.map(img => `<a href="data/${img}" target="_blank" rel="noopener"><img loading="lazy" src="data/${img}" alt="配图" onerror="this.parentNode.style.display='none'"></a>`).join("")}</div>` : ""}
           <div class="metrics">
             <span><b>${p.reply_count || 0}</b> 回复</span>
@@ -362,6 +424,23 @@
         el.remove();
       });
     });
+    $$(".post .tags .tag", tl).forEach(el => {
+      el.addEventListener("click", () => {
+        const t = el.dataset.tag;
+        if (t === "其他") return;
+        if (!activeTags.has(t)) {
+          activeTags.add(t);
+          const chip = $(`.tf-chips .chip[data-tag="${cssEscape(t)}"]`, $("#tagfilter"));
+          if (chip) chip.classList.add("active");
+        }
+        render();
+      });
+    });
+  }
+
+  function cssEscape(s) {
+    if (window.CSS && CSS.escape) return CSS.escape(s);
+    return s.replace(/["\\]/g, "\\$&");
   }
 
   // 自选股面板（雪球真实公开自选股列表）
@@ -450,6 +529,7 @@
       postIndex = await fetch("data/posts_index.json", { cache: "no-cache" }).then(r => r.json());
       paintStats();
       buildMonthSelect();
+      loadTagIndex();
       const recent = (postIndex.months || []).slice(0, 2);
       await Promise.all(recent.map(m => loadMonth(m.file)));
       $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（最新 ${recent.length} 个月）`;

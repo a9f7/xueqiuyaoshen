@@ -51,7 +51,8 @@ def main():
             fav_count        INTEGER,
             view_count       INTEGER,
             stock_correlation TEXT,
-            mentioned        TEXT
+            mentioned        TEXT,
+            tags             TEXT
         )
         """
     )
@@ -72,7 +73,8 @@ def main():
             original_user    TEXT,
             original_text    TEXT,
             original_url     TEXT,
-            stocks           TEXT
+            stocks           TEXT,
+            tags             TEXT
         )
         """
     )
@@ -99,11 +101,12 @@ def main():
                 to_int(p.get("view_count")),
                 json.dumps(p.get("stockCorrelation", []), ensure_ascii=False),
                 json.dumps(p.get("mentioned", []), ensure_ascii=False),
+                json.dumps(p.get("tags", []), ensure_ascii=False),
             )
         )
 
     c.executemany(
-        "INSERT OR REPLACE INTO posts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows
+        "INSERT OR REPLACE INTO posts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows
     )
 
     # 互动（评论/转发）
@@ -130,9 +133,10 @@ def main():
                 orig.get("text", ""),
                 orig.get("url", ""),
                 json.dumps(it.get("stocks", []), ensure_ascii=False),
+                json.dumps(it.get("tags", []), ensure_ascii=False),
             ))
     c.executemany(
-        "INSERT OR REPLACE INTO interactions VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", irows
+        "INSERT OR REPLACE INTO interactions VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", irows
     )
 
     c.execute("CREATE INDEX IF NOT EXISTS idx_created_at ON posts(created_at)")

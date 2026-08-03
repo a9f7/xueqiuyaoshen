@@ -21,9 +21,9 @@ MONTHS = DATA / "months"
 
 KEEP_POST = ["id", "created_at", "source", "type", "text", "ip_location",
              "reply_count", "retweet_count", "fav_count", "like_count",
-             "stockCorrelation", "url", "images"]
+             "stockCorrelation", "url", "images", "tags"]
 KEEP_CM = ["id", "created_at", "kind", "text", "original", "reply_to",
-           "stocks", "like_count", "url", "images", "ip_location", "source"]
+           "stocks", "like_count", "url", "images", "ip_location", "source", "tags"]
 
 
 def slim(p, keep):
