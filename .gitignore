@@ -19,3 +19,7 @@ data/xq_cookies.txt
 .DS_Store
 __pycache__/
 *.pyc
+
+# 临时探测脚本 / 中间文件（本地留痕，不入库）
+scripts/_*.py
+data/_*.json

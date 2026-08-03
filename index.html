@@ -99,7 +99,10 @@
   .selfstock .ss-chip.revived { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
   .selfstock .ss-chip.cold { background: #f5f5f5; color: #616161; border-color: #e0e0e0; }
   .selfstock .ss-chip.core { background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
-  .selfstock .ss-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .selfstock .ss-list { display: block; }
+  .selfstock .ss-group { margin-bottom: 14px; }
+  .selfstock .ss-ghead { font-size: 13px; font-weight: 600; color: var(--ink-2); margin: 8px 0 6px; border-left: 3px solid var(--link); padding-left: 8px; }
+  .selfstock .ss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
   .selfstock .ss-item {
     border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px;
     cursor: pointer;
@@ -235,6 +238,13 @@
     const pad = n => String(n).padStart(2, "0");
     return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
   }
+  function fmtDate(ts) {
+    if (!ts) return "";
+    const d = new Date(ts);
+    if (isNaN(d.getTime())) return "";
+    const pad = n => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  }
   function fmtYM(ts) {
     if (!ts) return "";
     const d = new Date(ts);
@@ -354,27 +364,57 @@
     });
   }
 
-  // 自选股面板
+  // 自选股面板（雪球真实公开自选股列表）
   let ssLoaded = false;
   async function loadSelfstock() {
     if (ssLoaded) return;
     try {
       const data = await fetch("data/selfstock.json", { cache: "no-cache" }).then(r => r.json());
       ssLoaded = true;
+      const base = data.baseline || {};
+      const cur = data.current || {};
       const ch = data.changes || {};
-      $("#ss-sub").textContent = `基于全部原贴+评论+转发中提到的个股（$NAME(代码)）派生追踪 · 最新月份 ${data.latest_month || "?"} · 共 ${data.total_stocks} 只`;
+      const items = cur.items || [];
+      const addedSet = new Set((ch.added || []).map(i => i.symbol));
+      const typeName = { stock: "股票", fund: "基金", cube: "组合" };
+      const mpName = m => ({ US: "美股", CN: "A股", CUBE: "组合", FUND: "公募基金", PRIVATE_FUND: "私募基金" }[m] || m);
+      $("#ss-sub").textContent = `雪球真实自选股（公开列表）· 基线 ${base.date || "?"} · 当前 ${cur.date || "?"} · 共 ${items.length} 项 · 有变动时与基线比对标注`;
+      const cnt = { stock: 0, fund: 0, cube: 0 };
+      items.forEach(i => { cnt[i.type] = (cnt[i.type] || 0) + 1; });
       const sum = $("#ss-summary");
-      const mk = (cls, label, arr) => `<span class="ss-chip ${cls}" data-st="${cls}"><span class="n">${(arr||[]).length}</span> ${label}</span>`;
-      sum.innerHTML = mk("new", "新关注", ch.new) + mk("revived", "重提", ch.revived) + mk("cold", "已冷落", ch.cold) + mk("core", "持续关注", ch.core);
-      const list = $("#ss-list");
-      list.innerHTML = (data.stocks || []).map(s => {
-        const bcls = { "新关注": "new", "重提": "revived", "已冷落": "cold", "持续关注": "core" }[s.status] || "core";
-        return `<div class="ss-item" data-code="${esc(s.code)}">
-          <div><span class="nm">${esc(s.name || s.code)}</span> <span class="badge ${bcls}">${esc(s.status)}</span></div>
-          <div class="cd">${esc(s.code)} · 提及 ${s.mention_count} 次 · 首 ${s.first_month} / 近 ${s.last_month}</div>
-        </div>`;
-      }).join("");
-      $$(".ss-item", list).forEach(el => {
+      const mk = (cls, label, n, st) => `<span class="ss-chip ${cls}" data-st="${st}"><span class="n">${n}</span> ${label}</span>`;
+      sum.innerHTML =
+        mk("core", "股票", cnt.stock, "type_stock") +
+        mk("core", "基金", cnt.fund, "type_fund") +
+        mk("core", "组合", cnt.cube, "type_cube") +
+        mk("new", "新增", (ch.added || []).length, "added") +
+        mk("cold", "移除", (ch.removed || []).length, "removed");
+      let html = "";
+      ["stock", "fund", "cube"].forEach(tp => {
+        const grp = items.filter(i => i.type === tp);
+        if (!grp.length) return;
+        html += `<div class="ss-group"><div class="ss-ghead">${typeName[tp]}（${grp.length}）</div><div class="ss-grid">`;
+        html += grp.map(i => {
+          let extra = "";
+          if (addedSet.has(i.symbol)) extra = `<span class="badge new">新增</span>`;
+          if (i.mentioned) extra += ` <span class="badge core">讨论过</span>`;
+          return `<div class="ss-item" data-code="${esc(i.symbol)}">
+            <div><span class="nm">${esc(i.name || i.symbol)}</span> ${extra}</div>
+            <div class="cd">${esc(i.symbol)} · ${mpName(i.marketplace)}${i.watched ? " · 加入 " + fmtDate(i.watched) : ""}</div>
+          </div>`;
+        }).join("");
+        html += `</div></div>`;
+      });
+      const removed = ch.removed || [];
+      if (removed.length) {
+        html += `<div class="ss-group"><div class="ss-ghead">已移除（${removed.length}）</div><div class="ss-grid">`;
+        html += removed.map(i => `<div class="ss-item" data-code="${esc(i.symbol)}">
+          <div><span class="nm">${esc(i.name || i.symbol)}</span> <span class="badge cold">移除</span></div>
+          <div class="cd">${esc(i.symbol)}</div></div>`).join("");
+        html += `</div></div>`;
+      }
+      $("#ss-list").innerHTML = html || `<div class="cd">暂无数据</div>`;
+      $$(".ss-item", $("#ss-list")).forEach(el => {
         el.addEventListener("click", () => {
           $("#q").value = el.dataset.code;
           render();
@@ -384,12 +424,19 @@
       $$(".ss-chip", sum).forEach(el => {
         el.addEventListener("click", () => {
           const st = el.dataset.st;
-          const map = { new: "新关注", revived: "重提", cold: "已冷落", core: "持续关注" };
-          const want = map[st];
-          const items = $$(".ss-item", list);
-          items.forEach(it => {
-            const badge = it.querySelector(".badge");
-            it.style.display = (!want || (badge && badge.textContent === want)) ? "" : "none";
+          const groups = $$(".ss-group", $("#ss-list"));
+          groups.forEach(g => {
+            const head = g.querySelector(".ss-ghead").textContent;
+            const its = Array.from(g.querySelectorAll(".ss-item"));
+            let show = true;
+            if (st.startsWith("type_")) show = head.startsWith(typeName[st.slice(5)]);
+            else if (st === "added") its.forEach(it => it.style.display = it.querySelector(".badge.new") ? "" : "none");
+            else if (st === "removed") its.forEach(it => it.style.display = it.querySelector(".badge.cold") ? "" : "none");
+            else its.forEach(it => it.style.display = "");
+            if (st.startsWith("type_")) its.forEach(it => it.style.display = show ? "" : "none");
+            g.style.display = (st === "added" || st === "removed")
+              ? (its.some(x => x.style.display !== "none") ? "" : "none")
+              : (st.startsWith("type_") ? (its.some(x => x.style.display !== "none") ? "" : "none") : "");
           });
         });
       });
