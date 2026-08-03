@@ -142,22 +142,12 @@ def fetch_batch(start, end, cookie_str):
             ctx.add_cookies(parse_cookies(cookie_str))
         page = ctx.new_page()
 
-        # 暖身
-        try:
-            page.goto("https://www.baidu.com/", wait_until="domcontentloaded", timeout=20000)
-            time.sleep(2)
-        except Exception:
-            pass
+        # 暖身（简化：仅首页，减少卡点）
         try:
             page.goto("https://xueqiu.com/", wait_until="domcontentloaded", timeout=30000)
-            time.sleep(4)
+            time.sleep(3)
         except Exception as e:
             print(f"  [warn] warmup homepage: {e}", flush=True)
-        try:
-            page.goto(f"https://xueqiu.com/u/{USER_ID}", wait_until="domcontentloaded", timeout=30000)
-            time.sleep(4)
-        except Exception as e:
-            print(f"  [warn] warmup profile: {e}", flush=True)
 
         for pno in range(start, end + 1):
             out_file = os.path.join(OUT_DIR, f"page_{pno}.json")
@@ -172,28 +162,37 @@ def fetch_batch(start, end, cookie_str):
                         const r = await fetch(url, {credentials: 'include', signal: ctrl.signal});
                         const t = await r.text();
                         clearTimeout(timer);
-                        try { return {ok: r.ok, status: r.status, json: JSON.parse(t)}; }
-                        catch (e) { return {ok: r.ok, status: r.status, text: t.slice(0, 500)}; }
+                        return {ok: r.ok, status: r.status, text: t};
                     } catch (e) {
                         clearTimeout(timer);
                         return {ok: false, status: 0, text: 'FETCH_ERR: ' + e.message};
                     }
                 }""", api_url)
-                success = data.get('ok') and isinstance(data.get('json'), dict) and 'statuses' in data['json']
-                if success:
-                    with open(out_file, 'w', encoding='utf-8') as f:
-                        json.dump(data['json'], f, ensure_ascii=False, indent=2)
-                    print(f"  page={pno}: {len(data['json']['statuses'])} statuses, total={data['json'].get('total')}, maxPage={data['json'].get('maxPage')}", flush=True)
-                    saved += 1
-                elif data.get('status') == 405:
+                ok = data.get('ok')
+                status = data.get('status')
+                text = data.get('text', '') or ''
+                if ok and status == 200 and text.startswith('{'):
+                    try:
+                        j = json.loads(text)
+                    except Exception:
+                        j = None
+                    if isinstance(j, dict) and 'statuses' in j:
+                        with open(out_file, 'w', encoding='utf-8') as f:
+                            json.dump(j, f, ensure_ascii=False, indent=2)
+                        print(f"  page={pno}: {len(j['statuses'])} statuses, total={j.get('total')}, maxPage={j.get('maxPage')}", flush=True)
+                        saved += 1
+                    else:
+                        print(f"  page={pno}: JSON 无 statuses (status={status})", flush=True)
+                        if '访问验证' in text or 'aliyun_waf' in text:
+                            stopped = True
+                            break
+                elif status == 405:
                     print(f"  [405 LIMIT] page={pno} rate limit. cookie cooldown.", flush=True)
                     stopped = True
                     break
                 else:
-                    body = str(data.get('text', ''))[:80]
-                    print(f"  page={pno}: FAIL status={data.get('status')} {body}", flush=True)
-                    # 访问验证 / WAF 挑战：停止本批，避免浪费
-                    if '访问验证' in body or 'aliyun_waf' in body:
+                    print(f"  page={pno}: FAIL status={status} {text[:80]}", flush=True)
+                    if '访问验证' in text or 'aliyun_waf' in text:
                         stopped = True
                         break
             except Exception as e:
