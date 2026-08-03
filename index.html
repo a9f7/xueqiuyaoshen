@@ -214,12 +214,13 @@
   .analyst .an-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
   .analyst .an-card { border: 1px solid var(--line-2); border-radius: 10px; padding: 12px 14px; background: #fcfcfd; }
   .analyst .an-card-h { font-size: 12.5px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
-  .analyst .an-bars { display: flex; flex-direction: column; gap: 6px; }
+  .analyst .an-bars { display: flex; flex-direction: column; gap: 8px; }
   .analyst .an-bar { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
-  .analyst .an-bar .nm { width: 64px; flex-shrink: 0; color: var(--ink-2); text-align: right; }
-  .analyst .an-bar .track { flex: 1; height: 14px; background: var(--line-2); border-radius: 7px; overflow: hidden; }
-  .analyst .an-bar .fill { height: 100%; background: linear-gradient(90deg, #e67e22, #c0392b); border-radius: 7px; }
-  .analyst .an-bar .ct { width: 34px; flex-shrink: 0; color: var(--ink-3); text-align: right; }
+  .analyst .an-bar .nm { width: 64px; flex-shrink: 0; color: var(--ink-2); text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+  .analyst .an-bar .nm .sw { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 2px rgba(255,255,255,0.9); }
+  .analyst .an-bar .track { flex: 1; height: 18px; background: #f1f2f5; border-radius: 9px; overflow: hidden; position: relative; box-shadow: inset 0 1px 0 rgba(0,0,0,0.03); }
+  .analyst .an-bar .fill { display: block; height: 100%; border-radius: 9px; transition: width 0.4s ease; }
+  .analyst .an-bar .ct { width: 38px; flex-shrink: 0; color: var(--ink); text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
   .analyst .an-stance { display: flex; flex-wrap: wrap; gap: 6px; }
   .analyst .an-stance .s {
     font-size: 12.5px; padding: 3px 10px; border-radius: 20px; color: #fff; font-weight: 500;
@@ -695,15 +696,49 @@
     if (d.headline) $("#an-verdict").textContent = d.headline;
     // 叙述
     $("#an-narrative").innerHTML = (d.narrative || []).map(p => `<p>${esc(p)}</p>`).join("");
-    // 行业条形
+    // 行业条形（按类别给不同色相，每条再做强光→主色渐变）
     const ind = (d.dims && d.dims.industry) || [];
     const maxInd = ind.length ? ind[0].count : 1;
-    $("#an-industry").innerHTML = ind.slice(0, 8).map(t => `
+    // 离散调色板（按重要性/热度感知排序：高饱和、互不冲突、避免品牌色）
+    const PAL = [
+      { a: "#ff6b6b", b: "#c92a2a" },  // 科技：红
+      { a: "#20c997", b: "#0ca678" },  // 医药：青绿
+      { a: "#845ef7", b: "#5f3dc4" },  // 互联网：紫
+      { a: "#f59f00", b: "#d9480f" },  // 金融：琥珀
+      { a: "#f06595", b: "#c2255c" },  // 消费：粉
+      { a: "#51cf66", b: "#2f9e44" },  // 新能源：绿
+      { a: "#ffd43b", b: "#f08c00" },  // 黄金有色：金
+      { a: "#339af0", b: "#1864ab" },  // 传媒游戏：蓝
+      { a: "#22b8cf", b: "#0b7285" },  // 通用：青
+      { a: "#868e96", b: "#495057" },  // 其他/兜底：灰
+    ];
+    // 按"行业语义"映射到调色板索引（语义相近=同色系；找不到再按位置兜底）
+    const semantic = {
+      "科技": 0, "AI": 0, "人工智能": 0, "半导体": 0, "芯片": 0, "算力": 0,
+      "医药": 1, "创新药": 1, "生物": 1, "医疗": 1,
+      "互联网": 2, "软件": 2, "SaaS": 2,
+      "金融": 3, "银行": 3, "保险": 3, "证券": 3,
+      "消费": 4, "白酒": 4, "食品": 4, "零售": 4,
+      "新能源": 5, "光伏": 5, "锂电": 5, "电池": 5, "电动车": 5,
+      "黄金有色": 6, "黄金": 6, "有色": 6, "商品": 6,
+      "传媒游戏": 7, "传媒": 7, "游戏": 7, "影视": 7,
+      "其他": 9
+    };
+    const usedIdx = new Set();
+    $("#an-industry").innerHTML = ind.slice(0, 8).map((t, i) => {
+      const key = t.tag || "";
+      let idx = (key in semantic) ? semantic[key] : -1;
+      if (idx < 0 || usedIdx.has(idx)) idx = i;  // 冲突或未识别时按位置兜底
+      usedIdx.add(idx);
+      const c = PAL[idx] || PAL[9];
+      const w = Math.max(8, Math.round(t.count / maxInd * 100));
+      return `
       <div class="an-bar">
-        <span class="nm">${esc(t.tag)}</span>
-        <span class="track"><span class="fill" style="width:${Math.max(6, Math.round(t.count / maxInd * 100))}%"></span></span>
-        <span class="ct">${t.count}</span>
-      </div>`).join("") || `<div class="an-sub">（无）</div>`;
+        <span class="nm"><span class="sw" style="background:${c.b}"></span>${esc(t.tag)}</span>
+        <span class="track"><span class="fill" style="width:${w}%;background:linear-gradient(90deg, ${c.a} 0%, ${c.b} 100%);box-shadow:0 1px 2px rgba(0,0,0,0.06) inset"></span></span>
+        <span class="ct" style="color:${c.b}">${t.count}</span>
+      </div>`;
+    }).join("") || `<div class="an-sub">（无）</div>`;
     // 立场
     const ss = d.stance_summary || {};
     const stanceMeta = [
