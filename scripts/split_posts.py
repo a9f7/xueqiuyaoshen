@@ -105,3 +105,11 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # 同步生成「首席视角」近 15 天发言解读（data/analysis_recent.json），供首页顶部面板加载
+    try:
+        import subprocess
+        analyze = Path(__file__).resolve().parent / "analyze_recent.py"
+        subprocess.run([sys.executable, str(analyze), "--days", "15"], check=False)
+    except Exception as e:
+        print("[split] 生成 analysis_recent.json 失败（不影响分块）:", e)
+
