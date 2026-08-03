@@ -1,0 +1,2532 @@
+{
+  "generated_at": 1785743715932,
+  "latest_month": "2026-07",
+  "total_stocks": 163,
+  "params": {
+    "cold_months": 6,
+    "new_months": 2,
+    "revive_gap": 3
+  },
+  "changes": {
+    "new": [
+      "SZ159558",
+      "SH588810",
+      "SH603259",
+      "SH688256",
+      "SZ002027",
+      "SZ301308",
+      "SH512890",
+      "SH688008",
+      "SH600183",
+      "SZ002636",
+      "SZ000823",
+      "SH688598",
+      "SZ300285",
+      "SH601888",
+      "SH688362",
+      "SZ002299",
+      "SZ002458",
+      "SH688041",
+      "SH688106",
+      "SZ002129",
+      "SZ300319",
+      "SZ002384",
+      "SH688189",
+      "SH600460",
+      "SZ002602",
+      "SZ002304",
+      "SZ000895",
+      "SZ000423"
+    ],
+    "revived": [
+      "SH600519",
+      "SH000688",
+      "SZ002594",
+      "SH600436",
+      "SH600276",
+      "SH601919",
+      "SZ000725",
+      "SZ002156",
+      "SH000001",
+      "SZ300308",
+      "SH601899",
+      "SZ000568",
+      "SH601058"
+    ],
+    "cold": [
+      "SH600547",
+      "SZ002624",
+      "SH688235",
+      "SZ300760",
+      "SH511880",
+      "SZ159687",
+      "SH513730",
+      "SH000991",
+      "SH513060",
+      "SH688105",
+      "SZ300233",
+      "SH600085",
+      "SH600050",
+      "SH513120",
+      "SH601166",
+      "SH600028",
+      "BK0041",
+      "SZ300750",
+      "SH600763",
+      "SZ000739",
+      "SZ002352",
+      "SH601100",
+      "SZ002714",
+      "SH600233",
+      "SZ002468",
+      "SZ002475",
+      "P000815",
+      "SZ300311",
+      "SH688111",
+      "SZ000661",
+      "SZ002466",
+      "SZ300361",
+      "SZ300753",
+      "SZ002126",
+      "SZ300525",
+      "SZ000681",
+      "ZH662149",
+      "SZ000998",
+      "SZ002385",
+      "SZ002074",
+      "SZ300003",
+      "SZ300573",
+      "SZ128086",
+      "SZ000963",
+      "SH603019",
+      "SZ002524",
+      "SZ002019",
+      "SZ002007",
+      "SZ300639",
+      "SH603987",
+      "SZ002173",
+      "SZ300246",
+      "SZ300328",
+      "SZ002317",
+      "SZ300147",
+      "SH600812",
+      "SZ300528",
+      "SZ002739",
+      "SZ002256",
+      "SZ300079",
+      "SH600536",
+      "SZ002422",
+      "SZ300679",
+      "SZ300115",
+      "SH603229",
+      "SZ300636",
+      "SH600789",
+      "SZ300767",
+      "SH688166",
+      "SH688016",
+      "SH603916",
+      "SH688366",
+      "SZ300558",
+      "SZ300149",
+      "SH603679",
+      "SZ300551",
+      "SZ399001",
+      "SH600776",
+      "SZ300379",
+      "SH603288",
+      "ZH008493",
+      "SZ300238",
+      "SH600211",
+      "SZ300584",
+      "SH600196",
+      "SZ000538",
+      "SZ000603",
+      "SZ002716",
+      "SZ000426",
+      "SZ300206",
+      "SZ300146",
+      "SZ002653",
+      "SZ002599",
+      "SH600771",
+      "SZ300122",
+      "SZ002592",
+      "SH600521",
+      "SH600267",
+      "SZ300571",
+      "SZ000797",
+      "SH601211"
+    ],
+    "core": [
+      "SZ200596",
+      "SZ002555",
+      "SZ300251",
+      "SZ000858",
+      "SH603986",
+      "SZ300207",
+      "SH600660",
+      "SH601872",
+      "SH600026",
+      "SH601857",
+      "SH600309",
+      "P000484",
+      "P001664",
+      "SZ000651",
+      "SZ000333",
+      "BJ920599",
+      "SH600262",
+      "SH600988",
+      "SZ001337",
+      "SZ002788",
+      "SZ000050"
+    ]
+  },
+  "stocks": [
+    {
+      "code": "SZ000858",
+      "name": "五粮液",
+      "first_month": "2026-02",
+      "last_month": "2026-07",
+      "months_count": 5,
+      "mention_count": 37,
+      "months": [
+        "2026-02",
+        "2026-04",
+        "2026-05",
+        "2026-06",
+        "2026-07"
+      ],
+      "max_gap": 2,
+      "months_since_last": 0,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH600519",
+      "name": "贵州茅台",
+      "first_month": "2020-03",
+      "last_month": "2026-07",
+      "months_count": 7,
+      "mention_count": 35,
+      "months": [
+        "2020-03",
+        "2024-06",
+        "2026-02",
+        "2026-03",
+        "2026-04",
+        "2026-06",
+        "2026-07"
+      ],
+      "max_gap": 51,
+      "months_since_last": 0,
+      "status": "重提"
+    },
+    {
+      "code": "SZ300308",
+      "name": "中际旭创",
+      "first_month": "2026-02",
+      "last_month": "2026-07",
+      "months_count": 3,
+      "mention_count": 9,
+      "months": [
+        "2026-02",
+        "2026-06",
+        "2026-07"
+      ],
+      "max_gap": 4,
+      "months_since_last": 0,
+      "status": "重提"
+    },
+    {
+      "code": "SH603986",
+      "name": "兆易创新",
+      "first_month": "2026-02",
+      "last_month": "2026-07",
+      "months_count": 4,
+      "mention_count": 8,
+      "months": [
+        "2026-02",
+        "2026-04",
+        "2026-06",
+        "2026-07"
+      ],
+      "max_gap": 2,
+      "months_since_last": 0,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH000688",
+      "name": "科创50",
+      "first_month": "2024-06",
+      "last_month": "2026-07",
+      "months_count": 2,
+      "mention_count": 4,
+      "months": [
+        "2024-06",
+        "2026-07"
+      ],
+      "max_gap": 25,
+      "months_since_last": 0,
+      "status": "重提"
+    },
+    {
+      "code": "SH600436",
+      "name": "片仔癀",
+      "first_month": "2024-01",
+      "last_month": "2026-07",
+      "months_count": 3,
+      "mention_count": 4,
+      "months": [
+        "2024-01",
+        "2026-06",
+        "2026-07"
+      ],
+      "max_gap": 29,
+      "months_since_last": 0,
+      "status": "重提"
+    },
+    {
+      "code": "SH688256",
+      "name": "寒武纪",
+      "first_month": "2026-06",
+      "last_month": "2026-07",
+      "months_count": 2,
+      "mention_count": 3,
+      "months": [
+        "2026-06",
+        "2026-07"
+      ],
+      "max_gap": 1,
+      "months_since_last": 0,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002594",
+      "name": "比亚迪",
+      "first_month": "2024-06",
+      "last_month": "2026-07",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2024-06",
+        "2026-07"
+      ],
+      "max_gap": 25,
+      "months_since_last": 0,
+      "status": "重提"
+    },
+    {
+      "code": "SZ002027",
+      "name": "分众传媒",
+      "first_month": "2026-07",
+      "last_month": "2026-07",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2026-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 0,
+      "status": "新关注"
+    },
+    {
+      "code": "SH601899",
+      "name": "紫金矿业",
+      "first_month": "2026-03",
+      "last_month": "2026-07",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2026-03",
+        "2026-07"
+      ],
+      "max_gap": 4,
+      "months_since_last": 0,
+      "status": "重提"
+    },
+    {
+      "code": "SZ301308",
+      "name": "江波龙",
+      "first_month": "2026-07",
+      "last_month": "2026-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 0,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ000568",
+      "name": "泸州老窖",
+      "first_month": "2026-02",
+      "last_month": "2026-06",
+      "months_count": 3,
+      "mention_count": 18,
+      "months": [
+        "2026-02",
+        "2026-05",
+        "2026-06"
+      ],
+      "max_gap": 3,
+      "months_since_last": 1,
+      "status": "重提"
+    },
+    {
+      "code": "SH600276",
+      "name": "恒瑞医药",
+      "first_month": "2019-06",
+      "last_month": "2026-06",
+      "months_count": 7,
+      "mention_count": 11,
+      "months": [
+        "2019-06",
+        "2019-08",
+        "2019-09",
+        "2019-10",
+        "2020-01",
+        "2021-04",
+        "2026-06"
+      ],
+      "max_gap": 62,
+      "months_since_last": 1,
+      "status": "重提"
+    },
+    {
+      "code": "SH601919",
+      "name": "中远海控",
+      "first_month": "2021-03",
+      "last_month": "2026-06",
+      "months_count": 3,
+      "mention_count": 6,
+      "months": [
+        "2021-03",
+        "2021-04",
+        "2026-06"
+      ],
+      "max_gap": 62,
+      "months_since_last": 1,
+      "status": "重提"
+    },
+    {
+      "code": "SH000001",
+      "name": "上证指数",
+      "first_month": "2018-10",
+      "last_month": "2026-06",
+      "months_count": 5,
+      "mention_count": 6,
+      "months": [
+        "2018-10",
+        "2019-08",
+        "2019-09",
+        "2019-10",
+        "2026-06"
+      ],
+      "max_gap": 80,
+      "months_since_last": 1,
+      "status": "重提"
+    },
+    {
+      "code": "SZ000725",
+      "name": "京东方A",
+      "first_month": "2021-04",
+      "last_month": "2026-06",
+      "months_count": 4,
+      "mention_count": 5,
+      "months": [
+        "2021-04",
+        "2026-01",
+        "2026-05",
+        "2026-06"
+      ],
+      "max_gap": 57,
+      "months_since_last": 1,
+      "status": "重提"
+    },
+    {
+      "code": "SH601058",
+      "name": "赛轮轮胎",
+      "first_month": "2026-03",
+      "last_month": "2026-06",
+      "months_count": 2,
+      "mention_count": 5,
+      "months": [
+        "2026-03",
+        "2026-06"
+      ],
+      "max_gap": 3,
+      "months_since_last": 1,
+      "status": "重提"
+    },
+    {
+      "code": "SH603259",
+      "name": "药明康德",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 4,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002602",
+      "name": "世纪华通",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 4,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ159558",
+      "name": "半导体设备ETF易方达",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 3,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH588810",
+      "name": "科创芯片ETF富国",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 3,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002304",
+      "name": "洋河股份",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 3,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002156",
+      "name": "通富微电",
+      "first_month": "2020-04",
+      "last_month": "2026-06",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2020-04",
+        "2026-06"
+      ],
+      "max_gap": 74,
+      "months_since_last": 1,
+      "status": "重提"
+    },
+    {
+      "code": "SH601888",
+      "name": "中国中免",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH688041",
+      "name": "海光信息",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH512890",
+      "name": "红利低波ETF华泰柏瑞",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH688008",
+      "name": "澜起科技",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH600183",
+      "name": "生益科技",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002636",
+      "name": "金安国纪",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ000823",
+      "name": "超声电子",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH688598",
+      "name": "金博股份",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ300285",
+      "name": "国瓷材料",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH688362",
+      "name": "甬矽电子",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002299",
+      "name": "圣农发展",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002458",
+      "name": "益生股份",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH688106",
+      "name": "金宏气体",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002129",
+      "name": "TCL中环",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ300319",
+      "name": "麦捷科技",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ002384",
+      "name": "东山精密",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH688189",
+      "name": "ST南新",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SH600460",
+      "name": "士兰微",
+      "first_month": "2026-06",
+      "last_month": "2026-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 1,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ000423",
+      "name": "东阿阿胶",
+      "first_month": "2026-05",
+      "last_month": "2026-05",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2026-05"
+      ],
+      "max_gap": 0,
+      "months_since_last": 2,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ000895",
+      "name": "双汇发展",
+      "first_month": "2026-05",
+      "last_month": "2026-05",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-05"
+      ],
+      "max_gap": 0,
+      "months_since_last": 2,
+      "status": "新关注"
+    },
+    {
+      "code": "SZ300207",
+      "name": "欣旺达",
+      "first_month": "2026-04",
+      "last_month": "2026-04",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 3,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH601872",
+      "name": "招商轮船",
+      "first_month": "2026-03",
+      "last_month": "2026-03",
+      "months_count": 1,
+      "mention_count": 3,
+      "months": [
+        "2026-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 4,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH600026",
+      "name": "中远海能",
+      "first_month": "2026-03",
+      "last_month": "2026-03",
+      "months_count": 1,
+      "mention_count": 3,
+      "months": [
+        "2026-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 4,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH600660",
+      "name": "福耀玻璃",
+      "first_month": "2026-03",
+      "last_month": "2026-03",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 4,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH601857",
+      "name": "中国石油",
+      "first_month": "2026-03",
+      "last_month": "2026-03",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 4,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH600309",
+      "name": "万华化学",
+      "first_month": "2026-03",
+      "last_month": "2026-03",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 4,
+      "status": "持续关注"
+    },
+    {
+      "code": "P000484",
+      "name": "牛顿定律",
+      "first_month": "2026-03",
+      "last_month": "2026-03",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 4,
+      "status": "持续关注"
+    },
+    {
+      "code": "P001664",
+      "name": "知未牛顿定律均衡A",
+      "first_month": "2026-03",
+      "last_month": "2026-03",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 4,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ300251",
+      "name": "光线传媒",
+      "first_month": "2019-12",
+      "last_month": "2026-02",
+      "months_count": 2,
+      "mention_count": 5,
+      "months": [
+        "2019-12",
+        "2026-02"
+      ],
+      "max_gap": 74,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH600988",
+      "name": "赤峰黄金",
+      "first_month": "2026-02",
+      "last_month": "2026-02",
+      "months_count": 1,
+      "mention_count": 4,
+      "months": [
+        "2026-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ001337",
+      "name": "四川黄金",
+      "first_month": "2026-02",
+      "last_month": "2026-02",
+      "months_count": 1,
+      "mention_count": 4,
+      "months": [
+        "2026-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ200596",
+      "name": "古井贡B",
+      "first_month": "2026-02",
+      "last_month": "2026-02",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ000651",
+      "name": "格力电器",
+      "first_month": "2026-02",
+      "last_month": "2026-02",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ000333",
+      "name": "美的集团",
+      "first_month": "2026-02",
+      "last_month": "2026-02",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "BJ920599",
+      "name": "同力股份",
+      "first_month": "2026-02",
+      "last_month": "2026-02",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH600262",
+      "name": "北方股份",
+      "first_month": "2026-02",
+      "last_month": "2026-02",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 5,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ002555",
+      "name": "三七互娱",
+      "first_month": "2026-01",
+      "last_month": "2026-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 6,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ002788",
+      "name": "鹭燕医药",
+      "first_month": "2026-01",
+      "last_month": "2026-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 6,
+      "status": "持续关注"
+    },
+    {
+      "code": "SZ000050",
+      "name": "深天马A",
+      "first_month": "2026-01",
+      "last_month": "2026-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2026-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 6,
+      "status": "持续关注"
+    },
+    {
+      "code": "SH600547",
+      "name": "山东黄金",
+      "first_month": "2019-01",
+      "last_month": "2025-10",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-01",
+        "2025-10"
+      ],
+      "max_gap": 81,
+      "months_since_last": 9,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002624",
+      "name": "完美世界",
+      "first_month": "2025-06",
+      "last_month": "2025-07",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2025-06",
+        "2025-07"
+      ],
+      "max_gap": 1,
+      "months_since_last": 12,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH688235",
+      "name": "百济神州-U",
+      "first_month": "2024-08",
+      "last_month": "2024-08",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-08"
+      ],
+      "max_gap": 0,
+      "months_since_last": 23,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300760",
+      "name": "迈瑞医疗",
+      "first_month": "2024-07",
+      "last_month": "2024-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 24,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH511880",
+      "name": "银华日利ETF",
+      "first_month": "2024-07",
+      "last_month": "2024-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 24,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ159687",
+      "name": "亚太精选ETF",
+      "first_month": "2024-07",
+      "last_month": "2024-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 24,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH513730",
+      "name": "东南亚科技ETF",
+      "first_month": "2024-07",
+      "last_month": "2024-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 24,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH000991",
+      "name": "全指医药",
+      "first_month": "2024-07",
+      "last_month": "2024-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 24,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH513060",
+      "name": "恒生医疗ETF",
+      "first_month": "2024-05",
+      "last_month": "2024-05",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-05"
+      ],
+      "max_gap": 0,
+      "months_since_last": 26,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH688105",
+      "name": "诺唯赞",
+      "first_month": "2024-04",
+      "last_month": "2024-04",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 27,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300233",
+      "name": "金城医药",
+      "first_month": "2024-03",
+      "last_month": "2024-03",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 28,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600085",
+      "name": "同仁堂",
+      "first_month": "2024-01",
+      "last_month": "2024-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 30,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600050",
+      "name": "中国联通",
+      "first_month": "2024-01",
+      "last_month": "2024-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 30,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH513120",
+      "name": "港股创新药ETF",
+      "first_month": "2024-01",
+      "last_month": "2024-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2024-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 30,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH601166",
+      "name": "兴业银行",
+      "first_month": "2023-12",
+      "last_month": "2023-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2023-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 31,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600028",
+      "name": "中国石化",
+      "first_month": "2023-09",
+      "last_month": "2023-09",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2023-09"
+      ],
+      "max_gap": 0,
+      "months_since_last": 34,
+      "status": "已冷落"
+    },
+    {
+      "code": "BK0041",
+      "name": "中药",
+      "first_month": "2022-06",
+      "last_month": "2022-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2022-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 49,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300750",
+      "name": "宁德时代",
+      "first_month": "2022-04",
+      "last_month": "2022-04",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2022-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 51,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600763",
+      "name": "通策医疗",
+      "first_month": "2021-06",
+      "last_month": "2021-06",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-06"
+      ],
+      "max_gap": 0,
+      "months_since_last": 61,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002352",
+      "name": "顺丰控股",
+      "first_month": "2021-04",
+      "last_month": "2021-05",
+      "months_count": 2,
+      "mention_count": 3,
+      "months": [
+        "2021-04",
+        "2021-05"
+      ],
+      "max_gap": 1,
+      "months_since_last": 62,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000739",
+      "name": "普洛药业",
+      "first_month": "2021-05",
+      "last_month": "2021-05",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-05"
+      ],
+      "max_gap": 0,
+      "months_since_last": 62,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH601100",
+      "name": "恒立液压",
+      "first_month": "2021-05",
+      "last_month": "2021-05",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-05"
+      ],
+      "max_gap": 0,
+      "months_since_last": 62,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002714",
+      "name": "牧原股份",
+      "first_month": "2021-04",
+      "last_month": "2021-04",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 63,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600233",
+      "name": "圆通速递",
+      "first_month": "2021-04",
+      "last_month": "2021-04",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 63,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002468",
+      "name": "申通快递",
+      "first_month": "2021-04",
+      "last_month": "2021-04",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 63,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002475",
+      "name": "立讯精密",
+      "first_month": "2021-03",
+      "last_month": "2021-03",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 64,
+      "status": "已冷落"
+    },
+    {
+      "code": "P000815",
+      "name": "敏行阿杏一号基金",
+      "first_month": "2021-01",
+      "last_month": "2021-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2021-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 66,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300311",
+      "name": "任子行",
+      "first_month": "2020-11",
+      "last_month": "2020-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 68,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH688111",
+      "name": "金山办公",
+      "first_month": "2020-10",
+      "last_month": "2020-10",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-10"
+      ],
+      "max_gap": 0,
+      "months_since_last": 69,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000661",
+      "name": "长春高新",
+      "first_month": "2020-09",
+      "last_month": "2020-09",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-09"
+      ],
+      "max_gap": 0,
+      "months_since_last": 70,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002466",
+      "name": "天齐锂业",
+      "first_month": "2020-05",
+      "last_month": "2020-05",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-05"
+      ],
+      "max_gap": 0,
+      "months_since_last": 74,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300361",
+      "name": "奥赛康",
+      "first_month": "2020-03",
+      "last_month": "2020-03",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2020-03"
+      ],
+      "max_gap": 0,
+      "months_since_last": 76,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300753",
+      "name": "爱朋医疗",
+      "first_month": "2019-11",
+      "last_month": "2020-02",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-11",
+        "2020-02"
+      ],
+      "max_gap": 3,
+      "months_since_last": 77,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002126",
+      "name": "银轮股份",
+      "first_month": "2020-02",
+      "last_month": "2020-02",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 77,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300525",
+      "name": "博思软件",
+      "first_month": "2020-02",
+      "last_month": "2020-02",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-02"
+      ],
+      "max_gap": 0,
+      "months_since_last": 77,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300573",
+      "name": "兴齐眼药",
+      "first_month": "2019-04",
+      "last_month": "2020-01",
+      "months_count": 6,
+      "mention_count": 19,
+      "months": [
+        "2019-04",
+        "2019-07",
+        "2019-08",
+        "2019-10",
+        "2019-11",
+        "2020-01"
+      ],
+      "max_gap": 3,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002385",
+      "name": "大北农",
+      "first_month": "2019-12",
+      "last_month": "2020-01",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-12",
+        "2020-01"
+      ],
+      "max_gap": 1,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002007",
+      "name": "华兰生物",
+      "first_month": "2019-10",
+      "last_month": "2020-01",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-10",
+        "2020-01"
+      ],
+      "max_gap": 3,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000681",
+      "name": "视觉中国",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "ZH662149",
+      "name": "小埋-无脑斩妖",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000998",
+      "name": "隆平高科",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002074",
+      "name": "国轩高科",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300003",
+      "name": "乐普医疗",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ128086",
+      "name": "国轩转债",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000963",
+      "name": "华东医药",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH603019",
+      "name": "中科曙光",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002524",
+      "name": "光正集团",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002019",
+      "name": "亿帆医药",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300639",
+      "name": "凯普生物",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH603987",
+      "name": "康德莱",
+      "first_month": "2020-01",
+      "last_month": "2020-01",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2020-01"
+      ],
+      "max_gap": 0,
+      "months_since_last": 78,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300079",
+      "name": "数码科技",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 3,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002173",
+      "name": "创新医疗",
+      "first_month": "2019-08",
+      "last_month": "2019-12",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-08",
+        "2019-12"
+      ],
+      "max_gap": 4,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300246",
+      "name": "宝莱特",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600812",
+      "name": "华北制药",
+      "first_month": "2019-11",
+      "last_month": "2019-12",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-11",
+        "2019-12"
+      ],
+      "max_gap": 1,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300528",
+      "name": "幸福蓝海",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600536",
+      "name": "中国软件",
+      "first_month": "2019-09",
+      "last_month": "2019-12",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-09",
+        "2019-12"
+      ],
+      "max_gap": 3,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002422",
+      "name": "科伦药业",
+      "first_month": "2019-09",
+      "last_month": "2019-12",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-09",
+        "2019-12"
+      ],
+      "max_gap": 3,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300328",
+      "name": "宜安科技",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002317",
+      "name": "众生药业",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300147",
+      "name": "香雪制药",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002739",
+      "name": "万达电影",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002256",
+      "name": "兆新股份",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300679",
+      "name": "电连技术",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300115",
+      "name": "长盈精密",
+      "first_month": "2019-12",
+      "last_month": "2019-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 79,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH603916",
+      "name": "苏博特",
+      "first_month": "2019-10",
+      "last_month": "2019-11",
+      "months_count": 2,
+      "mention_count": 3,
+      "months": [
+        "2019-10",
+        "2019-11"
+      ],
+      "max_gap": 1,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300767",
+      "name": "震安科技",
+      "first_month": "2019-11",
+      "last_month": "2019-11",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2019-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300558",
+      "name": "贝达药业",
+      "first_month": "2019-08",
+      "last_month": "2019-11",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-08",
+        "2019-11"
+      ],
+      "max_gap": 3,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH603229",
+      "name": "奥翔药业",
+      "first_month": "2019-11",
+      "last_month": "2019-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300636",
+      "name": "同和药业",
+      "first_month": "2019-11",
+      "last_month": "2019-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600789",
+      "name": "鲁抗医药",
+      "first_month": "2019-11",
+      "last_month": "2019-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH688166",
+      "name": "N博瑞",
+      "first_month": "2019-11",
+      "last_month": "2019-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH688016",
+      "name": "心脉医疗",
+      "first_month": "2019-11",
+      "last_month": "2019-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH688366",
+      "name": "昊海生科",
+      "first_month": "2019-11",
+      "last_month": "2019-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 80,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH603679",
+      "name": "华体科技",
+      "first_month": "2019-10",
+      "last_month": "2019-10",
+      "months_count": 1,
+      "mention_count": 4,
+      "months": [
+        "2019-10"
+      ],
+      "max_gap": 0,
+      "months_since_last": 81,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300149",
+      "name": "量子生物",
+      "first_month": "2019-07",
+      "last_month": "2019-10",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-07",
+        "2019-10"
+      ],
+      "max_gap": 3,
+      "months_since_last": 81,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300551",
+      "name": "古鳌科技",
+      "first_month": "2019-10",
+      "last_month": "2019-10",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2019-10"
+      ],
+      "max_gap": 0,
+      "months_since_last": 81,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ399001",
+      "name": "深证成指",
+      "first_month": "2019-10",
+      "last_month": "2019-10",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-10"
+      ],
+      "max_gap": 0,
+      "months_since_last": 81,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH603288",
+      "name": "海天味业",
+      "first_month": "2019-07",
+      "last_month": "2019-09",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-07",
+        "2019-09"
+      ],
+      "max_gap": 2,
+      "months_since_last": 82,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600776",
+      "name": "东方通信",
+      "first_month": "2019-09",
+      "last_month": "2019-09",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-09"
+      ],
+      "max_gap": 0,
+      "months_since_last": 82,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300379",
+      "name": "东方通",
+      "first_month": "2019-09",
+      "last_month": "2019-09",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-09"
+      ],
+      "max_gap": 0,
+      "months_since_last": 82,
+      "status": "已冷落"
+    },
+    {
+      "code": "ZH008493",
+      "name": "持续稳定",
+      "first_month": "2019-09",
+      "last_month": "2019-09",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-09"
+      ],
+      "max_gap": 0,
+      "months_since_last": 82,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600196",
+      "name": "复星医药",
+      "first_month": "2018-12",
+      "last_month": "2019-08",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2018-12",
+        "2019-08"
+      ],
+      "max_gap": 8,
+      "months_since_last": 83,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300238",
+      "name": "冠昊生物",
+      "first_month": "2019-08",
+      "last_month": "2019-08",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-08"
+      ],
+      "max_gap": 0,
+      "months_since_last": 83,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600211",
+      "name": "西藏药业",
+      "first_month": "2019-08",
+      "last_month": "2019-08",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-08"
+      ],
+      "max_gap": 0,
+      "months_since_last": 83,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300584",
+      "name": "海辰药业",
+      "first_month": "2019-08",
+      "last_month": "2019-08",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-08"
+      ],
+      "max_gap": 0,
+      "months_since_last": 83,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000538",
+      "name": "云南白药",
+      "first_month": "2019-08",
+      "last_month": "2019-08",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-08"
+      ],
+      "max_gap": 0,
+      "months_since_last": 83,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000603",
+      "name": "盛达矿业",
+      "first_month": "2019-01",
+      "last_month": "2019-07",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-01",
+        "2019-07"
+      ],
+      "max_gap": 6,
+      "months_since_last": 84,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000426",
+      "name": "兴业矿业",
+      "first_month": "2019-01",
+      "last_month": "2019-07",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2019-01",
+        "2019-07"
+      ],
+      "max_gap": 6,
+      "months_since_last": 84,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002716",
+      "name": "金贵银业",
+      "first_month": "2019-07",
+      "last_month": "2019-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 84,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300206",
+      "name": "理邦仪器",
+      "first_month": "2019-07",
+      "last_month": "2019-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 84,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300146",
+      "name": "汤臣倍健",
+      "first_month": "2019-07",
+      "last_month": "2019-07",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-07"
+      ],
+      "max_gap": 0,
+      "months_since_last": 84,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002653",
+      "name": "海思科",
+      "first_month": "2019-05",
+      "last_month": "2019-05",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-05"
+      ],
+      "max_gap": 0,
+      "months_since_last": 86,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300122",
+      "name": "智飞生物",
+      "first_month": "2019-04",
+      "last_month": "2019-04",
+      "months_count": 1,
+      "mention_count": 2,
+      "months": [
+        "2019-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 87,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002599",
+      "name": "盛通股份",
+      "first_month": "2019-04",
+      "last_month": "2019-04",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 87,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600771",
+      "name": "广誉远",
+      "first_month": "2019-04",
+      "last_month": "2019-04",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2019-04"
+      ],
+      "max_gap": 0,
+      "months_since_last": 87,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ002592",
+      "name": "八菱科技",
+      "first_month": "2018-12",
+      "last_month": "2019-01",
+      "months_count": 2,
+      "mention_count": 2,
+      "months": [
+        "2018-12",
+        "2019-01"
+      ],
+      "max_gap": 1,
+      "months_since_last": 90,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600521",
+      "name": "华海药业",
+      "first_month": "2018-11",
+      "last_month": "2018-12",
+      "months_count": 2,
+      "mention_count": 5,
+      "months": [
+        "2018-11",
+        "2018-12"
+      ],
+      "max_gap": 1,
+      "months_since_last": 91,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH600267",
+      "name": "海正药业",
+      "first_month": "2018-12",
+      "last_month": "2018-12",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2018-12"
+      ],
+      "max_gap": 0,
+      "months_since_last": 91,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ300571",
+      "name": "平治信息",
+      "first_month": "2018-11",
+      "last_month": "2018-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2018-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 92,
+      "status": "已冷落"
+    },
+    {
+      "code": "SZ000797",
+      "name": "中国武夷",
+      "first_month": "2018-11",
+      "last_month": "2018-11",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2018-11"
+      ],
+      "max_gap": 0,
+      "months_since_last": 92,
+      "status": "已冷落"
+    },
+    {
+      "code": "SH601211",
+      "name": "国泰君安",
+      "first_month": "2018-10",
+      "last_month": "2018-10",
+      "months_count": 1,
+      "mention_count": 1,
+      "months": [
+        "2018-10"
+      ],
+      "max_gap": 0,
+      "months_since_last": 93,
+      "status": "已冷落"
+    }
+  ]
+}

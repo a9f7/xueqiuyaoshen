@@ -1,5 +1,7 @@
 # 原始分页数据（量大，仅本地保留，不入库）
 data/raw/
+data/raw_comments/
+data/raw_reposts/
 
 # 原始未归一化全量（26MB，不入库）
 data/posts_raw.json
@@ -7,6 +9,7 @@ data/posts_raw_pretty.json
 
 # cookies 等敏感凭据（不入库）
 data/xq_cookie.txt
+data/xq_cookies.txt
 
 # 编辑器 / 临时
 .vscode/

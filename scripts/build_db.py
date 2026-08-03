@@ -56,6 +56,27 @@ def main():
         """
     )
 
+    # 评论 / 转发交互表（内嵌原文上下文）
+    c.execute("DROP TABLE IF EXISTS interactions")
+    c.execute(
+        """
+        CREATE TABLE interactions (
+            id               INTEGER PRIMARY KEY,
+            kind             TEXT,            -- comment / repost
+            created_at       INTEGER,
+            created_date     TEXT,
+            text             TEXT,
+            reply_to         TEXT,
+            like_count       INTEGER,
+            original_id      INTEGER,
+            original_user    TEXT,
+            original_text    TEXT,
+            original_url     TEXT,
+            stocks           TEXT
+        )
+        """
+    )
+
     rows = []
     for p in posts:
         ca = p.get("created_at", 0) or 0
@@ -84,7 +105,43 @@ def main():
     c.executemany(
         "INSERT OR REPLACE INTO posts VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", rows
     )
+
+    # 互动（评论/转发）
+    COMMENTS = os.path.join(ROOT, "data", "comments.json")
+    REPOSTS = os.path.join(ROOT, "data", "reposts.json")
+    irows = []
+    for path in (COMMENTS, REPOSTS):
+        if not os.path.exists(path):
+            continue
+        for it in json.load(open(path, encoding="utf-8")):
+            ca = it.get("created_at", 0) or 0
+            dt = datetime.fromtimestamp(ca / 1000, tz=timezone.utc) if ca else None
+            orig = it.get("original") or {}
+            irows.append((
+                it.get("id"),
+                it.get("kind", ""),
+                ca,
+                dt.strftime("%Y-%m-%d") if dt else "",
+                it.get("text", ""),
+                it.get("reply_to", ""),
+                to_int(it.get("like_count")),
+                orig.get("id"),
+                orig.get("user", ""),
+                orig.get("text", ""),
+                orig.get("url", ""),
+                json.dumps(it.get("stocks", []), ensure_ascii=False),
+            ))
+    c.executemany(
+        "INSERT OR REPLACE INTO interactions VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", irows
+    )
+
     c.execute("CREATE INDEX IF NOT EXISTS idx_created_at ON posts(created_at)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_type ON posts(type)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_like ON posts(like_count)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_date ON posts(created_date)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_i_kind ON interactions(kind)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_i_created ON interactions(created_at)")
+    c.execute("CREATE INDEX IF NOT EXISTS idx_i_orig ON interactions(original_id)")
     c.execute("CREATE INDEX IF NOT EXISTS idx_type ON posts(type)")
     c.execute("CREATE INDEX IF NOT EXISTS idx_like ON posts(like_count)")
     c.execute("CREATE INDEX IF NOT EXISTS idx_date ON posts(created_date)")
@@ -93,12 +150,15 @@ def main():
     n = c.execute("SELECT COUNT(*) FROM posts").fetchone()[0]
     like_sum = c.execute("SELECT COALESCE(SUM(like_count),0) FROM posts").fetchone()[0]
     reply_sum = c.execute("SELECT COALESCE(SUM(reply_count),0) FROM posts").fetchone()[0]
+    i_n = c.execute("SELECT COUNT(*) FROM interactions").fetchone()[0]
+    i_c = c.execute("SELECT COUNT(*) FROM interactions WHERE kind='comment'").fetchone()[0]
+    i_r = c.execute("SELECT COUNT(*) FROM interactions WHERE kind='repost'").fetchone()[0]
     conn.close()
 
     size = os.path.getsize(DB)
     print(
-        f"SQLite 构建完成: {n} 行 -> {DB} ({size/1024/1024:.2f} MB) | "
-        f"赞合计 {like_sum:,} | 回复合计 {reply_sum:,}"
+        f"SQLite 构建完成: posts {n} 行 + interactions {i_n} 行 (评论 {i_c}/转发 {i_r}) "
+        f"-> {DB} ({size/1024/1024:.2f} MB) | 赞合计 {like_sum:,} | 回复合计 {reply_sum:,}"
     )
 
 

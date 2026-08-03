@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 """雪球 user_timeline 抓取（playwright 反检测版，支持多 cookie 轮换）。
 
+支持三种抓取模式（--mode）：
+  posts    原贴（user_timeline type=0，含原创+长文）—— 默认
+  comments 评论（user_timeline type=3，每条内嵌被评论原文 retweeted_status）
+  reposts  转发（user_timeline type=1，内嵌被转原文 retweeted_status）
+
 用法：
-  # 抓最旧的 N 页未抓取数据（自动化增量用，默认 15 页）
-  python fetch_xueqiu.py --batch 15
+  # 自动抓最旧的 N 页（按 --mode 决定 raw 目录）
+  python fetch_xueqiu.py --mode comments --batch 15
 
   # 抓指定区间
-  python fetch_xueqiu.py 286 320
+  python fetch_xueqiu.py --mode comments 286 320
 
   # 仅抓公开 page=1（无 cookies 时）
-  python fetch_xueqiu.py
+  python fetch_xueqiu.py --mode posts
 
 cookies 来源（按优先级）：
   1. 环境变量 XQ_COOKIE（单条）
@@ -28,18 +33,26 @@ import json
 import time
 import random
 import argparse
+import math
 from playwright.sync_api import sync_playwright
 
 # 默认 cookies 文件（不入库）
 HERE = os.path.dirname(os.path.abspath(__file__))
-COOKIE_POOL_FILE = os.path.join(HERE, "..", "data", "xq_cookies.txt")
-COOKIE_FILE = os.path.join(HERE, "..", "data", "xq_cookie.txt")
-OUT_DIR = os.path.join(HERE, "..", "data", "raw")
+ROOT = os.path.abspath(os.path.join(HERE, ".."))
+COOKIE_POOL_FILE = os.path.join(ROOT, "data", "xq_cookies.txt")
+COOKIE_FILE = os.path.join(ROOT, "data", "xq_cookie.txt")
 CHROME_PATH = r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe"
 USER_ID = 2292705444
 BATCH_PER_BROWSER = 30  # 每个浏览器会话最多抓多少页（避免渲染器崩溃）
-FALLBACK_MAXPAGE = 810
+FALLBACK_MAXPAGE = {"posts": 811, "comments": 1600, "reposts": 60}
 COOLDOWN_SEC = 1800  # 触发风控后该 cookie 冷却 30 分钟
+
+# 模式 -> (API type, raw 子目录)
+MODES = {
+    "posts": (0, "raw"),
+    "comments": (3, "raw_comments"),
+    "reposts": (1, "raw_reposts"),
+}
 
 
 def load_cookie_pool():
@@ -58,7 +71,6 @@ def load_cookie_pool():
             s = f.read().strip()
             if s:
                 pool.append(s)
-    # 去重保持顺序
     seen = set()
     uniq = []
     for s in pool:
@@ -87,11 +99,11 @@ def parse_cookies(cookie_str):
     return cookies
 
 
-def existing_pages():
-    if not os.path.isdir(OUT_DIR):
+def existing_pages(out_dir):
+    if not os.path.isdir(out_dir):
         return set()
     s = set()
-    for fn in os.listdir(OUT_DIR):
+    for fn in os.listdir(out_dir):
         if fn.startswith("page_") and fn.endswith(".json"):
             try:
                 s.add(int(fn[5:-5]))
@@ -100,10 +112,11 @@ def existing_pages():
     return s
 
 
-def fetch_batch(start, end, cookie_str):
-    """启动一个全新浏览器会话，抓 [start,end] 中尚未存在的页。返回 (saved, stopped)。"""
+def fetch_batch(start, end, cookie_str, api_type, out_dir):
+    """启动一个全新浏览器会话，抓 [start,end] 中尚未存在的页。返回 (saved, stopped, maxpage)。"""
     saved = 0
     stopped = False
+    maxpage = None
     with sync_playwright() as p:
         browser = p.chromium.launch(
             executable_path=CHROME_PATH,
@@ -142,7 +155,7 @@ def fetch_batch(start, end, cookie_str):
             ctx.add_cookies(parse_cookies(cookie_str))
         page = ctx.new_page()
 
-        # 暖身（简化：仅首页，减少卡点）
+        # 暖身（简化：仅首页）
         try:
             page.goto("https://xueqiu.com/", wait_until="domcontentloaded", timeout=30000)
             time.sleep(3)
@@ -150,10 +163,10 @@ def fetch_batch(start, end, cookie_str):
             print(f"  [warn] warmup homepage: {e}", flush=True)
 
         for pno in range(start, end + 1):
-            out_file = os.path.join(OUT_DIR, f"page_{pno}.json")
+            out_file = os.path.join(out_dir, f"page_{pno}.json")
             if os.path.exists(out_file):
                 continue
-            api_url = f"https://xueqiu.com/v4/statuses/user_timeline.json?user_id={USER_ID}&page={pno}&type=0&count=20"
+            api_url = f"https://xueqiu.com/v4/statuses/user_timeline.json?user_id={USER_ID}&page={pno}&type={api_type}&count=20"
             try:
                 data = page.evaluate("""async (url) => {
                     const ctrl = new AbortController();
@@ -179,7 +192,10 @@ def fetch_batch(start, end, cookie_str):
                     if isinstance(j, dict) and 'statuses' in j:
                         with open(out_file, 'w', encoding='utf-8') as f:
                             json.dump(j, f, ensure_ascii=False, indent=2)
-                        print(f"  page={pno}: {len(j['statuses'])} statuses, total={j.get('total')}, maxPage={j.get('maxPage')}", flush=True)
+                        total = j.get('total')
+                        if total:
+                            maxpage = max(maxpage or 0, math.ceil(total / 20))
+                        print(f"  page={pno}: {len(j['statuses'])} statuses, total={total}, maxPage={maxpage}", flush=True)
                         saved += 1
                     else:
                         print(f"  page={pno}: JSON 无 statuses (status={status})", flush=True)
@@ -204,32 +220,36 @@ def fetch_batch(start, end, cookie_str):
             browser.close()
         except Exception:
             pass
-    return saved, stopped
+    return saved, stopped, maxpage
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("start", type=int, nargs="?", default=None)
     ap.add_argument("end", type=int, nargs="?", default=None)
+    ap.add_argument("--mode", choices=list(MODES.keys()), default="posts", help="posts/comments/reposts")
     ap.add_argument("--batch", type=int, default=15, help="自动模式下抓最旧的 N 页")
     args = ap.parse_args()
 
+    api_type, subdir = MODES[args.mode]
+    OUT_DIR = os.path.join(ROOT, "data", subdir)
     os.makedirs(OUT_DIR, exist_ok=True)
+
     pool = load_cookie_pool()
     if not pool:
         print("[warn] 无 cookies，仅抓公开 page=1", flush=True)
-    print(f"[run] cookie pool 共 {len(pool)} 组", flush=True)
+    print(f"[run] mode={args.mode} api_type={api_type} out={OUT_DIR} cookie pool 共 {len(pool)} 组", flush=True)
 
     # 决定区间
     if args.start is not None:
         start, end = args.start, (args.end if args.end is not None else args.start)
     else:
-        have = existing_pages()
+        have = existing_pages(OUT_DIR)
         start = 1
         while start in have:
             start += 1
         end = start + args.batch - 1
-        end = min(end, FALLBACK_MAXPAGE)
+        end = min(end, FALLBACK_MAXPAGE[args.mode])
         print(f"[auto] oldest missing = page {start}, fetching {start}..{end}", flush=True)
 
     if not pool:
@@ -244,14 +264,12 @@ def main():
     total_saved = 0
     lo = start
     while lo <= end:
-        # 跳过已抓
         while lo <= end and os.path.exists(os.path.join(OUT_DIR, f"page_{lo}.json")):
             lo += 1
         if lo > end:
             break
         hi = min(lo + BATCH_PER_BROWSER - 1, end)
 
-        # 选一个可用 cookie（轮转 + 跳过冷却）
         chosen = None
         for _ in range(len(pool)):
             i = idx % len(pool)
@@ -265,12 +283,11 @@ def main():
             break
 
         print(f"[batch] pages {lo}..{hi} | cookie#{chosen} ({'有' if pool else '无'})", flush=True)
-        saved, stopped = fetch_batch(lo, hi, pool[chosen])
+        saved, stopped, maxpage = fetch_batch(lo, hi, pool[chosen], api_type, OUT_DIR)
         total_saved += saved
         print(f"[batch done] saved={saved} cumulative={total_saved}", flush=True)
         if stopped:
             cooldown[chosen] = time.time() + COOLDOWN_SEC
-            # 重新定位 lo 到本批第一个未抓页，用下一个 cookie 重试
             while lo <= hi and os.path.exists(os.path.join(OUT_DIR, f"page_{lo}.json")):
                 lo += 1
             if all(cooldown.get(i, 0) > time.time() for i in range(len(pool))):
@@ -279,7 +296,7 @@ def main():
             continue
         lo = hi + 1
         time.sleep(random.uniform(5, 10))
-    print(f"[ALL DONE] saved this run: {total_saved}", flush=True)
+    print(f"[ALL DONE] mode={args.mode} saved this run: {total_saved}", flush=True)
 
 
 if __name__ == "__main__":

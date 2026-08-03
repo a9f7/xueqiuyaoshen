@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>雪球药神 · metalslime 发言归档</title>
-<meta name="description" content="雪球博主 metalslime（药神）发言归档与搜索，按月分块加载，由自动化任务每 12 小时增量更新。">
+<meta name="description" content="雪球博主 metalslime（药神）发言归档与搜索，含原贴/评论/转发与自选股变化追踪，按月分块加载，自动化每 12 小时增量更新。">
 <style>
   :root {
     --bg: #f6f7f9;
@@ -20,6 +20,8 @@
     --tag: #eef2ff;
     --tag-ink: #3949ab;
     --green: #0f9d58;
+    --blue: #1f6feb;
+    --orange: #e67e22;
     --shadow: 0 1px 2px rgba(15, 20, 30, .04), 0 4px 16px rgba(15, 20, 30, .04);
   }
   * { box-sizing: border-box; }
@@ -31,130 +33,125 @@
   }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 24px 18px 80px; }
 
-  /* Header */
   .hero {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 22px 26px;
-    box-shadow: var(--shadow);
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    flex-wrap: wrap;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px 26px; box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
   }
   .avatar {
     width: 64px; height: 64px; border-radius: 50%;
-    background: linear-gradient(135deg, #c0392b, #e67e22);
-    color: #fff; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #c0392b, #e67e22); color: #fff;
+    display: flex; align-items: center; justify-content: center;
     font-size: 26px; font-weight: 600; flex-shrink: 0;
   }
   .hero h1 { margin: 0 0 4px; font-size: 20px; font-weight: 600; }
   .hero .sub { color: var(--ink-2); font-size: 13px; }
   .hero .sub a { color: var(--link); text-decoration: none; }
   .hero .sub a:hover { text-decoration: underline; }
-  .hero .stats { display: flex; gap: 22px; margin-left: auto; flex-wrap: wrap; }
+  .hero .stats { display: flex; gap: 18px; margin-left: auto; flex-wrap: wrap; }
   .hero .stat { text-align: right; }
   .hero .stat .v { font-size: 18px; font-weight: 600; color: var(--ink); }
   .hero .stat .l { font-size: 12px; color: var(--ink-3); }
 
-  /* Notice */
   .notice {
-    margin-top: 14px;
-    padding: 12px 16px;
-    background: var(--accent-soft);
-    border: 1px solid #f5c6c0;
-    border-radius: 10px;
-    color: #8a2b1f;
-    font-size: 13px;
+    margin-top: 14px; padding: 12px 16px; background: var(--accent-soft);
+    border: 1px solid #f5c6c0; border-radius: 10px; color: #8a2b1f; font-size: 13px;
   }
   .notice b { color: var(--accent); }
 
-  /* Toolbar */
   .toolbar {
-    margin-top: 18px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 16px;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
-    box-shadow: var(--shadow);
+    margin-top: 18px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 16px; display: flex; gap: 10px;
+    flex-wrap: wrap; align-items: center; box-shadow: var(--shadow);
   }
   .toolbar input[type=search] {
-    flex: 1 1 240px;
-    min-width: 180px;
-    border: 1px solid var(--line);
-    background: #fafbfc;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 14px;
-    outline: none;
+    flex: 1 1 240px; min-width: 180px; border: 1px solid var(--line);
+    background: #fafbfc; border-radius: 8px; padding: 8px 12px; font-size: 14px; outline: none;
   }
   .toolbar input[type=search]:focus { border-color: var(--link); background: #fff; }
   .toolbar select {
-    border: 1px solid var(--line);
-    background: #fafbfc;
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 13px;
-    outline: none;
-    color: var(--ink-2);
-    max-width: 200px;
+    border: 1px solid var(--line); background: #fafbfc; border-radius: 8px;
+    padding: 8px 10px; font-size: 13px; outline: none; color: var(--ink-2); max-width: 200px;
   }
   .toolbar button {
-    border: 1px solid var(--line);
-    background: #fafbfc;
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 13px;
-    color: var(--ink-2);
-    cursor: pointer;
+    border: 1px solid var(--line); background: #fafbfc; border-radius: 8px;
+    padding: 8px 14px; font-size: 13px; color: var(--ink-2); cursor: pointer;
   }
   .toolbar button:hover { border-color: var(--link); color: var(--link); }
+  .toolbar button.active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
   .toolbar .meta { margin-left: auto; color: var(--ink-3); font-size: 12px; }
 
-  /* Timeline */
+  /* 自选股面板 */
+  .selfstock {
+    margin-top: 16px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); display: none;
+  }
+  .selfstock.open { display: block; }
+  .selfstock h2 { margin: 0 0 4px; font-size: 16px; font-weight: 600; }
+  .selfstock .ss-sub { color: var(--ink-3); font-size: 12px; margin-bottom: 12px; }
+  .selfstock .ss-summary { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .selfstock .ss-chip {
+    font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--line);
+    cursor: pointer; user-select: none;
+  }
+  .selfstock .ss-chip .n { font-weight: 600; }
+  .selfstock .ss-chip.new { background: #e8f5e9; color: #1b5e20; border-color: #c8e6c9; }
+  .selfstock .ss-chip.revived { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
+  .selfstock .ss-chip.cold { background: #f5f5f5; color: #616161; border-color: #e0e0e0; }
+  .selfstock .ss-chip.core { background: #e3f2fd; color: #0d47a1; border-color: #bbdefb; }
+  .selfstock .ss-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .selfstock .ss-item {
+    border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 13px;
+    cursor: pointer;
+  }
+  .selfstock .ss-item:hover { border-color: var(--link); }
+  .selfstock .ss-item .nm { font-weight: 600; }
+  .selfstock .ss-item .cd { color: var(--ink-3); font-size: 11px; margin-top: 2px; }
+  .selfstock .ss-item .badge { font-size: 11px; padding: 1px 6px; border-radius: 4px; margin-left: 6px; }
+  .badge.new { background: #1b5e20; color: #fff; }
+  .badge.revived { background: #e65100; color: #fff; }
+  .badge.cold { background: #757575; color: #fff; }
+  .badge.core { background: #0d47a1; color: #fff; }
+
   .timeline { margin-top: 18px; position: relative; padding-left: 22px; }
   .timeline::before {
     content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px;
     width: 2px; background: var(--line);
   }
   .post {
-    position: relative;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 14px 18px;
-    margin-bottom: 14px;
-    box-shadow: var(--shadow);
+    position: relative; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 18px; margin-bottom: 14px; box-shadow: var(--shadow);
   }
   .post::before {
     content: ""; position: absolute; left: -22px; top: 18px;
-    width: 10px; height: 10px; border-radius: 50%;
-    background: #fff; border: 2px solid var(--accent);
+    width: 10px; height: 10px; border-radius: 50%; background: #fff; border: 2px solid var(--accent);
   }
+  .post.kind-comment::before { border-color: var(--blue); }
+  .post.kind-repost::before { border-color: var(--orange); }
   .post .head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; color: var(--ink-3); font-size: 12px; }
   .post .head .time { color: var(--ink-2); font-weight: 500; }
   .post .head .id { color: var(--ink-3); }
   .post .head .src { padding: 1px 6px; background: var(--line-2); border-radius: 4px; font-size: 11px; }
   .post .head .loc { color: var(--ink-3); }
+  .kbadge { font-size: 11px; padding: 1px 7px; border-radius: 4px; color: #fff; }
+  .kbadge.comment { background: var(--blue); }
+  .kbadge.repost { background: var(--orange); }
+  .kbadge.post { background: var(--accent); }
   .post .text {
-    margin: 8px 0 10px;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    color: var(--ink);
-    font-size: 14.5px;
-    line-height: 1.75;
+    margin: 8px 0 10px; white-space: pre-wrap; word-wrap: break-word;
+    color: var(--ink); font-size: 14.5px; line-height: 1.75;
   }
   .post .text.collapsed { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
   .post .expand { color: var(--link); cursor: pointer; font-size: 12px; user-select: none; }
+  .post .context {
+    border-left: 3px solid var(--line); background: var(--line-2);
+    border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 0 0 10px; color: var(--ink-2); font-size: 13px;
+  }
+  .post .context .ctx-head { font-size: 12px; color: var(--ink-3); margin-bottom: 3px; }
+  .post .context .ctx-text { white-space: pre-wrap; word-wrap: break-word; }
   .post .tags { display: flex; gap: 6px; flex-wrap: wrap; }
   .post .tags .tag {
-    background: var(--tag); color: var(--tag-ink);
-    font-size: 12px; padding: 2px 8px; border-radius: 4px;
+    background: var(--tag); color: var(--tag-ink); font-size: 12px; padding: 2px 8px; border-radius: 4px;
     font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   }
   .post .imgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px; margin-top: 10px; }
@@ -167,10 +164,7 @@
   .post .link:hover { color: var(--link); text-decoration: underline; }
 
   .empty { text-align: center; color: var(--ink-3); padding: 60px 0; }
-
-  footer {
-    margin-top: 30px; text-align: center; color: var(--ink-3); font-size: 12px;
-  }
+  footer { margin-top: 30px; text-align: center; color: var(--ink-3); font-size: 12px; }
   footer a { color: var(--ink-2); text-decoration: none; }
   footer a:hover { color: var(--link); text-decoration: underline; }
 </style>
@@ -188,31 +182,38 @@
       </div>
     </div>
     <div class="stats">
-      <div class="stat"><div class="v" id="stat-total">--</div><div class="l">已收录发言</div></div>
-      <div class="stat"><div class="v" id="stat-original">--</div><div class="l">原创</div></div>
+      <div class="stat"><div class="v" id="stat-total">--</div><div class="l">已收录</div></div>
+      <div class="stat"><div class="v" id="stat-post">--</div><div class="l">原贴</div></div>
+      <div class="stat"><div class="v" id="stat-comment">--</div><div class="l">评论</div></div>
       <div class="stat"><div class="v" id="stat-repost">--</div><div class="l">转发</div></div>
       <div class="stat"><div class="v" id="stat-range">--</div><div class="l">时间跨度</div></div>
     </div>
   </div>
 
   <div class="notice">
-    📌 <b>按月分块加载</b> —— 数据已按月份切分为小文件，首屏仅加载索引（约 2KB）+ 最新月份；选择月份或点「加载全部」可查看更早历史。全量约 1.6 万条由自动化任务每 12 小时增量回填。
+    📌 <b>原贴 + 评论 + 转发 全收录</b> —— 评论/转发已内嵌「被评论/被转的原文」便于理解上下文；并新增
+    <b>自选股变化追踪</b>（点上方「自选股变化」）。数据按月分块，首屏仅加载索引+最新月，自动化每 12 小时增量回填。
   </div>
 
   <div class="toolbar">
-    <input type="search" id="q" placeholder="搜索发言内容、股票代码、@提及…">
+    <input type="search" id="q" placeholder="搜索发言/评论内容、股票代码、@提及…">
     <select id="month"><option value="">全部已加载月份</option></select>
-    <select id="src">
-      <option value="">全部来源</option>
-    </select>
-    <select id="type">
+    <select id="kind">
       <option value="">全部类型</option>
-      <option value="0">原创</option>
-      <option value="2">长文</option>
-      <option value="1">转发</option>
+      <option value="post">原贴</option>
+      <option value="comment">评论</option>
+      <option value="repost">转发</option>
     </select>
+    <button id="ssBtn">自选股变化</button>
     <button id="loadAll">加载全部</button>
     <div class="meta" id="meta">加载中…</div>
+  </div>
+
+  <div class="selfstock" id="selfstock">
+    <h2>自选股 / 关注股票变化</h2>
+    <div class="ss-sub" id="ss-sub"></div>
+    <div class="ss-summary" id="ss-summary"></div>
+    <div class="ss-list" id="ss-list"></div>
   </div>
 
   <div class="timeline" id="timeline"></div>
@@ -271,33 +272,26 @@
     const total = postIndex ? postIndex.total : allPosts.length;
     const months = postIndex ? postIndex.months : [];
     $("#stat-total").textContent = total;
-    $("#stat-original").textContent = postIndex && postIndex.orig != null ? postIndex.orig : allPosts.filter(p => String(p.type) === "0").length;
-    $("#stat-repost").textContent = postIndex && postIndex.repost != null ? postIndex.repost : allPosts.filter(p => String(p.type) === "1").length;
+    $("#stat-post").textContent = postIndex && postIndex.post_count != null ? postIndex.post_count : allPosts.filter(p => p.kind === "post").length;
+    $("#stat-comment").textContent = postIndex && postIndex.comment_count != null ? postIndex.comment_count : allPosts.filter(p => p.kind === "comment").length;
+    $("#stat-repost").textContent = postIndex && postIndex.repost_count != null ? postIndex.repost_count : allPosts.filter(p => p.kind === "repost").length;
     $("#stat-range").textContent = months.length ? `${months[months.length - 1].ym} → ${months[0].ym}` : "--";
-
-    const sources = Array.from(new Set(allPosts.map(p => p.source).filter(Boolean))).sort();
-    const sel = $("#src");
-    sel.innerHTML = `<option value="">全部来源</option>`;
-    sources.forEach(s => {
-      const o = document.createElement("option");
-      o.value = s; o.textContent = s;
-      sel.appendChild(o);
-    });
   }
 
   function render() {
     const q = $("#q").value.trim().toLowerCase();
-    const src = $("#src").value;
-    const tp = $("#type").value;
     const ym = $("#month").value;
+    const kind = $("#kind").value;
     const filtered = allPosts.filter(p => {
       if (ym && fmtYM(p.created_at) !== ym) return false;
-      if (src && p.source !== src) return false;
-      if (tp && String(p.type) !== tp) return false;
+      if (kind && p.kind !== kind) return false;
       if (q) {
         const hay = [
           p.text || "",
+          p.original && p.original.text ? p.original.text : "",
           (p.stockCorrelation || []).join(" "),
+          (p.stocks || []).join(" "),
+          p.reply_to || "",
         ].join(" ").toLowerCase();
         if (!hay.includes(q)) return false;
       }
@@ -307,23 +301,37 @@
 
     const tl = $("#timeline");
     if (filtered.length === 0) {
-      tl.innerHTML = `<div class="empty">没有匹配的发言</div>`;
+      tl.innerHTML = `<div class="empty">没有匹配的内容</div>`;
       return;
     }
     tl.innerHTML = filtered.map(p => {
       const longText = (p.text || "").length > 280;
-      const tags = (p.stockCorrelation || []).map(t => `<span class="tag">${esc(t)}</span>`).join("");
-      const url = p.url || `https://xueqiu.com/2292705444/${p.id}`;
+      const k = p.kind || "post";
+      const klabel = { post: "原贴", comment: "评论", repost: "转发" }[k] || k;
+      const tags = ((p.stockCorrelation || []).concat(p.stocks || [])).filter(Boolean)
+        .filter((v, i, a) => a.indexOf(v) === i)
+        .map(t => `<span class="tag">${esc(t)}</span>`).join("");
+      const url = p.url || (p.original && p.original.url) || `https://xueqiu.com/2292705444/${p.id}`;
       const loc = p.ip_location ? `<span class="loc">📍 ${esc(p.ip_location)}</span>` : "";
+      const ctx = p.original ? `
+        <div class="context">
+          <div class="ctx-head">原帖 @${esc(p.original.user)} · ${esc(fmtTime(p.original.created_at))}</div>
+          <div class="ctx-text">${esc(p.original.text || "")}</div>
+          <a class="link" href="${esc(p.original.url || "#")}" target="_blank" rel="noopener">查看原帖 ↗</a>
+        </div>` : "";
+      const replyTo = p.reply_to ? `回复 @${esc(p.reply_to)} · ` : "";
       return `
-        <article class="post">
+        <article class="post kind-${k}">
           <div class="head">
             <span class="time">${esc(fmtTime(p.created_at))}</span>
+            <span class="kbadge ${k}">${klabel}</span>
             <span class="id">#${p.id}</span>
             ${p.source ? `<span class="src">${esc(p.source)}</span>` : ""}
             ${loc}
+            ${replyTo ? `<span class="loc">${esc(replyTo)}</span>` : ""}
             <a class="link" href="${esc(url)}" target="_blank" rel="noopener">原帖 ↗</a>
           </div>
+          ${ctx}
           <div class="text ${longText ? "collapsed" : ""}" data-id="${p.id}">${esc(p.text || "")}</div>
           ${longText ? `<span class="expand" data-id="${p.id}">展开全文 ↓</span>` : ""}
           ${tags ? `<div class="tags">${tags}</div>` : ""}
@@ -332,7 +340,6 @@
             <span><b>${p.reply_count || 0}</b> 回复</span>
             <span><b>${p.like_count || 0}</b> 赞</span>
             <span><b>${p.retweet_count || 0}</b> 转发</span>
-            <span><b>${p.fav_count || 0}</b> 收藏</span>
           </div>
         </article>
       `;
@@ -347,12 +354,55 @@
     });
   }
 
+  // 自选股面板
+  let ssLoaded = false;
+  async function loadSelfstock() {
+    if (ssLoaded) return;
+    try {
+      const data = await fetch("data/selfstock.json", { cache: "no-cache" }).then(r => r.json());
+      ssLoaded = true;
+      const ch = data.changes || {};
+      $("#ss-sub").textContent = `基于全部原贴+评论+转发中提到的个股（$NAME(代码)）派生追踪 · 最新月份 ${data.latest_month || "?"} · 共 ${data.total_stocks} 只`;
+      const sum = $("#ss-summary");
+      const mk = (cls, label, arr) => `<span class="ss-chip ${cls}" data-st="${cls}"><span class="n">${(arr||[]).length}</span> ${label}</span>`;
+      sum.innerHTML = mk("new", "新关注", ch.new) + mk("revived", "重提", ch.revived) + mk("cold", "已冷落", ch.cold) + mk("core", "持续关注", ch.core);
+      const list = $("#ss-list");
+      list.innerHTML = (data.stocks || []).map(s => {
+        const bcls = { "新关注": "new", "重提": "revived", "已冷落": "cold", "持续关注": "core" }[s.status] || "core";
+        return `<div class="ss-item" data-code="${esc(s.code)}">
+          <div><span class="nm">${esc(s.name || s.code)}</span> <span class="badge ${bcls}">${esc(s.status)}</span></div>
+          <div class="cd">${esc(s.code)} · 提及 ${s.mention_count} 次 · 首 ${s.first_month} / 近 ${s.last_month}</div>
+        </div>`;
+      }).join("");
+      $$(".ss-item", list).forEach(el => {
+        el.addEventListener("click", () => {
+          $("#q").value = el.dataset.code;
+          render();
+          window.scrollTo({ top: $(".toolbar").offsetTop - 10, behavior: "smooth" });
+        });
+      });
+      $$(".ss-chip", sum).forEach(el => {
+        el.addEventListener("click", () => {
+          const st = el.dataset.st;
+          const map = { new: "新关注", revived: "重提", cold: "已冷落", core: "持续关注" };
+          const want = map[st];
+          const items = $$(".ss-item", list);
+          items.forEach(it => {
+            const badge = it.querySelector(".badge");
+            it.style.display = (!want || (badge && badge.textContent === want)) ? "" : "none";
+          });
+        });
+      });
+    } catch (e) {
+      $("#ss-sub").textContent = "自选股数据加载失败：" + e;
+    }
+  }
+
   async function load() {
     try {
       postIndex = await fetch("data/posts_index.json", { cache: "no-cache" }).then(r => r.json());
       paintStats();
       buildMonthSelect();
-      // 默认加载最新 2 个月
       const recent = (postIndex.months || []).slice(0, 2);
       await Promise.all(recent.map(m => loadMonth(m.file)));
       $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（最新 ${recent.length} 个月）`;
@@ -363,8 +413,7 @@
   }
 
   $("#q").addEventListener("input", render);
-  $("#src").addEventListener("change", render);
-  $("#type").addEventListener("change", render);
+  $("#kind").addEventListener("change", render);
   $("#month").addEventListener("change", async (e) => {
     const ym = e.target.value;
     if (!ym) { render(); return; }
@@ -375,6 +424,12 @@
       await loadMonth(m.file);
     }
     render();
+  });
+  $("#ssBtn").addEventListener("click", async () => {
+    const panel = $("#selfstock");
+    panel.classList.toggle("open");
+    $("#ssBtn").classList.toggle("active");
+    if (panel.classList.contains("open")) await loadSelfstock();
   });
   $("#loadAll").addEventListener("click", async () => {
     if (!postIndex) return;
