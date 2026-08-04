@@ -28,6 +28,7 @@ DATA_FILES = [
     "posts.json", "comments.json", "reposts.json", "interactions.json",
     "selfstock.json", "selfstock_raw.json", "posts_index.json",
     "tags_index.json", "analysis_recent.json", "user.json", "xueqiu.db",
+    "daily_review.md",
 ]
 
 
@@ -69,6 +70,11 @@ def sync_files():
     cs = os.path.join(dsrc, "corpus")
     if os.path.isdir(cs):
         shutil.copytree(cs, os.path.join(ddst, "corpus"), dirs_exist_ok=True)
+
+    # 每日首席视角总结（可选，存在才同步；按日期累积归档）
+    ds = os.path.join(dsrc, "daily")
+    if os.path.isdir(ds):
+        shutil.copytree(ds, os.path.join(ddst, "daily"), dirs_exist_ok=True)
 
     # scripts（排除 _*.py 与 __pycache__）
     ssrc = os.path.join(WORKSPACE, "scripts")
