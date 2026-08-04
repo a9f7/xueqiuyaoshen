@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-04T15:16:23Z",
+  "updated": "2026-08-04T16:14:35Z",
   "total_tagged": 24702,
   "distinct_tags": 45,
   "tags": [
@@ -10,17 +10,17 @@
     },
     {
       "tag": "答疑",
-      "count": 7085,
+      "count": 7084,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7023,
+      "count": 7024,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6356,
+      "count": 6357,
       "dim": "industry"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 4524,
+      "count": 4525,
       "dim": "region"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 3705,
+      "count": 3704,
       "dim": "industry"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "中观",
-      "count": 2471,
+      "count": 2472,
       "dim": "perspective"
     },
     {
@@ -95,7 +95,7 @@
     },
     {
       "tag": "随笔",
-      "count": 1335,
+      "count": 1334,
       "dim": "ctype"
     },
     {
