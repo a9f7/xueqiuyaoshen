@@ -208,7 +208,9 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir):
                     break
                 else:
                     print(f"  page={pno}: FAIL status={status} {text[:80]}", flush=True)
-                    if '访问验证' in text or 'aliyun_waf' in text:
+                    # status==0 多为 WAF 拦截导致 fetch 超时/报错；与 405/访问验证 同样按限流处理，
+                    # 立即停止本批（否则会逐页 15s 超时重试，单批卡 5+ 分钟）。
+                    if status == 0 or '访问验证' in text or 'aliyun_waf' in text:
                         stopped = True
                         break
             except Exception as e:
@@ -223,7 +225,34 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir):
     return saved, stopped, maxpage
 
 
+def acquire_lock():
+    """单实例锁：防止自动化并发启动多个 fetch（曾导致多进程抢 cookie 池 / WAF 预算、
+    写同一 raw 目录、账号被风控、渲染器崩溃、进程静默死退出）。
+    用法：main 开头调用；退出前 release_lock。若锁文件中的 PID 仍存活则直接退出。"""
+    LOCK = os.path.join(ROOT, "data", ".fetch.lock")
+    if os.path.exists(LOCK):
+        try:
+            with open(LOCK, encoding="utf-8") as f:
+                pid = int(f.read().strip())
+            os.kill(pid, 0)  # 进程存活则抛异常，否则 OSError
+            print(f"[LOCK] 已有 fetch 进程 PID {pid} 在运行，本实例退出。", flush=True)
+            sys.exit(0)
+        except (OSError, ValueError):
+            pass  # 过期锁，覆盖
+    with open(LOCK, "w", encoding="utf-8") as f:
+        f.write(str(os.getpid()))
+    return LOCK
+
+
+def release_lock(lock_path):
+    try:
+        os.remove(lock_path)
+    except OSError:
+        pass
+
+
 def main():
+    lock_path = acquire_lock()
     ap = argparse.ArgumentParser()
     ap.add_argument("start", type=int, nargs="?", default=None)
     ap.add_argument("end", type=int, nargs="?", default=None)
@@ -297,6 +326,7 @@ def main():
         lo = hi + 1
         time.sleep(random.uniform(5, 10))
     print(f"[ALL DONE] mode={args.mode} saved this run: {total_saved}", flush=True)
+    release_lock(lock_path)
 
 
 if __name__ == "__main__":
