@@ -97,8 +97,8 @@ def main():
     seen = set()
     all_posts = []
     for fp in files:
-        with open(fp, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        with open(fp, "r", encoding="utf-8", errors="replace") as f:
+            data = json.loads(f.read(), strict=False)
         for s in (data.get("statuses") or []):
             sid = s.get("id")
             if sid and sid not in seen:

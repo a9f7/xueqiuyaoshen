@@ -112,8 +112,12 @@ def existing_pages(out_dir):
     return s
 
 
-def fetch_batch(start, end, cookie_str, api_type, out_dir):
-    """启动一个全新浏览器会话，抓 [start,end] 中尚未存在的页。返回 (saved, stopped, maxpage)。"""
+def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
+    """启动一个全新浏览器会话，抓 [start,end]。
+
+    force=True 时覆盖已存在的页（用于 --newest 追最新发帖：新内容总在第 1 页，
+    必须重写才能抓到，否则会被 os.path.exists 跳过而导致最新发帖永远漏抓）。
+    返回 (saved, stopped, maxpage)。"""
     saved = 0
     stopped = False
     maxpage = None
@@ -164,7 +168,7 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir):
 
         for pno in range(start, end + 1):
             out_file = os.path.join(out_dir, f"page_{pno}.json")
-            if os.path.exists(out_file):
+            if not force and os.path.exists(out_file):
                 continue
             api_url = f"https://xueqiu.com/v4/statuses/user_timeline.json?user_id={USER_ID}&page={pno}&type={api_type}&count=20"
             try:
@@ -258,6 +262,8 @@ def main():
     ap.add_argument("end", type=int, nargs="?", default=None)
     ap.add_argument("--mode", choices=list(MODES.keys()), default="posts", help="posts/comments/reposts")
     ap.add_argument("--batch", type=int, default=15, help="自动模式下抓最旧的 N 页")
+    ap.add_argument("--newest", type=int, default=None,
+                    help="抓取并【覆盖重写】第 1..N 页（追最新发帖/评论，必须覆盖才会更新第 1 页）")
     args = ap.parse_args()
 
     api_type, subdir = MODES[args.mode]
@@ -270,8 +276,14 @@ def main():
     print(f"[run] mode={args.mode} api_type={api_type} out={OUT_DIR} cookie pool 共 {len(pool)} 组", flush=True)
 
     # 决定区间
-    if args.start is not None:
+    if args.newest is not None:
+        # 追最新：强制覆盖第 1..N 页
+        start, end = 1, max(1, args.newest)
+        force_overwrite = True
+        print(f"[newest] 覆盖重写 page 1..{end}", flush=True)
+    elif args.start is not None:
         start, end = args.start, (args.end if args.end is not None else args.start)
+        force_overwrite = False
     else:
         have = existing_pages(OUT_DIR)
         start = 1
@@ -279,6 +291,7 @@ def main():
             start += 1
         end = start + args.batch - 1
         end = min(end, FALLBACK_MAXPAGE[args.mode])
+        force_overwrite = False
         print(f"[auto] oldest missing = page {start}, fetching {start}..{end}", flush=True)
 
     if not pool:
@@ -293,10 +306,11 @@ def main():
     total_saved = 0
     lo = start
     while lo <= end:
-        while lo <= end and os.path.exists(os.path.join(OUT_DIR, f"page_{lo}.json")):
-            lo += 1
-        if lo > end:
-            break
+        if not force_overwrite:
+            while lo <= end and os.path.exists(os.path.join(OUT_DIR, f"page_{lo}.json")):
+                lo += 1
+            if lo > end:
+                break
         hi = min(lo + BATCH_PER_BROWSER - 1, end)
 
         chosen = None
@@ -312,7 +326,7 @@ def main():
             break
 
         print(f"[batch] pages {lo}..{hi} | cookie#{chosen} ({'有' if pool else '无'})", flush=True)
-        saved, stopped, maxpage = fetch_batch(lo, hi, pool[chosen], api_type, OUT_DIR)
+        saved, stopped, maxpage = fetch_batch(lo, hi, pool[chosen], api_type, OUT_DIR, force=force_overwrite)
         total_saved += saved
         print(f"[batch done] saved={saved} cumulative={total_saved}", flush=True)
         if stopped:

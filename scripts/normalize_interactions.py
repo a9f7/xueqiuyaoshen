@@ -100,7 +100,7 @@ def load_post_ids():
     pj = DATA / "posts.json"
     if not pj.exists():
         return set()
-    return set(p.get("id") for p in json.load(open(pj, encoding="utf-8")) if p.get("id"))
+    return set(p.get("id") for p in json.loads(open(pj, encoding="utf-8", errors="replace").read(), strict=False) if p.get("id"))
 
 
 def main():
@@ -110,7 +110,12 @@ def main():
     comments = []
     reposts = []
     for f in sorted(glob.glob(str(DATA / "raw_comments" / "page_*.json"))):
-        for s in json.load(open(f, encoding="utf-8")).get("statuses", []):
+        try:
+            data = json.loads(open(f, encoding="utf-8", errors="replace").read(), strict=False)
+        except Exception as e:
+            print(f"[warn] 跳过损坏的评论原始文件 {os.path.basename(f)}: {e}", file=sys.stderr)
+            continue
+        for s in (data.get("statuses") or []):
             sid = s.get("id")
             # 跳过帖子容器（id 与 posts 重复且非真实评论）
             if sid in post_ids:
@@ -119,7 +124,12 @@ def main():
                 continue
             comments.append(norm_item(s, "comment"))
     for f in sorted(glob.glob(str(DATA / "raw_reposts" / "page_*.json"))):
-        for s in json.load(open(f, encoding="utf-8")).get("statuses", []):
+        try:
+            data = json.loads(open(f, encoding="utf-8", errors="replace").read(), strict=False)
+        except Exception as e:
+            print(f"[warn] 跳过损坏的转发原始文件 {os.path.basename(f)}: {e}", file=sys.stderr)
+            continue
+        for s in (data.get("statuses") or []):
             sid = s.get("id")
             if sid in post_ids:
                 continue
