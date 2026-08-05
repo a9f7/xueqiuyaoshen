@@ -256,6 +256,29 @@
   .analyst .an-sig a { color: var(--ink-3); font-size: 11px; text-decoration: none; margin-left: 6px; }
   .analyst .an-sig a:hover { color: var(--link); }
 
+  /* 方向多空 + 重点标的 */
+  .analyst .an-dir { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .analyst .bull-card { border-color: #f3c6c0; }
+  .analyst .bear-card { border-color: #bfe3cb; }
+  .analyst .an-bars.bull .fill { background: linear-gradient(90deg, #ff8a80 0%, #c0392b 100%); }
+  .analyst .an-bars.bear .fill { background: linear-gradient(90deg, #80e0a0 0%, #0f9d58 100%); }
+  .analyst .an-bars.bull .nm .sw { background: #c0392b; }
+  .analyst .an-bars.bear .nm .sw { background: #0f9d58; }
+  .analyst .an-sym { margin-top: 16px; }
+  .analyst .an-symchips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .analyst .an-symchips .sc {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px;
+    padding: 4px 10px; border-radius: 20px; border: 1px solid var(--line);
+    background: #fff; cursor: pointer; user-select: none;
+  }
+  .analyst .an-symchips .sc:hover { border-color: var(--link); }
+  .analyst .an-symchips .sc .code { color: var(--ink-3); font-size: 11px; }
+  .analyst .an-symchips .sc .ct { color: var(--ink-2); font-size: 11px; }
+  .analyst .an-symchips .sc .badge { font-size: 10.5px; padding: 1px 6px; border-radius: 10px; color: #fff; font-weight: 500; }
+  .analyst .an-symchips .sc .badge.bull { background: var(--accent); }
+  .analyst .an-symchips .sc .badge.bear { background: var(--green); }
+  .analyst .an-symchips .sc .badge.mixed { background: #8b94a3; }
+
   .loadmore {
     display: block; margin: 16px auto 0; padding: 9px 22px; font-size: 13px;
     border: 1px solid var(--line); background: #fafbfc; border-radius: 20px; color: var(--ink-2); cursor: pointer;
@@ -328,6 +351,30 @@
           <div class="an-card-h">💡 关键信号</div>
           <div id="an-signals"></div>
         </div>
+      </div>
+
+      <div class="an-dir">
+        <div class="an-col">
+          <div class="an-card bull-card">
+            <div class="an-card-h">📈 看涨方向（看多发言里的行业主线）</div>
+            <div class="an-bars bull" id="an-bull-dir"></div>
+            <div class="an-card-h" style="margin-top:12px">看多标的</div>
+            <div class="an-chips" id="an-bull-sym"></div>
+          </div>
+        </div>
+        <div class="an-col">
+          <div class="an-card bear-card">
+            <div class="an-card-h">📉 看跌方向（看空发言里的行业主线）</div>
+            <div class="an-bars bear" id="an-bear-dir"></div>
+            <div class="an-card-h" style="margin-top:12px">看空标的</div>
+            <div class="an-chips" id="an-bear-sym"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="an-sym">
+        <div class="an-card-h">🎯 重点标的（按提及频次 · 点击可在时间线筛选 · 看多/看空/多空交织）</div>
+        <div class="an-symchips" id="an-symbols"></div>
       </div>
     </div>
   </section>
@@ -767,6 +814,38 @@
       const dt = fmtDate(s.created_at);
       return `<div class="an-sig">${esc(s.text)}<a href="${esc(s.url)}" target="_blank" rel="noopener">${dt} ↗</a></div>`;
     }).join("") || `<div class="an-sub">（无）</div>`;
+    // 方向多空：看涨/看跌方向条形
+    function dirBars(arr) {
+      const max = arr.length ? arr[0].count : 1;
+      return (arr || []).slice(0, 6).map(t => {
+        const w = Math.max(8, Math.round(t.count / max * 100));
+        return `<div class="an-bar"><span class="nm"><span class="sw"></span>${esc(t.tag)}</span>`
+             + `<span class="track"><span class="fill" style="width:${w}%"></span></span>`
+             + `<span class="ct">${t.count}</span></div>`;
+      }).join("") || `<div class="an-sub">（无）</div>`;
+    }
+    $("#an-bull-dir").innerHTML = dirBars(d.bullish && d.bullish.directions);
+    $("#an-bear-dir").innerHTML = dirBars(d.bearish && d.bearish.directions);
+    const symChip = s => `<span class="c">${esc(s.name)}${s.code ? ` <b>${esc(s.code)}</b>` : ""} <b>×${s.count}</b></span>`;
+    $("#an-bull-sym").innerHTML = (d.bullish && d.bullish.symbols && d.bullish.symbols.length)
+      ? d.bullish.symbols.map(symChip).join("") : `<span class="c">（无显式点名）</span>`;
+    $("#an-bear-sym").innerHTML = (d.bearish && d.bearish.symbols && d.bearish.symbols.length)
+      ? d.bearish.symbols.map(symChip).join("") : `<span class="c">（无显式点名）</span>`;
+    // 重点标的（全量，可点击筛选时间线）
+    $("#an-symbols").innerHTML = (d.symbols && d.symbols.length) ? d.symbols.slice(0, 18).map(s => {
+      const st = s.stance || "neutral";
+      const stTxt = st === "bull" ? "看多" : st === "bear" ? "看空" : st === "mixed" ? "多空" : "提及";
+      const badgeCls = st === "bull" ? "bull" : st === "bear" ? "bear" : "mixed";
+      const code = s.code ? `<span class="code">${esc(s.code)}</span>` : "";
+      return `<span class="sc" data-q="${esc(s.name)}"><span class="badge ${badgeCls}">${stTxt}</span>${esc(s.name)}${code}<span class="ct">×${s.count}</span></span>`;
+    }).join("") : `<div class="an-sub">（正文未以 $名称(代码) 形式显式点名具体个股）</div>`;
+    $$("#an-symbols .sc").forEach(el => {
+      el.addEventListener("click", () => {
+        $("#q").value = el.dataset.q;
+        render();
+        window.scrollTo({ top: $(".toolbar").offsetTop - 10, behavior: "smooth" });
+      });
+    });
   }
 
   // 防抖搜索
