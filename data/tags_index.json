@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-05T08:10:56Z",
-  "total_tagged": 25031,
+  "updated": "2026-08-05T09:10:35Z",
+  "total_tagged": 25032,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7468,
+      "count": 7469,
       "dim": "ctype"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "复盘",
-      "count": 1875,
+      "count": 1876,
       "dim": "stance"
     },
     {
