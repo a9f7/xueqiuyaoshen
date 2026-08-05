@@ -1167,7 +1167,7 @@
     ]
   },
   "current": {
-    "date": "2026-08-03",
+    "date": "2026-08-05",
     "items": [
       {
         "symbol": "ZH3389064",
@@ -1563,7 +1563,7 @@
         "exchange": "NYSE",
         "watched": 1656119700882,
         "type": "stock",
-        "mentioned": false
+        "mentioned": true
       },
       {
         "symbol": "MRK",
@@ -2335,7 +2335,7 @@
   "changes": {
     "added": [],
     "removed": [],
-    "as_of": "2026-08-03"
+    "as_of": "2026-08-05"
   },
   "mentioned": [
     {
@@ -2344,8 +2344,18 @@
       "mentions": 2
     },
     {
+      "symbol": "MNSO",
+      "name": "名创优品",
+      "mentions": 2
+    },
+    {
       "symbol": "LLY",
       "name": "礼来",
+      "mentions": 2
+    },
+    {
+      "symbol": "HKHSI",
+      "name": "恒生指数",
       "mentions": 2
     },
     {
@@ -2364,18 +2374,8 @@
       "mentions": 1
     },
     {
-      "symbol": "MNSO",
-      "name": "名创优品",
-      "mentions": 1
-    },
-    {
       "symbol": "GOLD",
       "name": "巴里克黄金",
-      "mentions": 1
-    },
-    {
-      "symbol": "HKHSI",
-      "name": "恒生指数",
       "mentions": 1
     },
     {
@@ -2411,6 +2411,26 @@
     {
       "symbol": "BTU",
       "name": "Peabody",
+      "mentions": 1
+    },
+    {
+      "symbol": "COST",
+      "name": "好市多",
+      "mentions": 1
+    },
+    {
+      "symbol": "HSAI",
+      "name": "禾赛",
+      "mentions": 1
+    },
+    {
+      "symbol": "MPNGY",
+      "name": "美团ADR",
+      "mentions": 1
+    },
+    {
+      "symbol": "OXY",
+      "name": "西方石油",
       "mentions": 1
     }
   ]
