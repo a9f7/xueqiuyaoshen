@@ -1,31 +1,31 @@
 {
-  "updated": "2026-08-05T01:24:59Z",
+  "updated": "2026-08-05T02:18:21Z",
   "total_tagged": 25018,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7463,
+      "count": 7462,
       "dim": "ctype"
     },
     {
       "tag": "答疑",
-      "count": 7233,
+      "count": 7234,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7162,
+      "count": 7160,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6468,
+      "count": 6466,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 5933,
+      "count": 5934,
       "dim": "asset"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 3782,
+      "count": 3784,
       "dim": "industry"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3209,
+      "count": 3208,
       "dim": "ctype"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "中观",
-      "count": 2499,
+      "count": 2498,
       "dim": "perspective"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "复盘",
-      "count": 1877,
+      "count": 1876,
       "dim": "stance"
     },
     {
@@ -95,7 +95,7 @@
     },
     {
       "tag": "随笔",
-      "count": 1340,
+      "count": 1341,
       "dim": "ctype"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "tag": "中国香港",
-      "count": 1166,
+      "count": 1167,
       "dim": "region"
     },
     {
