@@ -279,6 +279,64 @@
   .analyst .an-symchips .sc .badge.bear { background: var(--green); }
   .analyst .an-symchips .sc .badge.mixed { background: #8b94a3; }
 
+  /* 每日首席视角（每日总结面板） */
+  .daily {
+    margin-top: 16px; background: linear-gradient(180deg, #fffdf6 0%, #ffffff 100%);
+    border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 20px;
+    box-shadow: var(--shadow);
+  }
+  .daily .d-head { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+  .daily .d-title { font-size: 16px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 9px; }
+  .daily .d-title .badge {
+    font-size: 11px; padding: 2px 10px; border-radius: 20px; color: #fff;
+    background: linear-gradient(135deg, #e67e22, #c0392b); font-weight: 600; letter-spacing: .5px;
+  }
+  .daily .d-sub { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+  .daily .d-section { margin-top: 16px; }
+  .daily .d-sec-h { font-size: 14px; font-weight: 600; color: var(--ink); border-left: 3px solid var(--orange); padding-left: 8px; margin-bottom: 10px; }
+  .daily .d-sec-h.sub { border-left-color: var(--link); font-size: 13px; color: var(--ink-2); font-weight: 500; margin-top: 14px; }
+  .daily .d-bars { display: flex; flex-direction: column; gap: 8px; }
+  .daily .d-bar { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .daily .d-bar .nm { width: 72px; flex-shrink: 0; color: var(--ink-2); text-align: right; }
+  .daily .d-bar .track { flex: 1; height: 18px; background: #f1f2f5; border-radius: 9px; overflow: hidden; }
+  .daily .d-bar .fill { display: block; height: 100%; border-radius: 9px; background: linear-gradient(90deg, #ffd43b, #e8590c); }
+  .daily .d-bar .ct { width: 36px; text-align: right; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .daily .d-symtab { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .daily .d-symtab th, .daily .d-symtab td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line-2); }
+  .daily .d-symtab th { color: var(--ink-3); font-weight: 600; background: #fafbfc; }
+  .daily .d-symtab td.nm { font-weight: 600; cursor: pointer; color: var(--link); }
+  .daily .d-symtab td.nm:hover { text-decoration: underline; }
+  .daily .d-symtab td.cd { color: var(--ink-3); font-size: 11px; }
+  .daily .d-stance { display: flex; flex-wrap: wrap; gap: 6px; }
+  .daily .d-stance .s { font-size: 12.5px; padding: 3px 10px; border-radius: 20px; color: #fff; font-weight: 500; }
+  .daily .d-stance .s.bull { background: var(--accent); }
+  .daily .d-stance .s.bear { background: var(--green); }
+  .daily .d-stance .s.neu { background: #8b94a3; }
+  .daily .d-stance .s.risk { background: var(--orange); }
+  .daily .d-stance .s.rev { background: var(--blue); }
+  .daily .d-interp { font-size: 13.5px; line-height: 1.85; color: var(--ink); margin: 0; padding-left: 20px; }
+  .daily .d-interp li { margin-bottom: 8px; }
+  .daily .d-sig {
+    border-left: 3px solid var(--orange); background: #fcf8f4; border-radius: 0 8px 8px 0;
+    padding: 8px 11px; margin-bottom: 8px; font-size: 13px; line-height: 1.7; color: var(--ink);
+  }
+  .daily .d-sig:last-child { margin-bottom: 0; }
+  .daily .d-sig a { color: var(--ink-3); font-size: 11px; text-decoration: none; margin-left: 6px; }
+  .daily .d-sig a:hover { color: var(--link); }
+  .daily .d-post { border: 1px solid var(--line-2); border-radius: 9px; padding: 9px 11px; margin-bottom: 8px; background: #fff; font-size: 12.5px; }
+  .daily .d-post:last-child { margin-bottom: 0; }
+  .daily .d-post .ph { display: flex; gap: 8px; align-items: center; color: var(--ink-3); font-size: 11.5px; margin-bottom: 4px; }
+  .daily .d-post .ph .eng { margin-left: auto; color: var(--accent); font-weight: 600; }
+  .daily .d-post .pt { color: var(--ink); line-height: 1.6; }
+  .daily .d-post .pt a { color: var(--link); text-decoration: none; }
+  .daily .d-post .ptags { margin-top: 4px; display: flex; gap: 5px; flex-wrap: wrap; }
+  .daily .d-post .ptags span { font-size: 11px; color: var(--tag-ink); background: var(--tag); padding: 1px 6px; border-radius: 4px; }
+  .daily .d-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .daily .d-sub2 { color: var(--ink-3); font-size: 12px; margin-bottom: 12px; }
+  @media (max-width: 720px) {
+    .daily .d-grid2 { grid-template-columns: 1fr; }
+  }
+
   .loadmore {
     display: block; margin: 16px auto 0; padding: 9px 22px; font-size: 13px;
     border: 1px solid var(--line); background: #fafbfc; border-radius: 20px; color: var(--ink-2); cursor: pointer;
@@ -375,6 +433,41 @@
       <div class="an-sym">
         <div class="an-card-h">🎯 重点标的（按提及频次 · 点击可在时间线筛选 · 看多/看空/多空交织）</div>
         <div class="an-symchips" id="an-symbols"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="daily" id="daily" style="display:none">
+    <div class="d-head">
+      <div>
+        <div class="d-title"><span class="badge">每日</span> 首席视角 · 每日发言标的与观点总结</div>
+        <div class="d-sub" id="d-sub"></div>
+      </div>
+    </div>
+    <div class="d-body">
+      <div class="d-section">
+        <div class="d-sec-h">一、今日集中在什么标的</div>
+        <div class="d-sec-h sub">行业 / 主题主线</div>
+        <div class="d-bars" id="d-industry"></div>
+        <div class="d-sec-h sub">重点提及个股（按提及频次 · 点击标的可在时间线筛选）</div>
+        <table class="d-symtab" id="d-symtab"></table>
+      </div>
+      <div class="d-section">
+        <div class="d-sec-h">二、主要表达什么观点</div>
+        <div class="d-sec-h sub">多空立场</div>
+        <div class="d-stance" id="d-stance"></div>
+        <div class="d-sec-h sub">首席视角解读</div>
+        <ul class="d-interp" id="d-interp"></ul>
+      </div>
+      <div class="d-section d-grid2">
+        <div class="d-col">
+          <div class="d-sec-h">📜 今日金句</div>
+          <div id="d-signals"></div>
+        </div>
+        <div class="d-col">
+          <div class="d-sec-h">🔥 最热发言 Top5</div>
+          <div id="d-top"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -708,6 +801,7 @@
       buildMonthSelect();
       loadTagIndex();
       loadAnalyst();   // 非阻塞：小文件，独立渲染，不拖慢时间线
+      loadDailyReview();   // 非阻塞：每日首席视角总结面板
       const months = postIndex.months || [];
       // 先加载最新 1 个月（首屏最快），渲染后再后台补齐第 2 个月
       if (months[0]) await loadMonth(months[0].file);
@@ -846,6 +940,70 @@
         window.scrollTo({ top: $(".toolbar").offsetTop - 10, behavior: "smooth" });
       });
     });
+  }
+
+  // 每日首席视角：加载并渲染 data/daily_review.json
+  async function loadDailyReview() {
+    try {
+      const d = await fetch("data/daily_review.json", { cache: "no-cache" }).then(r => r.json());
+      renderDaily(d);
+      $("#daily").style.display = "block";
+    } catch (e) { /* 每日总结缺失不阻断主流程 */ }
+  }
+
+  function renderDaily(d) {
+    $("#d-sub").textContent =
+      `${d.window_start || "?"} – ${d.window_end || "?"} · 共 ${d.counts ? d.counts.total : "?"} 条发言` +
+      `（原贴 ${d.counts ? d.counts.post : "?"} / 评论 ${d.counts ? d.counts.comment : "?"} / 转发 ${d.counts ? d.counts.repost : "?"}）` +
+      ` · 更新于 ${d.generated_at || ""}`;
+    // 行业条形
+    const ind = d.industry || [];
+    const maxInd = ind.length ? ind[0].count : 1;
+    $("#d-industry").innerHTML = (ind.slice(0, 10).map(t => {
+      const w = Math.max(8, Math.round(t.count / maxInd * 100));
+      return `<div class="d-bar"><span class="nm">${esc(t.tag)}</span>`
+        + `<span class="track"><span class="fill" style="width:${w}%"></span></span>`
+        + `<span class="ct">${t.count}</span></div>`;
+    }).join("")) || `<div class="d-sub2">（无明显行业集中）</div>`;
+    // 个股表
+    const syms = d.symbols || [];
+    if (syms.length) {
+      $("#d-symtab").innerHTML =
+        `<thead><tr><th>标的</th><th>代码</th><th>提及</th><th>关联主线</th></tr></thead><tbody>`
+        + syms.map(s => `<tr><td class="nm" data-q="${esc(s.name)}">${esc(s.name)}</td>`
+            + `<td class="cd">${esc(s.code || "")}</td>`
+            + `<td>${s.count}</td>`
+            + `<td>${esc(s.main_industry || "")}</td></tr>`).join("")
+        + `</tbody>`;
+      $$("#d-symtab td.nm").forEach(el => el.addEventListener("click", () => {
+        $("#q").value = el.dataset.q; render();
+        window.scrollTo({ top: $(".toolbar").offsetTop - 10, behavior: "smooth" });
+      }));
+    } else {
+      $("#d-symtab").innerHTML = `<tbody><tr><td colspan="4" class="d-sub2">正文未显式提及具体个股代码（$名称）</td></tr></tbody>`;
+    }
+    // 立场
+    const ss = d.stance || {};
+    const stanceMeta = [["看多","bull"],["看空","bear"],["中性","neu"],["风险提示","risk"],["复盘","rev"]];
+    $("#d-stance").innerHTML = stanceMeta.map(([k,cls]) =>
+      (ss[k] ? `<span class="s ${cls}">${k} ${ss[k]}</span>` : "")).join("") || `<span class="s neu">无明显立场</span>`;
+    // 解读
+    $("#d-interp").innerHTML = (d.interpretation || []).map(s => `<li>${esc(s)}</li>`).join("") || `<li>本期无明显结论</li>`;
+    // 金句
+    $("#d-signals").innerHTML = (d.signals || []).map(s => {
+      const dt = fmtDate(s.created_at);
+      return `<div class="d-sig">${esc(s.text)}<a href="${esc(s.url)}" target="_blank" rel="noopener">${dt} ↗</a></div>`;
+    }).join("") || `<div class="d-sub2">（无）</div>`;
+    // 最热
+    $("#d-top").innerHTML = (d.top_posts || []).slice(0, 5).map(p => {
+      const dt = fmtDate(p.created_at);
+      const tags = (p.tags || []).slice(0, 3).map(t => `<span>${esc(t)}</span>`).join("");
+      return `<div class="d-post">
+        <div class="ph"><span>${dt}</span><span>${p.kind === "comment" ? "评论" : p.kind === "repost" ? "转发" : "原贴"}</span><span class="eng">🔥 ${p.reply + p.like + p.retweet}</span></div>
+        <div class="pt">${esc(p.text)} <a href="${esc(p.url)}" target="_blank" rel="noopener">↗</a></div>
+        ${tags ? `<div class="ptags">${tags}</div>` : ""}
+      </div>`;
+    }).join("") || `<div class="d-sub2">（无）</div>`;
   }
 
   // 防抖搜索

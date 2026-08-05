@@ -261,7 +261,38 @@ def main():
     arch = DATA / "daily" / f"{report_date}.md"
     os.makedirs(arch.parent, exist_ok=True)
     arch.write_text(text, encoding="utf-8")
+
+    # ---- 同步输出网页结构化 JSON（供 index.html 渲染「每日首席视角」面板）----
+    out_str = str(args.out)
+    out_json = (out_str[:-3] + ".json") if out_str.endswith(".md") else str(DATA / "daily_review.json")
+    daily_struct = {
+        "date": report_date,
+        "window_start": start.strftime("%Y-%m-%d %H:%M"),
+        "window_end": end.strftime("%Y-%m-%d %H:%M"),
+        "counts": counts,
+        "industry": dims.get("industry", []),
+        "region": dims.get("region", []),
+        "perspective": dims.get("perspective", []),
+        "stance": stance_summary,
+        "symbols": [
+            {
+                "name": n,
+                "code": sym_code.get(n, ""),
+                "count": c,
+                "main_industry": (sym_industry[n].most_common(1)[0][0] if sym_industry[n] else ""),
+            } for n, c in top_syms
+        ],
+        "interpretation": sym_lines + view_lines,
+        "signals": signals,
+        "top_posts": top_posts,
+        "generated_at": datetime.now(TZ).strftime("%Y-%m-%d %H:%M"),
+        "markdown": text,
+    }
+    open(out_json, "w", encoding="utf-8").write(json.dumps(daily_struct, ensure_ascii=False, indent=2))
+    arch_json = DATA / "daily" / f"{report_date}.json"
+    arch_json.write_text(json.dumps(daily_struct, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"[daily] 窗口 {report_date} 发言 {counts['total']} 条 -> {args.out} + {arch}")
+    print(f"[daily] JSON -> {out_json} + {arch_json}")
     print(f"[daily] 行业 Top3: " + ", ".join(f"{t['tag']}({t['count']})" for t in ind[:3]))
     print(f"[daily] 个股 Top5: " + ", ".join(f"{n}({sym_code.get(n, '')})" for n, _ in top_syms[:5]))
     print(f"[daily] 立场: {stance_summary}")
