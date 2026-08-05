@@ -11,6 +11,9 @@ data/posts_raw_pretty.json
 data/xq_cookie.txt
 data/xq_cookies.txt
 
+# GitHub PAT（本地推送用，绝不入库）
+.github_token
+
 # 编辑器 / 临时
 .vscode/
 .idea/

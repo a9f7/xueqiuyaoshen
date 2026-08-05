@@ -23,6 +23,43 @@ WORKSPACE = os.path.abspath(os.path.join(HERE, ".."))          # .../xueqiuyaosh
 DEPLOY = r"C:\Users\d\AppData\Local\Temp\xq_deploy"
 REPO = "https://github.com/a9f7/xueqiuyaoshen.git"
 
+# GitHub PAT：优先取环境变量 GITHUB_TOKEN，否则读本地 .github_token（gitignore，不入库）。
+# 内嵌到 remote URL 以摆脱对 Windows 凭据管理器的依赖。
+TOKEN_FILE = os.path.join(WORKSPACE, ".github_token")
+
+
+def load_token():
+    t = os.environ.get("GITHUB_TOKEN")
+    if t:
+        return t.strip()
+    try:
+        with open(TOKEN_FILE, encoding="utf-8") as f:
+            t = f.read().strip()
+            if t:
+                return t
+    except FileNotFoundError:
+        pass
+    return None
+
+
+TOKEN = load_token()
+
+
+def auth_repo(token):
+    if not token:
+        return REPO
+    return REPO.replace("https://", f"https://{token}@", 1)
+
+
+AUTH_REPO = auth_repo(TOKEN)
+
+
+def redact(s):
+    """打印前抹掉 token，避免泄露到日志/终端。"""
+    if TOKEN:
+        s = s.replace(TOKEN, "***TOKEN***")
+    return s
+
 # 需要同步的数据文件（不含 gitignore 的 raw_* / posts_raw.json / xq_cookie* / _*.json）
 DATA_FILES = [
     "posts.json", "comments.json", "reposts.json", "interactions.json",
@@ -39,12 +76,14 @@ def run_git(args, cwd):
 
 def ensure_repo():
     if os.path.isdir(os.path.join(DEPLOY, ".git")):
+        # 已存在：确保 remote 用 token，避免退回凭据管理器
+        run_git(["remote", "set-url", "origin", AUTH_REPO], DEPLOY)
         return True
     os.makedirs(os.path.dirname(DEPLOY), exist_ok=True)
-    print(f"clone {REPO} -> {DEPLOY}")
-    code, out = run_git(["clone", REPO, DEPLOY], cwd=os.path.dirname(DEPLOY))
+    print(f"clone {redact(AUTH_REPO)} -> {DEPLOY}")
+    code, out = run_git(["clone", AUTH_REPO, DEPLOY], cwd=os.path.dirname(DEPLOY))
     if code != 0:
-        print("clone failed:\n", out)
+        print("clone failed:\n", redact(out))
         return False
     return True
 
@@ -100,7 +139,7 @@ def push(message):
     sync_files()
 
     code, out = run_git(["pull", "--rebase", "--autostash"], DEPLOY)
-    print("pull:", out)
+    print("pull:", redact(out))
     # 即便 pull 失败也继续（可能无远程更新），但最终 push 会校验
 
     code, out = run_git(["add", "-A"], DEPLOY)
@@ -110,14 +149,14 @@ def push(message):
         return True
 
     code, out = run_git(["commit", "-m", message], DEPLOY)
-    print("commit:", out)
+    print("commit:", redact(out))
     if code != 0:
         return False
 
     code, out = run_git(["push", "origin", "main"], DEPLOY)
-    print("push:", out)
+    print("push:", redact(out))
     if code != 0:
-        # 推送失败（偶发网络）：保留本地提交，下一轮补推
+        # 推送失败（偶发网络/权限）：保留本地提交，下一轮补推
         print("PUSH FAILED - local commit kept, will retry next run.")
         return False
     return True
