@@ -281,7 +281,11 @@ def main():
         sym_parts.append("多空交织（既被看多也被看空）的标的：" +
                          "、".join(s["name"] + (f"({s['code']})" if s["code"] else "") for s in mixed_syms[:5]))
     if not sym_parts:
-        sym_parts.append("正文未以 $名称(代码) 形式显式点名具体个股，方向判断主要依据行业主题与措辞倾向。")
+        if sym_list:
+            sym_parts.append("正文点名的具体个股（未明确多空倾向）：" +
+                             "、".join(s["name"] + (f"({s['code']})" if s["code"] else "") for s in sym_list[:6]))
+        else:
+            sym_parts.append("正文未以 $名称(代码) 形式显式点名具体个股，方向判断主要依据行业主题与措辞倾向")
     narrative.append("具体标的：" + "；".join(sym_parts) + "。")
 
     # headline 一句话结论
