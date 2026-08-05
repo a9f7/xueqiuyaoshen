@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-05T11:09:16Z",
-  "total_tagged": 25041,
+  "updated": "2026-08-05T12:07:35Z",
+  "total_tagged": 25042,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7471,
+      "count": 7472,
       "dim": "ctype"
     },
     {
@@ -20,17 +20,17 @@
     },
     {
       "tag": "科技",
-      "count": 6471,
+      "count": 6472,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 5941,
+      "count": 5942,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 5733,
+      "count": 5734,
       "dim": "perspective"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "看空",
-      "count": 2475,
+      "count": 2476,
       "dim": "stance"
     },
     {
