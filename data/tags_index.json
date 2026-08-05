@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-05T12:07:35Z",
-  "total_tagged": 25042,
+  "updated": "2026-08-05T13:06:13Z",
+  "total_tagged": 25044,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7472,
+      "count": 7471,
       "dim": "ctype"
     },
     {
@@ -15,12 +15,12 @@
     },
     {
       "tag": "美国",
-      "count": 7168,
+      "count": 7169,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6472,
+      "count": 6474,
       "dim": "industry"
     },
     {
@@ -30,12 +30,12 @@
     },
     {
       "tag": "宏观",
-      "count": 5734,
+      "count": 5735,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 4777,
+      "count": 4776,
       "dim": "stance"
     },
     {
@@ -70,12 +70,12 @@
     },
     {
       "tag": "中观",
-      "count": 2505,
+      "count": 2506,
       "dim": "perspective"
     },
     {
       "tag": "看空",
-      "count": 2476,
+      "count": 2478,
       "dim": "stance"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1410,
+      "count": 1411,
       "dim": "ctype"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "tag": "债券",
-      "count": 393,
+      "count": 394,
       "dim": "asset"
     },
     {
