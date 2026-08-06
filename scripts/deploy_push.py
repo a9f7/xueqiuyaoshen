@@ -156,9 +156,23 @@ def push(message):
     code, out = run_git(["push", "origin", "main"], DEPLOY)
     print("push:", redact(out))
     if code != 0:
-        # 推送失败（偶发网络/权限）：保留本地提交，下一轮补推
-        print("PUSH FAILED - local commit kept, will retry next run.")
-        return False
+        # 偶发网络：若 push 失败疑似 HTTPS 代理不可达，自动取消代理后重试一次
+        proxy_keys = [k for k in ("HTTPS_PROXY", "HTTP_PROXY", "ALL_PROXY", "https_proxy", "http_proxy") if k in os.environ]
+        if proxy_keys:
+            print(f"push failed with proxy {proxy_keys}; retry without proxy...")
+            env_no_proxy = {k: v for k, v in os.environ.items() if k not in proxy_keys}
+            r2 = subprocess.run(["git", "push", "origin", "main"], cwd=DEPLOY,
+                                capture_output=True, text=True, env=env_no_proxy)
+            out2 = (r2.stdout + r2.stderr).strip()
+            print("push(no-proxy):", redact(out2))
+            if r2.returncode == 0:
+                return True
+            out = out2
+            code = r2.returncode
+        if code != 0:
+            # 推送失败（偶发网络/权限）：保留本地提交，下一轮补推
+            print("PUSH FAILED - local commit kept, will retry next run.")
+            return False
     return True
 
 
