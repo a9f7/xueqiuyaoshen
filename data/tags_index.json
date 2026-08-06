@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-06T01:36:18Z",
-  "total_tagged": 25389,
+  "updated": "2026-08-06T02:29:47Z",
+  "total_tagged": 25390,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7543,
+      "count": 7545,
       "dim": "ctype"
     },
     {
@@ -15,7 +15,7 @@
     },
     {
       "tag": "美国",
-      "count": 7339,
+      "count": 7338,
       "dim": "region"
     },
     {
@@ -30,12 +30,12 @@
     },
     {
       "tag": "宏观",
-      "count": 5811,
+      "count": 5812,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 4851,
+      "count": 4852,
       "dim": "stance"
     },
     {
@@ -45,22 +45,22 @@
     },
     {
       "tag": "微观",
-      "count": 4413,
+      "count": 4412,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 3866,
+      "count": 3867,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3317,
+      "count": 3318,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3244,
+      "count": 3245,
       "dim": "ctype"
     },
     {
