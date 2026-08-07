@@ -14,6 +14,9 @@ data/xq_cookies.txt
 # GitHub PAT（本地推送用，绝不入库）
 .github_token
 
+# 每小时整点归档（本地历史快照，不入库，避免仓库膨胀）
+data/hourly/
+
 # 编辑器 / 临时
 .vscode/
 .idea/

@@ -11,6 +11,7 @@
 import json
 import os
 import sys
+import argparse
 from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -53,6 +54,11 @@ def load(path):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--archive", action="store_true",
+                    help="透传给 analyze_recent.py，使其额外把近15天视图按整点归档到 data/hourly/")
+    args = ap.parse_args()
+
     posts = load(DATA / "posts.json")
     comments = load(DATA / "comments.json")
     reposts = load(DATA / "reposts.json")
@@ -109,7 +115,8 @@ if __name__ == "__main__":
     try:
         import subprocess
         analyze = Path(__file__).resolve().parent / "analyze_recent.py"
-        subprocess.run([sys.executable, str(analyze), "--days", "15"], check=False)
+        # 始终 --archive：每小时/每12小时任务跑 split 时，都把近15天视图按整点归档到 data/hourly/
+        subprocess.run([sys.executable, str(analyze), "--days", "15", "--archive"], check=False)
     except Exception as e:
         print("[split] 生成 analysis_recent.json 失败（不影响分块）:", e)
 

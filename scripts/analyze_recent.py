@@ -25,7 +25,7 @@ import re
 import sys
 import argparse
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -81,6 +81,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=15)
     ap.add_argument("--out", default=str(DATA / "analysis_recent.json"))
+    ap.add_argument("--archive", action="store_true",
+                    help="同时将结果按北京时间整点归档到 data/hourly/YYYY-MM-DD_HH.json（每小时任务用）")
     args = ap.parse_args()
 
     now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
@@ -325,6 +327,16 @@ def main():
         "narrative": narrative,
     }
     json.dump(out, open(args.out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+
+    # 归档：按北京时间整点保存到 data/hourly/（本地，不进 GitHub，避免仓库膨胀）
+    if args.archive:
+        bj = datetime.now(timezone(timedelta(hours=8)))
+        hourly_dir = DATA / "hourly"
+        hourly_dir.mkdir(parents=True, exist_ok=True)
+        arch_path = hourly_dir / f"{bj.strftime('%Y-%m-%d_%H')}.json"
+        json.dump(out, open(arch_path, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        print(f"[analyze] 归档 -> {arch_path}")
+
     print(f"[analyze] 窗口 {args.days} 天，发言 {counts['total']} 条 -> {args.out}")
     print(f"[analyze] 行业 Top5: " + ", ".join(f"{t['tag']}({t['count']})" for t in ind[:5]))
     print(f"[analyze] 立场: {stance_summary}")
