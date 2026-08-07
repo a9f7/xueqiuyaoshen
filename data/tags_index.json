@@ -1,36 +1,36 @@
 {
-  "updated": "2026-08-07T07:44:54Z",
-  "total_tagged": 25709,
+  "updated": "2026-08-07T08:43:37Z",
+  "total_tagged": 25713,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7604,
+      "count": 7606,
       "dim": "ctype"
     },
     {
       "tag": "答疑",
-      "count": 7564,
+      "count": 7565,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7477,
+      "count": 7480,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6731,
+      "count": 6733,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6217,
+      "count": 6218,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 5882,
+      "count": 5879,
       "dim": "perspective"
     },
     {
@@ -45,32 +45,32 @@
     },
     {
       "tag": "微观",
-      "count": 4496,
+      "count": 4497,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 3961,
+      "count": 3966,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3392,
+      "count": 3391,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3283,
+      "count": 3285,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 2908,
+      "count": 2909,
       "dim": "industry"
     },
     {
       "tag": "中观",
-      "count": 2577,
+      "count": 2580,
       "dim": "perspective"
     },
     {
@@ -95,7 +95,7 @@
     },
     {
       "tag": "随笔",
-      "count": 1363,
+      "count": 1364,
       "dim": "ctype"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "传媒游戏",
-      "count": 770,
+      "count": 769,
       "dim": "industry"
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "tag": "全球",
-      "count": 475,
+      "count": 474,
       "dim": "region"
     },
     {
