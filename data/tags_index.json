@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-07T05:45:24Z",
-  "total_tagged": 25706,
+  "updated": "2026-08-07T06:46:22Z",
+  "total_tagged": 25707,
   "distinct_tags": 45,
   "tags": [
     {
@@ -15,22 +15,22 @@
     },
     {
       "tag": "美国",
-      "count": 7478,
+      "count": 7477,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6731,
+      "count": 6730,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6217,
+      "count": 6218,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 5882,
+      "count": 5883,
       "dim": "perspective"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 3959,
+      "count": 3961,
       "dim": "industry"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3283,
+      "count": 3284,
       "dim": "ctype"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "tag": "互联网",
-      "count": 1232,
+      "count": 1233,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1221,
+      "count": 1222,
       "dim": "region"
     },
     {
