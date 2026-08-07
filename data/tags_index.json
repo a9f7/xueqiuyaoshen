@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-07T06:46:22Z",
-  "total_tagged": 25707,
+  "updated": "2026-08-07T07:44:54Z",
+  "total_tagged": 25709,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7603,
+      "count": 7604,
       "dim": "ctype"
     },
     {
       "tag": "答疑",
-      "count": 7563,
+      "count": 7564,
       "dim": "ctype"
     },
     {
@@ -20,17 +20,17 @@
     },
     {
       "tag": "科技",
-      "count": 6730,
+      "count": 6731,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6218,
+      "count": 6217,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 5883,
+      "count": 5882,
       "dim": "perspective"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3284,
+      "count": 3283,
       "dim": "ctype"
     },
     {
@@ -70,22 +70,22 @@
     },
     {
       "tag": "中观",
-      "count": 2578,
+      "count": 2577,
       "dim": "perspective"
     },
     {
       "tag": "看空",
-      "count": 2570,
+      "count": 2569,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2018,
+      "count": 2019,
       "dim": "other"
     },
     {
       "tag": "复盘",
-      "count": 1922,
+      "count": 1923,
       "dim": "stance"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1233,
+      "count": 1235,
       "dim": "industry"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "传媒游戏",
-      "count": 768,
+      "count": 770,
       "dim": "industry"
     },
     {
