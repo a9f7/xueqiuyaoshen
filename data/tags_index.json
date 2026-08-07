@@ -1,26 +1,26 @@
 {
-  "updated": "2026-08-07T12:38:10Z",
-  "total_tagged": 25713,
+  "updated": "2026-08-07T13:36:24Z",
+  "total_tagged": 25716,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7605,
+      "count": 7607,
       "dim": "ctype"
     },
     {
       "tag": "答疑",
-      "count": 7567,
+      "count": 7568,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7481,
+      "count": 7483,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6732,
+      "count": 6734,
       "dim": "industry"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 4918,
+      "count": 4919,
       "dim": "stance"
     },
     {
@@ -65,7 +65,7 @@
     },
     {
       "tag": "金融",
-      "count": 2909,
+      "count": 2912,
       "dim": "industry"
     },
     {
@@ -85,12 +85,12 @@
     },
     {
       "tag": "复盘",
-      "count": 1924,
+      "count": 1925,
       "dim": "stance"
     },
     {
       "tag": "数据",
-      "count": 1423,
+      "count": 1424,
       "dim": "ctype"
     },
     {
