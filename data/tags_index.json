@@ -1,41 +1,41 @@
 {
-  "updated": "2026-08-07T08:43:37Z",
+  "updated": "2026-08-07T11:39:38Z",
   "total_tagged": 25713,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7606,
+      "count": 7605,
       "dim": "ctype"
     },
     {
       "tag": "答疑",
-      "count": 7565,
+      "count": 7567,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7480,
+      "count": 7481,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6733,
+      "count": 6732,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6218,
+      "count": 6220,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 5879,
+      "count": 5878,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 4919,
+      "count": 4918,
       "dim": "stance"
     },
     {
@@ -45,12 +45,12 @@
     },
     {
       "tag": "微观",
-      "count": 4497,
+      "count": 4495,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 3966,
+      "count": 3969,
       "dim": "industry"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3285,
+      "count": 3283,
       "dim": "ctype"
     },
     {
@@ -70,12 +70,12 @@
     },
     {
       "tag": "中观",
-      "count": 2580,
+      "count": 2579,
       "dim": "perspective"
     },
     {
       "tag": "看空",
-      "count": 2569,
+      "count": 2568,
       "dim": "stance"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "复盘",
-      "count": 1923,
+      "count": 1924,
       "dim": "stance"
     },
     {
@@ -115,12 +115,12 @@
     },
     {
       "tag": "新能源",
-      "count": 912,
+      "count": 913,
       "dim": "industry"
     },
     {
       "tag": "传媒游戏",
-      "count": 769,
+      "count": 767,
       "dim": "industry"
     },
     {
@@ -130,7 +130,7 @@
     },
     {
       "tag": "能源",
-      "count": 735,
+      "count": 734,
       "dim": "industry"
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "tag": "外汇",
-      "count": 666,
+      "count": 665,
       "dim": "asset"
     },
     {
