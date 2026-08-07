@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-07T03:48:33Z",
+  "updated": "2026-08-07T04:47:02Z",
   "total_tagged": 25706,
   "distinct_tags": 45,
   "tags": [
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 6732,
+      "count": 6733,
       "dim": "industry"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 4921,
+      "count": 4920,
       "dim": "stance"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 4498,
+      "count": 4497,
       "dim": "perspective"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3284,
+      "count": 3283,
       "dim": "ctype"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1233,
+      "count": 1232,
       "dim": "industry"
     },
     {
