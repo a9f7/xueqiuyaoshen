@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-07T02:49:18Z",
-  "total_tagged": 25707,
+  "updated": "2026-08-07T03:48:33Z",
+  "total_tagged": 25706,
   "distinct_tags": 45,
   "tags": [
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 6733,
+      "count": 6732,
       "dim": "industry"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 5883,
+      "count": 5882,
       "dim": "perspective"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 4499,
+      "count": 4498,
       "dim": "perspective"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "其他",
-      "count": 2019,
+      "count": 2018,
       "dim": "other"
     },
     {
@@ -90,17 +90,17 @@
     },
     {
       "tag": "数据",
-      "count": 1424,
+      "count": 1423,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1361,
+      "count": 1362,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1232,
+      "count": 1233,
       "dim": "industry"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "传媒游戏",
-      "count": 767,
+      "count": 768,
       "dim": "industry"
     },
     {
@@ -195,7 +195,7 @@
     },
     {
       "tag": "期权",
-      "count": 166,
+      "count": 165,
       "dim": "asset"
     },
     {
