@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-07T01:06:15Z",
+  "updated": "2026-08-07T01:55:47Z",
   "total_tagged": 25705,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7601,
+      "count": 7600,
       "dim": "ctype"
     },
     {
       "tag": "答疑",
-      "count": 7563,
+      "count": 7564,
       "dim": "ctype"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 6735,
+      "count": 6734,
       "dim": "industry"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 4503,
+      "count": 4502,
       "dim": "perspective"
     },
     {
@@ -70,12 +70,12 @@
     },
     {
       "tag": "中观",
-      "count": 2577,
+      "count": 2576,
       "dim": "perspective"
     },
     {
       "tag": "看空",
-      "count": 2570,
+      "count": 2569,
       "dim": "stance"
     },
     {
