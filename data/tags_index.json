@@ -1,21 +1,21 @@
 {
-  "updated": "2026-08-07T17:30:00Z",
-  "total_tagged": 25716,
+  "updated": "2026-08-08T02:40:16Z",
+  "total_tagged": 25718,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "行情点评",
-      "count": 7607,
+      "count": 7606,
       "dim": "ctype"
     },
     {
       "tag": "答疑",
-      "count": 7568,
+      "count": 7570,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7483,
+      "count": 7485,
       "dim": "region"
     },
     {
@@ -25,12 +25,12 @@
     },
     {
       "tag": "股票",
-      "count": 6220,
+      "count": 6219,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 5878,
+      "count": 5877,
       "dim": "perspective"
     },
     {
@@ -40,12 +40,12 @@
     },
     {
       "tag": "中国",
-      "count": 4749,
+      "count": 4748,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4495,
+      "count": 4496,
       "dim": "perspective"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3283,
+      "count": 3284,
       "dim": "ctype"
     },
     {
@@ -80,12 +80,12 @@
     },
     {
       "tag": "其他",
-      "count": 2019,
+      "count": 2020,
       "dim": "other"
     },
     {
       "tag": "复盘",
-      "count": 1925,
+      "count": 1924,
       "dim": "stance"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 913,
+      "count": 912,
       "dim": "industry"
     },
     {
@@ -200,7 +200,7 @@
     },
     {
       "tag": "军工",
-      "count": 129,
+      "count": 131,
       "dim": "industry"
     },
     {
