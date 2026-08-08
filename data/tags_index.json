@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-08T12:25:22Z",
-  "total_tagged": 25987,
+  "updated": "2026-08-08T13:24:06Z",
+  "total_tagged": 25988,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7719,
+      "count": 7720,
       "dim": "ctype"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 5942,
+      "count": 5944,
       "dim": "perspective"
     },
     {
@@ -40,12 +40,12 @@
     },
     {
       "tag": "中国",
-      "count": 4798,
+      "count": 4799,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4564,
+      "count": 4563,
       "dim": "perspective"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "复盘",
-      "count": 1936,
+      "count": 1938,
       "dim": "stance"
     },
     {
