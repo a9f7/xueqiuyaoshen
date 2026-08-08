@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-08T03:38:48Z",
-  "total_tagged": 25978,
+  "updated": "2026-08-08T04:37:07Z",
+  "total_tagged": 25979,
   "distinct_tags": 45,
   "tags": [
     {
@@ -25,7 +25,7 @@
     },
     {
       "tag": "股票",
-      "count": 6315,
+      "count": 6316,
       "dim": "asset"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 4980,
+      "count": 4981,
       "dim": "stance"
     },
     {
