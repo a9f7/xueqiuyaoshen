@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-08T07:31:47Z",
-  "total_tagged": 25981,
+  "updated": "2026-08-08T08:30:24Z",
+  "total_tagged": 25982,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7715,
+      "count": 7716,
       "dim": "ctype"
     },
     {
@@ -15,12 +15,12 @@
     },
     {
       "tag": "美国",
-      "count": 7624,
+      "count": 7625,
       "dim": "region"
     },
     {
       "tag": "科技",
-      "count": 6841,
+      "count": 6842,
       "dim": "industry"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 4987,
+      "count": 4988,
       "dim": "stance"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 4562,
+      "count": 4563,
       "dim": "perspective"
     },
     {
