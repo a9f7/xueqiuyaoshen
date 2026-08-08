@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-08T09:28:51Z",
-  "total_tagged": 25982,
+  "updated": "2026-08-08T10:27:43Z",
+  "total_tagged": 25983,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7716,
+      "count": 7717,
       "dim": "ctype"
     },
     {
@@ -15,7 +15,7 @@
     },
     {
       "tag": "美国",
-      "count": 7625,
+      "count": 7626,
       "dim": "region"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 4988,
+      "count": 4989,
       "dim": "stance"
     },
     {
@@ -45,12 +45,12 @@
     },
     {
       "tag": "微观",
-      "count": 4563,
+      "count": 4564,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4071,
+      "count": 4072,
       "dim": "industry"
     },
     {
