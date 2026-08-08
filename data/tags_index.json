@@ -1,21 +1,21 @@
 {
-  "updated": "2026-08-08T11:26:44Z",
-  "total_tagged": 25983,
+  "updated": "2026-08-08T12:25:22Z",
+  "total_tagged": 25987,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7716,
+      "count": 7719,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 7665,
+      "count": 7666,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7623,
+      "count": 7627,
       "dim": "region"
     },
     {
@@ -25,17 +25,17 @@
     },
     {
       "tag": "股票",
-      "count": 6312,
+      "count": 6311,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 5940,
+      "count": 5942,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 4991,
+      "count": 4992,
       "dim": "stance"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4075,
+      "count": 4078,
       "dim": "industry"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3308,
+      "count": 3309,
       "dim": "ctype"
     },
     {
@@ -70,12 +70,12 @@
     },
     {
       "tag": "中观",
-      "count": 2607,
+      "count": 2608,
       "dim": "perspective"
     },
     {
       "tag": "看空",
-      "count": 2600,
+      "count": 2601,
       "dim": "stance"
     },
     {
