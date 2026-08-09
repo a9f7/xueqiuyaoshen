@@ -1,41 +1,41 @@
 {
-  "updated": "2026-08-09T01:55:55Z",
+  "updated": "2026-08-09T02:48:37Z",
   "total_tagged": 26289,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7896,
+      "count": 7894,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7809,
+      "count": 7810,
       "dim": "region"
     },
     {
       "tag": "行情点评",
-      "count": 7734,
+      "count": 7732,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 6988,
+      "count": 6992,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6385,
+      "count": 6388,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6038,
+      "count": 6036,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5064,
+      "count": 5067,
       "dim": "stance"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "tag": "消费",
-      "count": 3449,
+      "count": 3445,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3343,
+      "count": 3346,
       "dim": "ctype"
     },
     {
@@ -70,42 +70,42 @@
     },
     {
       "tag": "中观",
-      "count": 2644,
+      "count": 2647,
       "dim": "perspective"
     },
     {
       "tag": "看空",
-      "count": 2640,
+      "count": 2639,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2023,
+      "count": 2022,
       "dim": "other"
     },
     {
       "tag": "复盘",
-      "count": 1974,
+      "count": 1975,
       "dim": "stance"
     },
     {
       "tag": "数据",
-      "count": 1457,
+      "count": 1458,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1378,
+      "count": 1377,
       "dim": "ctype"
     },
     {
       "tag": "中国香港",
-      "count": 1263,
+      "count": 1264,
       "dim": "region"
     },
     {
       "tag": "互联网",
-      "count": 1253,
+      "count": 1255,
       "dim": "industry"
     },
     {
@@ -120,12 +120,12 @@
     },
     {
       "tag": "商品",
-      "count": 804,
+      "count": 803,
       "dim": "asset"
     },
     {
       "tag": "传媒游戏",
-      "count": 770,
+      "count": 771,
       "dim": "industry"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 434,
+      "count": 435,
       "dim": "stance"
     },
     {
