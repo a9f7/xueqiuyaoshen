@@ -1,46 +1,46 @@
 {
-  "updated": "2026-08-09T01:00:34Z",
-  "total_tagged": 26292,
+  "updated": "2026-08-09T01:55:55Z",
+  "total_tagged": 26289,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7895,
+      "count": 7896,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7814,
+      "count": 7809,
       "dim": "region"
     },
     {
       "tag": "行情点评",
-      "count": 7736,
+      "count": 7734,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 6995,
+      "count": 6988,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6389,
+      "count": 6385,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6039,
+      "count": 6038,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5065,
+      "count": 5064,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 4859,
+      "count": 4858,
       "dim": "region"
     },
     {
@@ -50,27 +50,27 @@
     },
     {
       "tag": "医药",
-      "count": 4169,
+      "count": 4173,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3453,
+      "count": 3449,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3342,
+      "count": 3343,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 2960,
+      "count": 2959,
       "dim": "industry"
     },
     {
       "tag": "中观",
-      "count": 2640,
+      "count": 2644,
       "dim": "perspective"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "其他",
-      "count": 2024,
+      "count": 2023,
       "dim": "other"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1456,
+      "count": 1457,
       "dim": "ctype"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1255,
+      "count": 1253,
       "dim": "industry"
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "tag": "全球",
-      "count": 478,
+      "count": 477,
       "dim": "region"
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "tag": "ETF",
-      "count": 320,
+      "count": 319,
       "dim": "asset"
     },
     {
@@ -205,7 +205,7 @@
     },
     {
       "tag": "通信",
-      "count": 121,
+      "count": 120,
       "dim": "industry"
     },
     {
