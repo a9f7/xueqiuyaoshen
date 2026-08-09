@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-09T09:37:50Z",
+  "updated": "2026-08-09T10:36:45Z",
   "total_tagged": 26295,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7896,
+      "count": 7895,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7814,
+      "count": 7813,
       "dim": "region"
     },
     {
@@ -20,17 +20,17 @@
     },
     {
       "tag": "科技",
-      "count": 6997,
+      "count": 6999,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6392,
+      "count": 6391,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6037,
+      "count": 6036,
       "dim": "perspective"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3441,
+      "count": 3439,
       "dim": "industry"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "中观",
-      "count": 2645,
+      "count": 2647,
       "dim": "perspective"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1457,
+      "count": 1459,
       "dim": "ctype"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1257,
+      "count": 1258,
       "dim": "industry"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 808,
+      "count": 810,
       "dim": "asset"
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "tag": "ETF",
-      "count": 319,
+      "count": 318,
       "dim": "asset"
     },
     {
