@@ -1,41 +1,41 @@
 {
-  "updated": "2026-08-09T02:48:37Z",
-  "total_tagged": 26289,
+  "updated": "2026-08-09T03:47:21Z",
+  "total_tagged": 26292,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 7894,
+      "count": 7895,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7810,
+      "count": 7813,
       "dim": "region"
     },
     {
       "tag": "行情点评",
-      "count": 7732,
+      "count": 7731,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 6992,
+      "count": 6996,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6388,
+      "count": 6390,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6036,
+      "count": 6038,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5067,
+      "count": 5070,
       "dim": "stance"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 4617,
+      "count": 4618,
       "dim": "perspective"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3445,
+      "count": 3441,
       "dim": "industry"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "看空",
-      "count": 2639,
+      "count": 2640,
       "dim": "stance"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "复盘",
-      "count": 1975,
+      "count": 1976,
       "dim": "stance"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "中国香港",
-      "count": 1264,
+      "count": 1263,
       "dim": "region"
     },
     {
@@ -110,17 +110,17 @@
     },
     {
       "tag": "地产",
-      "count": 1084,
+      "count": 1087,
       "dim": "industry"
     },
     {
       "tag": "新能源",
-      "count": 926,
+      "count": 925,
       "dim": "industry"
     },
     {
       "tag": "商品",
-      "count": 803,
+      "count": 804,
       "dim": "asset"
     },
     {
