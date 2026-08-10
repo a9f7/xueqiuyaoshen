@@ -1,51 +1,51 @@
 {
-  "updated": "2026-08-10T01:10:55Z",
-  "total_tagged": 26603,
+  "updated": "2026-08-10T02:02:22Z",
+  "total_tagged": 26596,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 8043,
+      "count": 8042,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7996,
+      "count": 7991,
       "dim": "region"
     },
     {
       "tag": "行情点评",
-      "count": 7808,
+      "count": 7805,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7138,
+      "count": 7130,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6465,
+      "count": 6466,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6164,
+      "count": 6162,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5120,
+      "count": 5118,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 4912,
+      "count": 4911,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4665,
+      "count": 4666,
       "dim": "perspective"
     },
     {
@@ -55,17 +55,17 @@
     },
     {
       "tag": "消费",
-      "count": 3455,
+      "count": 3451,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3383,
+      "count": 3382,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 2986,
+      "count": 2985,
       "dim": "industry"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 2672,
+      "count": 2669,
       "dim": "perspective"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "复盘",
-      "count": 2008,
+      "count": 2006,
       "dim": "stance"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1258,
+      "count": 1255,
       "dim": "industry"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 930,
+      "count": 931,
       "dim": "industry"
     },
     {
@@ -130,7 +130,7 @@
     },
     {
       "tag": "黄金有色",
-      "count": 767,
+      "count": 768,
       "dim": "industry"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "tag": "债券",
-      "count": 424,
+      "count": 423,
       "dim": "asset"
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "tag": "ETF",
-      "count": 319,
+      "count": 318,
       "dim": "asset"
     },
     {
