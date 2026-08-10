@@ -1,26 +1,26 @@
 {
-  "updated": "2026-08-10T06:00:53Z",
-  "total_tagged": 26596,
+  "updated": "2026-08-10T06:59:12Z",
+  "total_tagged": 26595,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "答疑",
-      "count": 8043,
+      "count": 8041,
       "dim": "ctype"
     },
     {
       "tag": "美国",
-      "count": 7993,
+      "count": 7992,
       "dim": "region"
     },
     {
       "tag": "行情点评",
-      "count": 7806,
+      "count": 7810,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7131,
+      "count": 7129,
       "dim": "industry"
     },
     {
@@ -30,12 +30,12 @@
     },
     {
       "tag": "宏观",
-      "count": 6165,
+      "count": 6164,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5119,
+      "count": 5118,
       "dim": "stance"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 4665,
+      "count": 4667,
       "dim": "perspective"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "tag": "消费",
-      "count": 3450,
+      "count": 3449,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3381,
+      "count": 3380,
       "dim": "ctype"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "看空",
-      "count": 2712,
+      "count": 2714,
       "dim": "stance"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "其他",
-      "count": 2024,
+      "count": 2022,
       "dim": "other"
     },
     {
@@ -90,12 +90,12 @@
     },
     {
       "tag": "数据",
-      "count": 1464,
+      "count": 1463,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1389,
+      "count": 1390,
       "dim": "ctype"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1254,
+      "count": 1256,
       "dim": "industry"
     },
     {
@@ -125,12 +125,12 @@
     },
     {
       "tag": "传媒游戏",
-      "count": 775,
+      "count": 776,
       "dim": "industry"
     },
     {
       "tag": "黄金有色",
-      "count": 769,
+      "count": 770,
       "dim": "industry"
     },
     {
