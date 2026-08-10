@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-10T06:59:12Z",
+  "updated": "2026-08-10T07:57:09Z",
   "total_tagged": 26595,
   "distinct_tags": 45,
   "tags": [
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 6164,
+      "count": 6165,
       "dim": "perspective"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 4911,
+      "count": 4912,
       "dim": "region"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1463,
+      "count": 1464,
       "dim": "ctype"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1256,
+      "count": 1255,
       "dim": "industry"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "tag": "债券",
-      "count": 423,
+      "count": 424,
       "dim": "asset"
     },
     {
