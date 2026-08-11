@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-11T11:59:23Z",
-  "total_tagged": 26879,
+  "updated": "2026-08-11T12:58:06Z",
+  "total_tagged": 26878,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,17 +10,17 @@
     },
     {
       "tag": "美国",
-      "count": 8161,
+      "count": 8160,
       "dim": "region"
     },
     {
       "tag": "行情点评",
-      "count": 7873,
+      "count": 7874,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7270,
+      "count": 7268,
       "dim": "industry"
     },
     {
@@ -65,7 +65,7 @@
     },
     {
       "tag": "金融",
-      "count": 3035,
+      "count": 3034,
       "dim": "industry"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 2708,
+      "count": 2707,
       "dim": "perspective"
     },
     {
