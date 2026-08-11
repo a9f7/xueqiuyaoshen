@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-11T09:00:37Z",
-  "total_tagged": 26880,
+  "updated": "2026-08-11T10:00:32Z",
+  "total_tagged": 26879,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,22 +10,22 @@
     },
     {
       "tag": "美国",
-      "count": 8163,
+      "count": 8162,
       "dim": "region"
     },
     {
       "tag": "行情点评",
-      "count": 7873,
+      "count": 7872,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7272,
+      "count": 7271,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6552,
+      "count": 6551,
       "dim": "asset"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "看空",
-      "count": 2761,
+      "count": 2760,
       "dim": "stance"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "其他",
-      "count": 2025,
+      "count": 2024,
       "dim": "other"
     },
     {
@@ -125,7 +125,7 @@
     },
     {
       "tag": "黄金有色",
-      "count": 778,
+      "count": 779,
       "dim": "industry"
     },
     {
