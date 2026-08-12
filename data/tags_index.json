@@ -1,26 +1,26 @@
 {
-  "updated": "2026-08-12T01:26:14Z",
-  "total_tagged": 27240,
+  "updated": "2026-08-12T02:19:48Z",
+  "total_tagged": 27239,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8394,
+      "count": 8393,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8386,
+      "count": 8385,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 7992,
+      "count": 7994,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7441,
+      "count": 7439,
       "dim": "industry"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4436,
+      "count": 4435,
       "dim": "industry"
     },
     {
@@ -60,17 +60,17 @@
     },
     {
       "tag": "个股分析",
-      "count": 3455,
+      "count": 3454,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3087,
+      "count": 3088,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2824,
+      "count": 2823,
       "dim": "stance"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1282,
+      "count": 1283,
       "dim": "industry"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 888,
+      "count": 887,
       "dim": "asset"
     },
     {
@@ -130,12 +130,12 @@
     },
     {
       "tag": "黄金有色",
-      "count": 783,
+      "count": 784,
       "dim": "industry"
     },
     {
       "tag": "能源",
-      "count": 766,
+      "count": 765,
       "dim": "industry"
     },
     {
