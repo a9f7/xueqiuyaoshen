@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-12T11:18:17Z",
-  "total_tagged": 27239,
+  "updated": "2026-08-12T12:17:53Z",
+  "total_tagged": 27238,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8393,
+      "count": 8392,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8385,
+      "count": 8384,
       "dim": "ctype"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 7439,
+      "count": 7438,
       "dim": "industry"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 6352,
+      "count": 6353,
       "dim": "perspective"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 4806,
+      "count": 4804,
       "dim": "perspective"
     },
     {
@@ -65,17 +65,17 @@
     },
     {
       "tag": "金融",
-      "count": 3088,
+      "count": 3087,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2823,
+      "count": 2824,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2744,
+      "count": 2743,
       "dim": "perspective"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "tag": "互联网",
-      "count": 1283,
+      "count": 1284,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1279,
+      "count": 1280,
       "dim": "region"
     },
     {
