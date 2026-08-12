@@ -1,6 +1,6 @@
 {
   "user_id": 2292705444,
-  "fetched_at": 1786410951766,
+  "fetched_at": 1786494297820,
   "total": 129,
   "items": [
     {
@@ -1072,7 +1072,7 @@
     },
     {
       "symbol": "SLB",
-      "name": "SLB",
+      "name": "SLB LMTD ORD",
       "marketplace": "US",
       "exchange": "NYSE",
       "watched": 1732812511960,
