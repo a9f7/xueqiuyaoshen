@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-13T16:01:05Z",
+  "updated": "2026-08-13T16:59:37Z",
   "total_tagged": 27482,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8538,
+      "count": 8537,
       "dim": "region"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 7537,
+      "count": 7536,
       "dim": "industry"
     },
     {
