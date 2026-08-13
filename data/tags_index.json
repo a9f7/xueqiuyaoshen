@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-13T10:09:35Z",
-  "total_tagged": 27485,
+  "updated": "2026-08-13T11:08:30Z",
+  "total_tagged": 27484,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8542,
+      "count": 8540,
       "dim": "region"
     },
     {
@@ -15,37 +15,37 @@
     },
     {
       "tag": "行情点评",
-      "count": 8074,
+      "count": 8073,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7543,
+      "count": 7540,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6728,
+      "count": 6729,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6453,
+      "count": 6457,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5345,
+      "count": 5341,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5102,
+      "count": 5106,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4843,
+      "count": 4841,
       "dim": "perspective"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3553,
+      "count": 3556,
       "dim": "industry"
     },
     {
@@ -65,12 +65,12 @@
     },
     {
       "tag": "金融",
-      "count": 3114,
+      "count": 3112,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2875,
+      "count": 2878,
       "dim": "stance"
     },
     {
@@ -80,17 +80,17 @@
     },
     {
       "tag": "复盘",
-      "count": 2088,
+      "count": 2087,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2026,
+      "count": 2025,
       "dim": "other"
     },
     {
       "tag": "数据",
-      "count": 1490,
+      "count": 1493,
       "dim": "ctype"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1292,
+      "count": 1294,
       "dim": "industry"
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "tag": "地产",
-      "count": 1184,
+      "count": 1183,
       "dim": "industry"
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "tag": "外汇",
-      "count": 760,
+      "count": 761,
       "dim": "asset"
     },
     {
@@ -165,7 +165,7 @@
     },
     {
       "tag": "日本",
-      "count": 407,
+      "count": 408,
       "dim": "region"
     },
     {
@@ -200,7 +200,7 @@
     },
     {
       "tag": "军工",
-      "count": 138,
+      "count": 137,
       "dim": "industry"
     },
     {
