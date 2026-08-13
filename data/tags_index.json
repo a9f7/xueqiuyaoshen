@@ -1,46 +1,46 @@
 {
-  "updated": "2026-08-13T02:00:24Z",
-  "total_tagged": 27479,
+  "updated": "2026-08-13T03:01:39Z",
+  "total_tagged": 27485,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8537,
+      "count": 8543,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8493,
+      "count": 8499,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8072,
+      "count": 8075,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7549,
+      "count": 7551,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6729,
+      "count": 6732,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6455,
+      "count": 6456,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5340,
+      "count": 5342,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5100,
+      "count": 5101,
       "dim": "region"
     },
     {
@@ -50,17 +50,17 @@
     },
     {
       "tag": "医药",
-      "count": 4502,
+      "count": 4506,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3537,
+      "count": 3543,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3470,
+      "count": 3468,
       "dim": "ctype"
     },
     {
@@ -80,27 +80,27 @@
     },
     {
       "tag": "复盘",
-      "count": 2084,
+      "count": 2083,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2029,
+      "count": 2027,
       "dim": "other"
     },
     {
       "tag": "数据",
-      "count": 1490,
+      "count": 1491,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1407,
+      "count": 1410,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1291,
+      "count": 1292,
       "dim": "industry"
     },
     {
@@ -130,12 +130,12 @@
     },
     {
       "tag": "黄金有色",
-      "count": 787,
+      "count": 790,
       "dim": "industry"
     },
     {
       "tag": "能源",
-      "count": 767,
+      "count": 766,
       "dim": "industry"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 586,
+      "count": 587,
       "dim": "ctype"
     },
     {
