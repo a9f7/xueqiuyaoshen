@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-13T12:07:36Z",
-  "total_tagged": 27483,
+  "updated": "2026-08-13T13:05:53Z",
+  "total_tagged": 27482,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,7 +10,7 @@
     },
     {
       "tag": "答疑",
-      "count": 8502,
+      "count": 8501,
       "dim": "ctype"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 7538,
+      "count": 7537,
       "dim": "industry"
     },
     {
@@ -35,12 +35,12 @@
     },
     {
       "tag": "看多",
-      "count": 5339,
+      "count": 5338,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5107,
+      "count": 5106,
       "dim": "region"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3556,
+      "count": 3557,
       "dim": "industry"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 955,
+      "count": 954,
       "dim": "industry"
     },
     {
