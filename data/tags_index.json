@@ -1,26 +1,26 @@
 {
-  "updated": "2026-08-13T11:08:30Z",
-  "total_tagged": 27484,
+  "updated": "2026-08-13T12:07:36Z",
+  "total_tagged": 27483,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8540,
+      "count": 8538,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8504,
+      "count": 8502,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8073,
+      "count": 8074,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7540,
+      "count": 7538,
       "dim": "industry"
     },
     {
@@ -35,17 +35,17 @@
     },
     {
       "tag": "看多",
-      "count": 5341,
+      "count": 5339,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5106,
+      "count": 5107,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4841,
+      "count": 4839,
       "dim": "perspective"
     },
     {
@@ -60,12 +60,12 @@
     },
     {
       "tag": "个股分析",
-      "count": 3466,
+      "count": 3464,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3112,
+      "count": 3111,
       "dim": "industry"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "其他",
-      "count": 2025,
+      "count": 2026,
       "dim": "other"
     },
     {
@@ -145,12 +145,12 @@
     },
     {
       "tag": "政策解读",
-      "count": 587,
+      "count": 588,
       "dim": "ctype"
     },
     {
       "tag": "全球",
-      "count": 488,
+      "count": 489,
       "dim": "region"
     },
     {
