@@ -1,76 +1,76 @@
 {
-  "updated": "2026-08-13T04:02:35Z",
-  "total_tagged": 27486,
+  "updated": "2026-08-13T05:02:35Z",
+  "total_tagged": 27484,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8542,
+      "count": 8541,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8499,
+      "count": 8500,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8075,
+      "count": 8073,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7549,
+      "count": 7547,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6732,
+      "count": 6730,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6455,
+      "count": 6454,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5343,
+      "count": 5344,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5102,
+      "count": 5103,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4846,
+      "count": 4845,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4508,
+      "count": 4505,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3543,
+      "count": 3546,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3469,
+      "count": 3470,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3114,
+      "count": 3115,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2878,
+      "count": 2877,
       "dim": "stance"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "tag": "互联网",
-      "count": 1292,
+      "count": 1289,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1287,
+      "count": 1286,
       "dim": "region"
     },
     {
@@ -125,7 +125,7 @@
     },
     {
       "tag": "传媒游戏",
-      "count": 797,
+      "count": 795,
       "dim": "industry"
     },
     {
@@ -135,7 +135,7 @@
     },
     {
       "tag": "能源",
-      "count": 766,
+      "count": 765,
       "dim": "industry"
     },
     {
