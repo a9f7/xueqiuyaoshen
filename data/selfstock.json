@@ -1167,7 +1167,7 @@
     ]
   },
   "current": {
-    "date": "2026-08-12",
+    "date": "2026-08-13",
     "items": [
       {
         "symbol": "ZH3389064",
@@ -1504,7 +1504,7 @@
       },
       {
         "symbol": "MOS",
-        "name": "美国美盛公司",
+        "name": "美国美盛",
         "marketplace": "US",
         "exchange": "NYSE",
         "watched": 1654097980485,
@@ -1738,7 +1738,7 @@
       },
       {
         "symbol": "FCX",
-        "name": "Freeport McMoRan",
+        "name": "麦克莫兰铜金",
         "marketplace": "US",
         "exchange": "NYSE",
         "watched": 1704818192300,
@@ -2152,7 +2152,7 @@
       },
       {
         "symbol": "SPOT",
-        "name": "Spotify",
+        "name": "Spotify Technology",
         "marketplace": "US",
         "exchange": "NYSE",
         "watched": 1748526831399,
@@ -2335,7 +2335,7 @@
   "changes": {
     "added": [],
     "removed": [],
-    "as_of": "2026-08-12"
+    "as_of": "2026-08-13"
   },
   "mentioned": [
     {

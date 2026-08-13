@@ -1,6 +1,6 @@
 {
   "user_id": 2292705444,
-  "fetched_at": 1786494297820,
+  "fetched_at": 1786580716018,
   "total": 129,
   "items": [
     {
@@ -412,7 +412,7 @@
     },
     {
       "symbol": "MOS",
-      "name": "美国美盛公司",
+      "name": "美国美盛",
       "marketplace": "US",
       "exchange": "NYSE",
       "watched": 1654097980485,
@@ -698,7 +698,7 @@
     },
     {
       "symbol": "FCX",
-      "name": "Freeport McMoRan",
+      "name": "麦克莫兰铜金",
       "marketplace": "US",
       "exchange": "NYSE",
       "watched": 1704818192300,
@@ -1204,7 +1204,7 @@
     },
     {
       "symbol": "SPOT",
-      "name": "Spotify",
+      "name": "Spotify Technology",
       "marketplace": "US",
       "exchange": "NYSE",
       "watched": 1748526831399,
