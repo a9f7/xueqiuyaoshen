@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-13T07:02:22Z",
+  "updated": "2026-08-13T09:10:40Z",
   "total_tagged": 27485,
   "distinct_tags": 45,
   "tags": [
@@ -10,17 +10,17 @@
     },
     {
       "tag": "答疑",
-      "count": 8505,
+      "count": 8504,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8072,
+      "count": 8074,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7544,
+      "count": 7543,
       "dim": "industry"
     },
     {
@@ -45,12 +45,12 @@
     },
     {
       "tag": "微观",
-      "count": 4842,
+      "count": 4843,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4501,
+      "count": 4502,
       "dim": "industry"
     },
     {
@@ -60,17 +60,17 @@
     },
     {
       "tag": "个股分析",
-      "count": 3467,
+      "count": 3466,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3115,
+      "count": 3114,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2875,
+      "count": 2874,
       "dim": "stance"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "其他",
-      "count": 2027,
+      "count": 2026,
       "dim": "other"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "tag": "互联网",
-      "count": 1289,
+      "count": 1292,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1286,
+      "count": 1287,
       "dim": "region"
     },
     {
@@ -130,7 +130,7 @@
     },
     {
       "tag": "黄金有色",
-      "count": 793,
+      "count": 794,
       "dim": "industry"
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "tag": "ETF",
-      "count": 340,
+      "count": 341,
       "dim": "asset"
     },
     {
