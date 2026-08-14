@@ -1,86 +1,86 @@
 {
-  "updated": "2026-08-13T23:46:13Z",
-  "total_tagged": 27482,
+  "updated": "2026-08-14T00:24:39Z",
+  "total_tagged": 27689,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8537,
+      "count": 8677,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8501,
+      "count": 8602,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8074,
+      "count": 8122,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7536,
+      "count": 7643,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6729,
+      "count": 6799,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6457,
+      "count": 6532,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5338,
+      "count": 5396,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5106,
+      "count": 5158,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4839,
+      "count": 4895,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4501,
+      "count": 4560,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3557,
+      "count": 3575,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3464,
+      "count": 3486,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3111,
+      "count": 3144,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2878,
+      "count": 2903,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2759,
+      "count": 2774,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2087,
+      "count": 2109,
       "dim": "stance"
     },
     {
@@ -90,87 +90,87 @@
     },
     {
       "tag": "数据",
-      "count": 1493,
+      "count": 1498,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1409,
+      "count": 1414,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1294,
+      "count": 1296,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1287,
+      "count": 1289,
       "dim": "region"
     },
     {
       "tag": "地产",
-      "count": 1183,
+      "count": 1198,
       "dim": "industry"
     },
     {
       "tag": "新能源",
-      "count": 954,
+      "count": 959,
       "dim": "industry"
     },
     {
       "tag": "商品",
-      "count": 889,
+      "count": 894,
       "dim": "asset"
     },
     {
-      "tag": "传媒游戏",
-      "count": 795,
+      "tag": "黄金有色",
+      "count": 799,
       "dim": "industry"
     },
     {
-      "tag": "黄金有色",
-      "count": 794,
+      "tag": "传媒游戏",
+      "count": 798,
       "dim": "industry"
     },
     {
       "tag": "能源",
-      "count": 764,
+      "count": 769,
       "dim": "industry"
     },
     {
       "tag": "外汇",
-      "count": 761,
+      "count": 766,
       "dim": "asset"
     },
     {
       "tag": "政策解读",
-      "count": 588,
+      "count": 590,
       "dim": "ctype"
     },
     {
       "tag": "全球",
-      "count": 489,
+      "count": 490,
       "dim": "region"
     },
     {
       "tag": "风险提示",
-      "count": 454,
+      "count": 457,
       "dim": "stance"
     },
     {
       "tag": "债券",
-      "count": 429,
+      "count": 433,
       "dim": "asset"
     },
     {
       "tag": "日本",
-      "count": 408,
+      "count": 411,
       "dim": "region"
     },
     {
       "tag": "ETF",
-      "count": 341,
+      "count": 349,
       "dim": "asset"
     },
     {
@@ -185,7 +185,7 @@
     },
     {
       "tag": "新兴市场",
-      "count": 207,
+      "count": 209,
       "dim": "region"
     },
     {
@@ -195,17 +195,17 @@
     },
     {
       "tag": "期权",
-      "count": 173,
+      "count": 174,
       "dim": "asset"
     },
     {
       "tag": "军工",
-      "count": 137,
+      "count": 139,
       "dim": "industry"
     },
     {
       "tag": "中性",
-      "count": 130,
+      "count": 131,
       "dim": "stance"
     },
     {
