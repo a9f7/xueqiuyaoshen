@@ -1,31 +1,31 @@
 {
-  "updated": "2026-08-14T13:23:37Z",
-  "total_tagged": 27690,
+  "updated": "2026-08-14T14:22:38Z",
+  "total_tagged": 27688,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8676,
+      "count": 8671,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8606,
+      "count": 8605,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8123,
+      "count": 8119,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7641,
+      "count": 7637,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6805,
+      "count": 6803,
       "dim": "asset"
     },
     {
@@ -35,47 +35,47 @@
     },
     {
       "tag": "看多",
-      "count": 5396,
+      "count": 5392,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5158,
+      "count": 5159,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4890,
+      "count": 4891,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4561,
+      "count": 4558,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3580,
+      "count": 3585,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3483,
+      "count": 3486,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3144,
+      "count": 3145,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2901,
+      "count": 2900,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2773,
+      "count": 2772,
       "dim": "perspective"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "其他",
-      "count": 2028,
+      "count": 2027,
       "dim": "other"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 590,
+      "count": 591,
       "dim": "ctype"
     },
     {
@@ -205,7 +205,7 @@
     },
     {
       "tag": "中性",
-      "count": 131,
+      "count": 132,
       "dim": "stance"
     },
     {
