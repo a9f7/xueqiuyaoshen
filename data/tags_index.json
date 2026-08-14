@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-14T14:22:38Z",
-  "total_tagged": 27688,
+  "updated": "2026-08-14T15:21:28Z",
+  "total_tagged": 27687,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8671,
+      "count": 8669,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8605,
+      "count": 8604,
       "dim": "ctype"
     },
     {
@@ -20,12 +20,12 @@
     },
     {
       "tag": "科技",
-      "count": 7637,
+      "count": 7635,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 6803,
+      "count": 6802,
       "dim": "asset"
     },
     {
@@ -35,12 +35,12 @@
     },
     {
       "tag": "看多",
-      "count": 5392,
+      "count": 5391,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5159,
+      "count": 5160,
       "dim": "region"
     },
     {
@@ -50,12 +50,12 @@
     },
     {
       "tag": "医药",
-      "count": 4558,
+      "count": 4557,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3585,
+      "count": 3587,
       "dim": "industry"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "看空",
-      "count": 2900,
+      "count": 2899,
       "dim": "stance"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "复盘",
-      "count": 2108,
+      "count": 2107,
       "dim": "stance"
     },
     {
@@ -95,7 +95,7 @@
     },
     {
       "tag": "随笔",
-      "count": 1412,
+      "count": 1411,
       "dim": "ctype"
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "tag": "地产",
-      "count": 1198,
+      "count": 1196,
       "dim": "industry"
     },
     {
@@ -120,12 +120,12 @@
     },
     {
       "tag": "商品",
-      "count": 894,
+      "count": 895,
       "dim": "asset"
     },
     {
       "tag": "黄金有色",
-      "count": 807,
+      "count": 808,
       "dim": "industry"
     },
     {
