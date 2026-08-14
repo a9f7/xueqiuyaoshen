@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-14T08:25:42Z",
-  "total_tagged": 27686,
+  "updated": "2026-08-14T09:25:33Z",
+  "total_tagged": 27688,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8673,
+      "count": 8675,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8600,
+      "count": 8602,
       "dim": "ctype"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 7641,
+      "count": 7643,
       "dim": "industry"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 5395,
+      "count": 5396,
       "dim": "stance"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4558,
+      "count": 4559,
       "dim": "industry"
     },
     {
@@ -120,12 +120,12 @@
     },
     {
       "tag": "商品",
-      "count": 893,
+      "count": 894,
       "dim": "asset"
     },
     {
       "tag": "黄金有色",
-      "count": 806,
+      "count": 807,
       "dim": "industry"
     },
     {
