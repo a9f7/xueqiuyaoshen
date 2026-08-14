@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-14T12:24:43Z",
-  "total_tagged": 27688,
+  "updated": "2026-08-14T13:23:37Z",
+  "total_tagged": 27690,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8675,
+      "count": 8676,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8602,
+      "count": 8606,
       "dim": "ctype"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 7642,
+      "count": 7641,
       "dim": "industry"
     },
     {
@@ -40,27 +40,27 @@
     },
     {
       "tag": "中国",
-      "count": 5157,
+      "count": 5158,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 4889,
+      "count": 4890,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4559,
+      "count": 4561,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3577,
+      "count": 3580,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3485,
+      "count": 3483,
       "dim": "ctype"
     },
     {
@@ -75,12 +75,12 @@
     },
     {
       "tag": "中观",
-      "count": 2776,
+      "count": 2773,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2106,
+      "count": 2108,
       "dim": "stance"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1294,
+      "count": 1293,
       "dim": "industry"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "tag": "债券",
-      "count": 433,
+      "count": 434,
       "dim": "asset"
     },
     {
