@@ -1,26 +1,26 @@
 {
-  "updated": "2026-08-14T03:28:12Z",
+  "updated": "2026-08-14T04:29:06Z",
   "total_tagged": 27686,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8673,
+      "count": 8674,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8600,
+      "count": 8602,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8122,
+      "count": 8121,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7640,
+      "count": 7637,
       "dim": "industry"
     },
     {
@@ -30,17 +30,17 @@
     },
     {
       "tag": "宏观",
-      "count": 6532,
+      "count": 6530,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5395,
+      "count": 5396,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5158,
+      "count": 5156,
       "dim": "region"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3486,
+      "count": 3487,
       "dim": "ctype"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1295,
+      "count": 1294,
       "dim": "industry"
     },
     {
@@ -125,7 +125,7 @@
     },
     {
       "tag": "黄金有色",
-      "count": 800,
+      "count": 802,
       "dim": "industry"
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "tag": "外汇",
-      "count": 764,
+      "count": 763,
       "dim": "asset"
     },
     {
