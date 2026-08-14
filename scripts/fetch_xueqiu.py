@@ -41,7 +41,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, ".."))
 COOKIE_POOL_FILE = os.path.join(ROOT, "data", "xq_cookies.txt")
 COOKIE_FILE = os.path.join(ROOT, "data", "xq_cookie.txt")
-CHROME_PATH = r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe"
+# 默认仍是本机 Windows 路径（本地行为不变）。
+# 云端 Linux 部署时，export XQ_CHROME_PATH="" 即可改用 playwright 自带的 chromium。
+CHROME_PATH = os.environ.get("XQ_CHROME_PATH", r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe")
 USER_ID = 2292705444
 BATCH_PER_BROWSER = 30  # 每个浏览器会话最多抓多少页（避免渲染器崩溃）
 FALLBACK_MAXPAGE = {"posts": 811, "comments": 1600, "reposts": 60}
@@ -123,7 +125,7 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
     maxpage = None
     with sync_playwright() as p:
         browser = p.chromium.launch(
-            executable_path=CHROME_PATH,
+            executable_path=CHROME_PATH or None,
             headless=True,
             args=[
                 '--disable-blink-features=AutomationControlled',
