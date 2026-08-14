@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-14T11:25:54Z",
+  "updated": "2026-08-14T12:24:43Z",
   "total_tagged": 27688,
   "distinct_tags": 45,
   "tags": [
@@ -15,12 +15,12 @@
     },
     {
       "tag": "行情点评",
-      "count": 8124,
+      "count": 8123,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7643,
+      "count": 7642,
       "dim": "industry"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 5158,
+      "count": 5157,
       "dim": "region"
     },
     {
@@ -70,12 +70,12 @@
     },
     {
       "tag": "看空",
-      "count": 2902,
+      "count": 2901,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2777,
+      "count": 2776,
       "dim": "perspective"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "其他",
-      "count": 2027,
+      "count": 2028,
       "dim": "other"
     },
     {
