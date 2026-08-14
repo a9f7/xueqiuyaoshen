@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-14T15:21:28Z",
+  "updated": "2026-08-14T16:20:12Z",
   "total_tagged": 27687,
   "distinct_tags": 45,
   "tags": [
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 6528,
+      "count": 6527,
       "dim": "perspective"
     },
     {
@@ -120,12 +120,12 @@
     },
     {
       "tag": "商品",
-      "count": 895,
+      "count": 894,
       "dim": "asset"
     },
     {
       "tag": "黄金有色",
-      "count": 808,
+      "count": 809,
       "dim": "industry"
     },
     {
