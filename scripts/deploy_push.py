@@ -122,11 +122,12 @@ def sync_files():
     for name in os.listdir(ssrc):
         if name.startswith("_") or name == "__pycache__":
             continue
-        if name.endswith(".py"):
+        if name.endswith(".py") or name.endswith(".sh"):
             shutil.copy2(os.path.join(ssrc, name), os.path.join(sdst, name))
 
-    # 根目录文件
-    for f in ["index.html", "summary.md", "README.md", ".gitignore"]:
+    # 根目录文件（含云端运行所需：requirements.txt / 上云指南）
+    for f in ["index.html", "summary.md", "README.md", ".gitignore",
+              "requirements.txt", "CLOUDSTUDIO_SETUP_xueqiu.md"]:
         s = os.path.join(WORKSPACE, f)
         if os.path.exists(s):
             shutil.copy2(s, os.path.join(DEPLOY, f))

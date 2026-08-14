@@ -1,0 +1,3 @@
+# xueqiuyaoshen 云端运行依赖（CloudStudio / 任意 Linux 容器）
+# 仅 playwright 是第三方包；其余脚本均只用 Python 标准库。
+playwright>=1.40
