@@ -1,0 +1,16 @@
+{
+  "generated_at": "2026-08-15T05:46:42Z",
+  "method": "β剥离 + 命中率/IC",
+  "overall": {
+    "n_events": 0,
+    "events_skipped": 0,
+    "hit_rate_by_horizon": {},
+    "ic": null,
+    "avg_alpha_by_horizon": {}
+  },
+  "by_sector": [],
+  "by_stance": {},
+  "recent_signals": [],
+  "benchmark_available": null,
+  "note": "行情数据缺失，无法计算收益（请确认运行环境能访问东方财富行情接口 push2his.eastmoney.com）。已抽取 564 条候选事件，待行情可用后重跑即可。"
+}
