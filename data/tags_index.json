@@ -1,26 +1,26 @@
 {
-  "updated": "2026-08-15T02:48:20Z",
-  "total_tagged": 27905,
+  "updated": "2026-08-15T03:47:25Z",
+  "total_tagged": 27904,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8814,
+      "count": 8813,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 8722,
+      "count": 8721,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8160,
+      "count": 8161,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 7744,
+      "count": 7743,
       "dim": "industry"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 5457,
+      "count": 5456,
       "dim": "stance"
     },
     {
@@ -45,17 +45,17 @@
     },
     {
       "tag": "微观",
-      "count": 4932,
+      "count": 4931,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4631,
+      "count": 4630,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3600,
+      "count": 3601,
       "dim": "industry"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 2789,
+      "count": 2790,
       "dim": "perspective"
     },
     {
@@ -95,7 +95,7 @@
     },
     {
       "tag": "随笔",
-      "count": 1415,
+      "count": 1414,
       "dim": "ctype"
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "tag": "地产",
-      "count": 1221,
+      "count": 1222,
       "dim": "industry"
     },
     {
