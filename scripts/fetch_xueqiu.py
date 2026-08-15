@@ -34,6 +34,8 @@ import time
 import random
 import argparse
 import math
+import urllib.request
+import urllib.error
 from playwright.sync_api import sync_playwright
 
 # 默认 cookies 文件（不入库）
@@ -114,6 +116,64 @@ def existing_pages(out_dir):
     return s
 
 
+# ---------------------------------------------------------------------------
+# API 子域直连备份（零依赖：仅标准库 urllib）
+# 主路径是 playwright 浏览器内 fetch（带 cookie + 绕过 WAF）；当主路径被 WAF/405/
+# 网络超时拦截某页时，用 urllib 直连 api.xueqiu.com 子域抢救该页。
+# 参考 JohnWish1590/xueqiu-analyzer：api 子域不挂阿里云 WAF，主域会被 JS 挑战页拦。
+# ---------------------------------------------------------------------------
+API_BASE = "https://api.xueqiu.com"
+UA_API = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+          '(KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36')
+
+
+def _is_waf(body):
+    """响应是不是被 WAF 拦下来的 HTML 挑战页（而非 JSON）。"""
+    if not body:
+        return False
+    head = body.lstrip()[:1]
+    if head in ("[", "{"):
+        return False
+    return ("aliyun_waf" in body) or ("renderData" in body) or head == "<"
+
+
+def fetch_page_api(api_type, pno, cookie_str):
+    """直连 API 子域拉一页时间线；成功返回 dict（含 statuses），失败/被 WAF 返回 None。
+
+    候选 URL 顺序：api 子域 → 主域 v4 → 主域旧版 user_timeline；任一成功即返回。
+    纯标准库实现，无需 requests / playwright。
+    """
+    path = (f"/v4/statuses/user_timeline.json?user_id={USER_ID}"
+            f"&page={pno}&type={api_type}&count=20")
+    candidates = [
+        API_BASE + path,
+        "https://xueqiu.com" + path,
+        (f"https://xueqiu.com/statuses/user_timeline.json?user_id={USER_ID}"
+         f"&page={pno}&type={api_type}&count=20"),
+    ]
+    headers = {
+        "Cookie": cookie_str or "",
+        "User-Agent": UA_API,
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Referer": "https://xueqiu.com/",
+        "X-Requested-With": "XMLHttpRequest",
+    }
+    for u in candidates:
+        try:
+            req = urllib.request.Request(u, headers=headers)
+            with urllib.request.urlopen(req, timeout=12) as r:
+                body = r.read().decode("utf-8", "replace")
+            if _is_waf(body):
+                continue
+            j = json.loads(body)
+            if isinstance(j, dict) and "statuses" in j:
+                return j
+        except Exception:
+            continue
+    return None
+
+
 def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
     """启动一个全新浏览器会话，抓 [start,end]。
 
@@ -173,6 +233,8 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
             if not force and os.path.exists(out_file):
                 continue
             api_url = f"https://xueqiu.com/v4/statuses/user_timeline.json?user_id={USER_ID}&page={pno}&type={api_type}&count=20"
+            saved_this = False
+            stopped_this = False
             try:
                 data = page.evaluate("""async (url) => {
                     const ctrl = new AbortController();
@@ -203,25 +265,55 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
                             maxpage = max(maxpage or 0, math.ceil(total / 20))
                         print(f"  page={pno}: {len(j['statuses'])} statuses, total={total}, maxPage={maxpage}", flush=True)
                         saved += 1
-                    else:
-                        print(f"  page={pno}: JSON 无 statuses (status={status})", flush=True)
-                        if '访问验证' in text or 'aliyun_waf' in text:
-                            stopped = True
-                            break
+                        saved_this = True
+                    elif '访问验证' in text or 'aliyun_waf' in text:
+                        # 主路径被 WAF：尝试 api 子域直连备份
+                        j = fetch_page_api(api_type, pno, cookie_str)
+                        if j and 'statuses' in j:
+                            with open(out_file, 'w', encoding='utf-8') as f:
+                                json.dump(j, f, ensure_ascii=False, indent=2)
+                            print(f"  page={pno}: [API备份] {len(j['statuses'])} statuses", flush=True)
+                            saved += 1
+                            saved_this = True
+                        else:
+                            print(f"  page={pno}: WAF 且 API 备份也失败", flush=True)
+                            stopped_this = True
                 elif status == 405:
                     print(f"  [405 LIMIT] page={pno} rate limit. cookie cooldown.", flush=True)
-                    stopped = True
-                    break
+                    stopped_this = True
                 else:
                     print(f"  page={pno}: FAIL status={status} {text[:80]}", flush=True)
-                    # status==0 多为 WAF 拦截导致 fetch 超时/报错；与 405/访问验证 同样按限流处理，
-                    # 立即停止本批（否则会逐页 15s 超时重试，单批卡 5+ 分钟）。
+                    # status==0 多为 WAF 拦截导致 fetch 超时/报错；尝试 api 子域直连备份
                     if status == 0 or '访问验证' in text or 'aliyun_waf' in text:
-                        stopped = True
-                        break
+                        j = fetch_page_api(api_type, pno, cookie_str)
+                        if j and 'statuses' in j:
+                            with open(out_file, 'w', encoding='utf-8') as f:
+                                json.dump(j, f, ensure_ascii=False, indent=2)
+                            print(f"  page={pno}: [API备份] {len(j['statuses'])} statuses", flush=True)
+                            saved += 1
+                            saved_this = True
+                        else:
+                            print(f"  page={pno}: WAF/超时 且 API 备份也失败", flush=True)
+                            stopped_this = True
             except Exception as e:
                 print(f"  page={pno}: ERR {e}", flush=True)
-                break  # 渲染器崩溃，本批终止（下批重开浏览器）
+                # 渲染器崩溃：尝试 api 子域直连备份救该页
+                try:
+                    j = fetch_page_api(api_type, pno, cookie_str)
+                    if j and 'statuses' in j:
+                        with open(out_file, 'w', encoding='utf-8') as f:
+                            json.dump(j, f, ensure_ascii=False, indent=2)
+                        print(f"  page={pno}: [API备份-崩溃恢复] {len(j['statuses'])} statuses", flush=True)
+                        saved += 1
+                        saved_this = True
+                except Exception:
+                    pass
+                if not saved_this:
+                    break  # 渲染器崩溃且备份也失败，本批终止（下批重开浏览器）
+            if not saved_this:
+                if stopped_this:
+                    stopped = True
+                    break
             time.sleep(random.uniform(1.5, 3))
 
         try:

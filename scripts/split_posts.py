@@ -119,4 +119,12 @@ if __name__ == "__main__":
         subprocess.run([sys.executable, str(analyze), "--days", "15", "--archive"], check=False)
     except Exception as e:
         print("[split] 生成 analysis_recent.json 失败（不影响分块）:", e)
+    # 同步生成「观点回测」（data/backtest.json）：β剥离 + 命中率/IC + 近期信号，供网页回测面板。
+    # 行情缺失时优雅降级（输出空结果，不阻断流水线）。
+    try:
+        import subprocess
+        backtest = Path(__file__).resolve().parent / "backtest_engine.py"
+        subprocess.run([sys.executable, str(backtest)], check=False)
+    except Exception as e:
+        print("[split] 生成 backtest.json 失败（不影响分块）:", e)
 

@@ -65,7 +65,7 @@ DATA_FILES = [
     "posts.json", "comments.json", "reposts.json", "interactions.json",
     "selfstock.json", "selfstock_raw.json", "posts_index.json",
     "tags_index.json", "analysis_recent.json", "user.json", "xueqiu.db",
-    "daily_review.md", "daily_review.json",
+    "daily_review.md", "daily_review.json", "backtest.json",
 ]
 
 

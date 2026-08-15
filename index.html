@@ -337,6 +337,44 @@
     .daily .d-grid2 { grid-template-columns: 1fr; }
   }
 
+  /* 观点回测面板 */
+  .backtest { margin-top: 16px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 20px; box-shadow: var(--shadow); }
+  .backtest .bt-h { font-size: 16px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
+  .backtest .bt-h .badge { font-size: 11px; padding: 2px 10px; border-radius: 20px; color: #fff; background: linear-gradient(135deg, #6c5ce7, #4834d4); font-weight: 600; letter-spacing: .5px; }
+  .backtest .bt-sub { font-size: 12px; color: var(--ink-3); margin-bottom: 14px; }
+  .backtest .bt-cards { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .backtest .bt-card { flex: 1 1 130px; min-width: 130px; background: #f8f9fc; border: 1px solid var(--line-2); border-radius: 11px; padding: 12px 14px; }
+  .backtest .bt-card .k { font-size: 12px; color: var(--ink-3); }
+  .backtest .bt-card .v { font-size: 24px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .backtest .bt-card .v.good { color: var(--green); }
+  .backtest .bt-card .v.bad { color: var(--accent); }
+  .backtest .bt-card .v small { font-size: 12px; font-weight: 500; color: var(--ink-3); }
+  .backtest .bt-sec-h { font-size: 13.5px; font-weight: 600; color: var(--ink); border-left: 3px solid #6c5ce7; padding-left: 8px; margin: 6px 0 10px; }
+  .backtest .bt-horizon { display: flex; flex-wrap: wrap; gap: 10px; }
+  .backtest .bt-hz { flex: 1 1 90px; min-width: 90px; background: #f8f9fc; border-radius: 10px; padding: 9px 11px; text-align: center; }
+  .backtest .bt-hz .h { font-size: 11.5px; color: var(--ink-3); }
+  .backtest .bt-hz .r { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .backtest .bt-hz .n { font-size: 10.5px; color: var(--ink-3); }
+  .backtest .bt-secrow { display: flex; align-items: center; gap: 8px; font-size: 12.5px; margin-bottom: 6px; }
+  .backtest .bt-secrow .nm { width: 64px; flex-shrink: 0; color: var(--ink-2); text-align: right; }
+  .backtest .bt-secrow .track { flex: 1; height: 16px; background: #f1f2f5; border-radius: 8px; overflow: hidden; }
+  .backtest .bt-secrow .fill { display: block; height: 100%; background: linear-gradient(90deg, #a29bfe, #6c5ce7); }
+  .backtest .bt-secrow .ct { width: 92px; text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .backtest .bt-stance { display: flex; gap: 12px; font-size: 13px; }
+  .backtest .bt-stance .b { background: #f8f9fc; border-radius: 10px; padding: 8px 14px; }
+  .backtest .bt-stance .b .l { font-size: 11.5px; color: var(--ink-3); }
+  .backtest .bt-stance .b .r { font-size: 18px; font-weight: 700; }
+  .backtest .bt-sig { border-left: 3px solid var(--line-2); background: #fafbfc; border-radius: 0 8px 8px 0; padding: 8px 11px; margin-bottom: 8px; font-size: 12.5px; }
+  .backtest .bt-sig:last-child { margin-bottom: 0; }
+  .backtest .bt-sig .meta { display: flex; gap: 8px; align-items: center; color: var(--ink-3); font-size: 11.5px; margin-bottom: 3px; }
+  .backtest .bt-sig .sig { font-weight: 700; padding: 1px 8px; border-radius: 20px; color: #fff; }
+  .backtest .bt-sig .sig.follow { background: var(--green); }
+  .backtest .bt-sig .sig.reverse { background: var(--accent); }
+  .backtest .bt-sig .sig.watch { background: #8b94a3; }
+  .backtest .bt-sig .txt { color: var(--ink); line-height: 1.6; }
+  .backtest .bt-sig .txt a { color: var(--link); text-decoration: none; }
+  .backtest .bt-note { font-size: 12px; color: var(--ink-3); margin-top: 12px; line-height: 1.7; }
+
   .loadmore {
     display: block; margin: 16px auto 0; padding: 9px 22px; font-size: 13px;
     border: 1px solid var(--line); background: #fafbfc; border-radius: 20px; color: var(--ink-2); cursor: pointer;
@@ -470,6 +508,21 @@
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="backtest" id="backtest" style="display:none">
+    <div class="bt-h"><span class="badge">回测</span> 观点回测 · 他说得准不准（β剥离 + 命中率/IC）</div>
+    <div class="bt-sub" id="bt-sub"></div>
+    <div class="bt-cards" id="bt-cards"></div>
+    <div class="bt-sec-h">各窗口命中率（T+N 日实际涨跌方向与观点一致的比例，带样本量 N）</div>
+    <div class="bt-horizon" id="bt-horizon"></div>
+    <div class="bt-sec-h" style="margin-top:16px">分板块命中率（样本量 ≥ 3）</div>
+    <div id="bt-sector"></div>
+    <div class="bt-sec-h" style="margin-top:16px">分立场命中率（以 T+5 计）</div>
+    <div class="bt-stance" id="bt-stance"></div>
+    <div class="bt-sec-h" style="margin-top:16px">近期观点信号（窗口未闭合 · 跟随 / 观望 / 反向）</div>
+    <div id="bt-signals"></div>
+    <div class="bt-note" id="bt-note"></div>
   </section>
 
   <div class="toolbar">
@@ -802,6 +855,7 @@
       loadTagIndex();
       loadAnalyst();   // 非阻塞：小文件，独立渲染，不拖慢时间线
       loadDailyReview();   // 非阻塞：每日首席视角总结面板
+      loadBacktest();   // 非阻塞：观点回测面板
       const months = postIndex.months || [];
       // 先加载最新 1 个月（首屏最快），渲染后再后台补齐第 2 个月
       if (months[0]) await loadMonth(months[0].file);
@@ -1004,6 +1058,84 @@
         ${tags ? `<div class="ptags">${tags}</div>` : ""}
       </div>`;
     }).join("") || `<div class="d-sub2">（无）</div>`;
+  }
+
+  // 观点回测：加载并渲染 data/backtest.json
+  async function loadBacktest() {
+    try {
+      const d = await fetch("data/backtest.json", { cache: "no-cache" }).then(r => r.json());
+      renderBacktest(d);
+      $("#backtest").style.display = "block";
+    } catch (e) { /* 回测数据缺失不阻断主流程 */ }
+  }
+
+  function renderBacktest(d) {
+    const ov = d.overall || {};
+    const hr = ov.hit_rate_by_horizon || {};
+    const hr5 = hr["5"];
+    $("#bt-sub").textContent =
+      `数据源：${ov.benchmark_available ? "东方财富日线（含沪深300基准）" : "基准行情缺失"}` +
+      ` · 回测事件 ${ov.n_events || 0} 条（跳过 ${ov.events_skipped || 0}）` +
+      ` · 更新于 ${d.generated_at || ""}`;
+    // 概览卡片
+    const card = (k, v, cls, sub) =>
+      `<div class="bt-card"><div class="k">${k}</div><div class="v ${cls || ""}">${v}${sub ? ` <small>${sub}</small>` : ""}</div></div>`;
+    let cards = "";
+    cards += card("T+5 命中率", hr5 != null ? (hr5 * 100).toFixed(1) + "%" : "—",
+      hr5 != null ? (hr5 >= 0.5 ? "good" : "bad") : "",
+      hr5 != null ? (hr5 >= 0.5 ? "跑赢随机" : "弱于随机") : "");
+    cards += card("IC（信息系数）", ov.ic != null ? ov.ic.toFixed(3) : "—",
+      ov.ic != null ? (ov.ic > 0 ? "good" : "bad") : "", "观点方向×实际方向");
+    cards += card("回测事件", ov.n_events || 0, "", "看多/看空+个股");
+    const a5 = ov.avg_alpha_by_horizon && ov.avg_alpha_by_horizon["5"];
+    cards += card("T+5 平均超额α", a5 != null ? (a5 * 100).toFixed(2) + "%" : "—",
+      a5 != null ? (a5 > 0 ? "good" : "bad") : "", "剥离大盘后");
+    $("#bt-cards").innerHTML = cards;
+    // 各窗口命中率
+    const hzOrder = [1, 3, 5, 7, 10, 20];
+    $("#bt-horizon").innerHTML = hzOrder.map(k => {
+      const v = hr[String(k)];
+      if (v == null) return "";
+      const col = v >= 0.5 ? "var(--green)" : "var(--accent)";
+      return `<div class="bt-hz"><div class="h">T+${k}</div>`
+        + `<div class="r" style="color:${col}">${(v * 100).toFixed(0)}%</div>`
+        + `<div class="n">N=${(ov.n_by_horizon && ov.n_by_horizon[String(k)]) || ""}</div></div>`;
+    }).join("");
+    // 分板块命中率
+    const secs = d.by_sector || [];
+    const maxSec = secs.length ? Math.max.apply(null, secs.map(s => s.hit_rate)) : 1;
+    $("#bt-sector").innerHTML = secs.map(s => {
+      const w = Math.max(8, Math.round(s.hit_rate / maxSec * 100));
+      const col = s.hit_rate >= 0.5 ? "var(--green)" : "var(--accent)";
+      return `<div class="bt-secrow"><span class="nm">${esc(s.sector)}</span>`
+        + `<span class="track"><span class="fill" style="width:${w}%;background:${'linear-gradient(90deg,#a29bfe,#6c5ce7)'}"></span></span>`
+        + `<span class="ct">${(s.hit_rate * 100).toFixed(0)}% · N=${s.n} · IC=${s.ic != null ? s.ic.toFixed(2) : "—"}</span></div>`;
+    }).join("") || `<div class="bt-note">暂无满足样本量（≥3）的板块。</div>`;
+    // 分立场
+    const st = d.by_stance || {};
+    const stBox = (k, cls) => {
+      const v = st[k];
+      if (!v || !v.n) return "";
+      const col = v.hit_rate >= 0.5 ? "var(--green)" : "var(--accent)";
+      return `<div class="b"><div class="l">${k}（N=${v.n}）</div><div class="r" style="color:${col}">${(v.hit_rate * 100).toFixed(0)}%</div></div>`;
+    };
+    $("#bt-stance").innerHTML = stBox("看多", "bull") + stBox("看空", "bear") ||
+      `<div class="bt-note">暂无分立场数据。</div>`;
+    // 近期信号
+    const sigs = d.recent_signals || [];
+    $("#bt-signals").innerHTML = sigs.map(s => {
+      const cls = s.signal === "跟随" ? "follow" : s.signal === "反向" ? "reverse" : "watch";
+      return `<div class="bt-sig">
+        <div class="meta"><span class="sig ${cls}">${s.signal}</span>`
+          + `<span>${esc(s.date)}</span><span>${s.stance}</span>`
+          + (s.sector ? `<span>${esc(s.sector)}</span>` : "")
+          + `<span>${esc(s.code)}</span>`
+          + `<span>依据命中率 ${(s.basis_hit_rate * 100).toFixed(0)}%</span></div>
+        <div class="txt">${esc(s.text)} <a href="${esc(s.url)}" target="_blank" rel="noopener">原文 ↗</a></div>
+      </div>`;
+    }).join("") || `<div class="bt-note">暂无窗口未闭合的近期观点。</div>`;
+    // 方法说明
+    $("#bt-note").textContent = d.method || "";
   }
 
   // 防抖搜索

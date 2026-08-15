@@ -29,3 +29,6 @@ __pycache__/
 # 临时探测脚本 / 中间文件（本地留痕，不入库）
 scripts/_*.py
 data/_*.json
+
+# 行情缓存（回测引擎本地拉取，不入库）
+data/market/
