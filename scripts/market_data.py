@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""行情数据层（零依赖：仅用标准库 urllib 直连东方财富 kline 接口）。
+"""行情数据层（零依赖：仅用标准库 urllib 直连行情接口）。
 
-为什么用东方财富而不是雅虎：
-  - 本项目面向国内网络，东方财富 push2his 接口对国内 IP 友好、无需密钥；
-  - 雅虎财经在国内常被限流/不可达（实测返回 429）。
+主源：东方财富 push2his 日线（国内 IP 友好、无需密钥）。
+兜底：新浪财经日线（https://money.finance.sina.com.cn .../CN_MarketData.getKLineData）。
+  - 某些受限网络/代理会拦截 push2his（DNS 解析到 198.18.x 黑洞），此时自动切新浪；
+  - 新浪覆盖 A 股个股 + 指数（沪深300/创业板等），但不支持港股与板块指数(BK)，
+    这些标的在兜底模式下取不到行情 -> 回测优雅跳过。
 
 数据缓存：首次拉取后落盘 data/market/<secid>.json，后续直接读缓存，
 避免重复请求触发限流。取不到行情时所有函数返回 None，调用方应优雅降级。
@@ -156,9 +158,79 @@ def _fetch_kline(secid):
     return {"name": name, "rows": rows}, None
 
 
-def get_kline(secid, use_cache=True, max_age_days=30):
+def _secid_to_sina(secid):
+    """东方财富 secid '1.600519'/'0.300308'/'1.000300'/'113.00700' -> 新浪 symbol
+    'sh600519'/'sz300308'/'sh000300'/'hk00700'。板块(90.BKxxxx)返回 None。"""
+    try:
+        m, num = secid.split(".", 1)
+    except Exception:
+        return None
+    if m == "1":
+        return "sh" + num
+    if m == "0":
+        return "sz" + num
+    if m in ("113", "116"):
+        return "hk" + num
+    return None
+
+
+def _fetch_kline_sina(secid):
+    """新浪财经日线兜底（零依赖）。个股/指数可用；港股与板块指数返回 None。
+    返回 {'name', 'rows':[[date,o,c,h,l,v]...]} 升序，或 (None, err)。
+    """
+    sym = _secid_to_sina(secid)
+    if not sym:
+        return None, "no sina symbol (sector/hk)"
+    url = ("https://money.finance.sina.com.cn/quotes_service/api/json_v2.php/"
+           "CN_MarketData.getKLineData"
+           f"?symbol={sym}&scale=240&ma=no&datalen=2000")
+    req = urllib.request.Request(url, headers={
+        "User-Agent": UA,
+        "Referer": "https://finance.sina.com.cn/",
+        "Accept": "application/json, text/plain, */*",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=12) as r:
+            raw = r.read().decode("utf-8", "replace")
+        arr = json.loads(raw)
+    except Exception as e:
+        return None, f"sina:{e}"
+    if not isinstance(arr, list) or not arr:
+        return None, "sina:empty/null"
+    rows = []
+    for it in arr:
+        try:
+            date = it["day"]
+            o = float(it["open"]); c = float(it["close"])
+            h = float(it["high"]); l = float(it["low"])
+            v = float(it.get("volume") or 0)
+        except Exception:
+            continue
+        rows.append([date, o, c, h, l, v])
+    if not rows:
+        return None, "sina:no rows"
+    return {"name": sym, "rows": rows}, None
+
+
+def _fetch_multi(secid, sources):
+    last_err = "no sources"
+    for src in sources:
+        if src == "eastmoney":
+            data, err = _fetch_kline(secid)
+        elif src == "sina":
+            data, err = _fetch_kline_sina(secid)
+        else:
+            continue
+        if data is not None:
+            return data, None
+        last_err = err
+    return None, last_err
+
+
+def get_kline(secid, use_cache=True, max_age_days=30, sources=("eastmoney", "sina")):
     """返回 {'name', 'rows':[[date,o,c,h,l,v]...]} 或 None。
 
+    默认先试东方财富(push2his)，失败自动回退新浪财经日线（本环境 push2his 常被代理拦截）。
     use_cache=False 强制刷新。缓存超过 max_age_days 天也刷新（保证回测用近期价）。
     """
     cf = CACHE_DIR / f"{secid.replace('.', '_')}.json"
@@ -169,7 +241,7 @@ def get_kline(secid, use_cache=True, max_age_days=30):
                 return json.load(open(cf, encoding="utf-8"))
         except Exception:
             pass
-    data, err = _fetch_kline(secid)
+    data, err = _fetch_multi(secid, sources)
     if data is None:
         return None
     try:

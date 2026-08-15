@@ -1125,15 +1125,16 @@
     const sigs = d.recent_signals || [];
     $("#bt-signals").innerHTML = sigs.map(s => {
       const cls = s.signal === "跟随" ? "follow" : s.signal === "反向" ? "reverse" : "watch";
+      const status = s.closed_horizon ? `T+${s.closed_horizon}已闭合` : "进行中";
       return `<div class="bt-sig">
         <div class="meta"><span class="sig ${cls}">${s.signal}</span>`
           + `<span>${esc(s.date)}</span><span>${s.stance}</span>`
           + (s.sector ? `<span>${esc(s.sector)}</span>` : "")
-          + `<span>${esc(s.code)}</span>`
+          + `<span>${esc(s.code)}</span><span>${status}</span>`
           + `<span>依据命中率 ${(s.basis_hit_rate * 100).toFixed(0)}%</span></div>
         <div class="txt">${esc(s.text)} <a href="${esc(s.url)}" target="_blank" rel="noopener">原文 ↗</a></div>
       </div>`;
-    }).join("") || `<div class="bt-note">暂无窗口未闭合的近期观点。</div>`;
+    }).join("") || `<div class="bt-note">暂无近期观点（最近 60 天无看多/看空发言）。</div>`;
     // 方法说明
     $("#bt-note").textContent = d.method || "";
   }

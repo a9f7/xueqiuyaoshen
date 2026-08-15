@@ -275,7 +275,7 @@ def main():
         per_event.append((ev, res))
 
     if not per_event:
-        _dump_empty("行情数据缺失，无法计算收益（请确认运行环境能访问东方财富行情接口 push2his.eastmoney.com）。"
+        _dump_empty("行情数据缺失，无法计算收益（请确认运行环境能访问东方财富 push2his 或新浪财经行情接口）。"
                     f"已抽取 {len(events)} 条候选事件，待行情可用后重跑即可。")
         return
 
@@ -326,18 +326,17 @@ def main():
         for s, v in by_stance.items()
     }
 
-    # 近期未闭合事件 -> 预测信号
+    # 近期观点 -> 预测/验证信号（最近 60 天内的观点，标注最大已闭合窗口）
     recent = []
     last_date = max(ev["date"] for ev, _ in per_event)
-    cutoff = last_date - timedelta(days=25)
+    cutoff = last_date - timedelta(days=60)
     # 板块命中率查表（用于信号校准）
     sector_hr = {x["sector"]: x["hit_rate"] for x in sector_list}
     for ev, res in per_event:
         if ev["date"] < cutoff:
             continue
-        # 窗口是否仍闭合（T+20 是否可取）
-        if 20 not in res:
-            continue
+        # 该事件当前最大已闭合窗口（用于标注"进行中/已验证"）
+        closed = max((k for k in res if res[k] is not None), default=None)
         basis_hr = sector_hr.get(ev["sector"]) if ev["sector"] else overall_hit.get(5)
         if basis_hr is None:
             basis_hr = 0.5
@@ -354,14 +353,16 @@ def main():
             "sector": ev["sector"] or "",
             "signal": signal,
             "basis_hit_rate": round(basis_hr, 3),
+            "closed_horizon": closed,
             "url": ev["url"],
             "text": ev["text"],
         })
     recent.sort(key=lambda x: x["date"], reverse=True)
+    recent = recent[:30]
 
     out = {
         "generated_at": datetime.now(__import__("datetime").timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "method": "β剥离(个股收益-β×沪深300) + 各窗口命中率/IC；数据源：东方财富日线",
+        "method": "β剥离(个股收益-β×沪深300) + 各窗口命中率/IC；数据源：东方财富/新浪日线",
         "overall": {
             "n_events": n,
             "events_skipped": missing_price,
