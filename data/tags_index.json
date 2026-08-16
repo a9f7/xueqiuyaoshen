@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-16T05:17:50Z",
+  "updated": "2026-08-16T06:16:31Z",
   "total_tagged": 28047,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 8909,
+      "count": 8908,
       "dim": "region"
     },
     {
@@ -15,7 +15,7 @@
     },
     {
       "tag": "行情点评",
-      "count": 8186,
+      "count": 8184,
       "dim": "ctype"
     },
     {
@@ -25,7 +25,7 @@
     },
     {
       "tag": "股票",
-      "count": 6913,
+      "count": 6912,
       "dim": "asset"
     },
     {
@@ -35,12 +35,12 @@
     },
     {
       "tag": "看多",
-      "count": 5496,
+      "count": 5498,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5253,
+      "count": 5255,
       "dim": "region"
     },
     {
@@ -50,17 +50,17 @@
     },
     {
       "tag": "医药",
-      "count": 4668,
+      "count": 4667,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3625,
+      "count": 3627,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3524,
+      "count": 3525,
       "dim": "ctype"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 2829,
+      "count": 2831,
       "dim": "perspective"
     },
     {
@@ -120,12 +120,12 @@
     },
     {
       "tag": "商品",
-      "count": 899,
+      "count": 898,
       "dim": "asset"
     },
     {
       "tag": "黄金有色",
-      "count": 810,
+      "count": 808,
       "dim": "industry"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 594,
+      "count": 593,
       "dim": "ctype"
     },
     {

@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-08-16T05:18:09Z",
+  "generated_at": "2026-08-16T06:16:54Z",
   "method": "β剥离(个股收益-β×沪深300) + 各窗口命中率/IC；数据源：东方财富/新浪日线",
   "overall": {
     "n_events": 514,
-    "events_skipped": 50,
+    "events_skipped": 52,
     "hit_rate_by_horizon": {
       "1": 0.455,
       "3": 0.471,
