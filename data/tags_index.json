@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-16T09:12:32Z",
-  "total_tagged": 28047,
+  "updated": "2026-08-16T10:11:10Z",
+  "total_tagged": 28048,
   "distinct_tags": 45,
   "tags": [
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 5498,
+      "count": 5499,
       "dim": "stance"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "tag": "消费",
-      "count": 3627,
+      "count": 3628,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3525,
+      "count": 3526,
       "dim": "ctype"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 898,
+      "count": 899,
       "dim": "asset"
     },
     {
