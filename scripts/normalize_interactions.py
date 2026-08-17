@@ -40,6 +40,12 @@ def parse_reply_to(text):
     return m.group(1) if m else ""
 
 
+def _ip_location(mk):
+    """从 meta_keywords(JSON字符串) 提取 ip_location，无匹配返回空串。"""
+    m = re.search(r'"ip_location"\s*:\s*"([^"]+)"', mk or "")
+    return m.group(1) if m else ""
+
+
 def original_of(s):
     """提取内嵌原文（被评论/被转的帖）。"""
     rt = s.get("retweeted_status")
@@ -82,7 +88,7 @@ def norm_item(s, kind):
         "like_count": s.get("like_count", 0) or 0,
         "reply_count": s.get("reply_count", 0) or 0,
         "retweet_count": s.get("retweet_count", 0) or 0,
-        "ip_location": (lambda m: (re.search(r'"ip_location"\s*:\s*"([^"]+)"', m).group(1) if m else ""))(s.get("meta_keywords") or ""),
+        "ip_location": _ip_location(s.get("meta_keywords") or ""),
         "stocks": stocks,
         "symbols": symbols,              # [{code,name}]
         "mentioned": [],
