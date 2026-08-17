@@ -337,6 +337,69 @@
     .daily .d-grid2 { grid-template-columns: 1fr; }
   }
 
+  /* === 全局侧边栏导航 === */
+  .wrap { display: grid; grid-template-columns: 240px 1fr; gap: 0; align-items: start; }
+  .side-nav { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; overflow-x: hidden;
+    background: var(--bg); border-right: 1px solid var(--line); padding: 16px 14px 24px;
+    overscroll-behavior: contain; }
+  .side-nav::-webkit-scrollbar { width: 6px; }
+  .side-nav::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
+  .side-nav .sn-head { display: flex; align-items: center; gap: 10px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+  .side-nav .sn-head .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent);
+    color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+  .side-nav .sn-head h1 { font-size: 14px; font-weight: 700; margin: 0; line-height: 1.2; }
+  .side-nav .sn-head .xq { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+  .side-nav .sn-stats { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 0 12px;
+    border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+  .side-nav .sn-stat { flex: 1 1 0; min-width: 50px; background: #fafbfc; border: 1px solid var(--line-2);
+    border-radius: 6px; padding: 4px 2px; text-align: center; }
+  .side-nav .sn-stat .v { font-size: 13px; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .side-nav .sn-stat .l { font-size: 10.5px; color: var(--ink-3); }
+  .side-nav .sn-notice { font-size: 11px; color: var(--ink-2); background: #f8f9fc;
+    border-left: 2px solid var(--link); padding: 6px 8px; margin: 0 0 12px; line-height: 1.55;
+    border-radius: 0 4px 4px 0; }
+  .side-nav nav { font-size: 13px; }
+  .side-nav .sn-group { margin-bottom: 4px; }
+  .side-nav .sn-group > summary { list-style: none; cursor: pointer; padding: 7px 8px;
+    border-radius: 6px; font-weight: 700; color: var(--ink); user-select: none;
+    display: flex; align-items: center; gap: 6px; }
+  .side-nav .sn-group > summary::-webkit-details-marker { display: none; }
+  .side-nav .sn-group > summary::before { content: "▸"; font-size: 10px; color: var(--ink-3);
+    transition: transform .15s; display: inline-block; width: 10px; }
+  .side-nav .sn-group[open] > summary::before { transform: rotate(90deg); }
+  .side-nav .sn-group > summary:hover { background: #f0f3f8; }
+  .side-nav .sn-link { display: flex; align-items: center; gap: 6px; padding: 6px 8px 6px 24px;
+    color: var(--ink-2); text-decoration: none; border-radius: 6px; font-size: 12.5px;
+    border-left: 2px solid transparent; margin: 1px 0; transition: all .12s; }
+  .side-nav .sn-link:hover { background: #f0f3f8; color: var(--ink); }
+  .side-nav .sn-link.active { background: rgba(9,132,227,0.10); color: var(--link);
+    border-left-color: var(--link); font-weight: 600; }
+  .side-nav .sn-top { display: flex; align-items: center; gap: 6px; padding: 7px 8px;
+    border-radius: 6px; color: var(--ink); text-decoration: none; font-weight: 700;
+    border-left: 2px solid transparent; margin: 1px 0 4px; }
+  .side-nav .sn-top:hover { background: #f0f3f8; }
+  .side-nav .sn-top.active { background: rgba(9,132,227,0.10); color: var(--link);
+    border-left-color: var(--link); }
+  .side-nav .sn-foot { padding-top: 12px; border-top: 1px solid var(--line);
+    font-size: 11px; color: var(--ink-3); line-height: 1.6; margin-top: 8px; }
+  .side-nav .sn-foot a { color: var(--link); text-decoration: none; }
+  .main-content { min-width: 0; padding: 16px 22px 32px; }
+  /* 各主区 section 锚点偏移（避免 sticky nav 遮挡） */
+  .backtest, .daily, .mynotes-form, .mynotes-result, .analyst, .posts-anchor {
+    scroll-margin-top: 16px; }
+
+  /* 移动端 < 900px：侧栏横向贴顶 / 折叠 */
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: 1fr; }
+    .side-nav { position: static; max-height: none; border-right: none;
+      border-bottom: 1px solid var(--line); padding: 12px 14px; }
+    .side-nav .sn-head { padding-bottom: 8px; margin-bottom: 8px; }
+    .side-nav .sn-stats { padding-bottom: 8px; margin-bottom: 8px; }
+    .side-nav .sn-notice { display: none; }
+    .main-content { padding: 12px 14px 24px; }
+  }
+
   /* 观点回测面板 */
   .backtest { margin-top: 16px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 20px; box-shadow: var(--shadow); }
   .backtest .bt-h { font-size: 16px; font-weight: 600; color: var(--ink); display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
@@ -375,91 +438,66 @@
   .backtest .bt-sig .txt a { color: var(--link); text-decoration: none; }
   .backtest .bt-note { font-size: 12px; color: var(--ink-3); margin-top: 12px; line-height: 1.7; }
 
-  /* 我的投资笔记 — 侧边栏布局（宽屏两列：左 320px sticky 表单+索引，右主区放回测） */
-  .mynotes {
+  /* 我的投资笔记 — 拆为两个独立 section（表单 + 回测结果） */
+  .mynotes-form, .mynotes-result {
     margin-top: 16px;
     background: #fff;
     border: 1px solid var(--line);
     border-radius: 14px;
     padding: 18px 20px 20px;
     box-shadow: var(--shadow);
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
   }
-  .mynotes .bt-h .badge { background: linear-gradient(135deg, #0984e3, #0066cc); }
-  /* 侧栏：sticky，溢出可滚 */
-  .mynotes .mn-side {
-    position: sticky;
-    top: 12px;
-    align-self: start;
-    max-height: calc(100vh - 24px);
-    overflow-y: auto;
-    padding-right: 4px;
-  }
-  .mynotes .mn-side::-webkit-scrollbar { width: 6px; }
-  .mynotes .mn-side::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
-  /* 侧栏标题区 */
-  .mynotes .mn-head { border-bottom: 1px dashed var(--line-2); padding-bottom: 10px; margin-bottom: 12px; }
-  .mynotes .mn-sub { font-size: 12px; color: var(--ink-3); margin-top: 6px; line-height: 1.6; }
+  .mynotes-form .bt-h .badge,
+  .mynotes-result .bt-h .badge { background: linear-gradient(135deg, #0984e3, #0066cc); }
   /* 表单：单列满宽 */
-  .mynotes .mn-form { background: #f8f9fc; border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 12px 10px; }
-  .mynotes .mn-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .mynotes .mn-row2 label { font-size: 11.5px; color: var(--ink-3); display: flex; flex-direction: column; gap: 3px; }
-  .mynotes .mn-row2 input, .mynotes .mn-row2 select { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; width: 100%; box-sizing: border-box; }
-  .mynotes .mn-full { display: flex; flex-direction: column; gap: 3px; margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
-  .mynotes .mn-full input { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; width: 100%; box-sizing: border-box; }
-  .mynotes textarea { width: 100%; margin-top: 8px; min-height: 56px; font-size: 13px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; resize: vertical; box-sizing: border-box; }
-  .mynotes .mn-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
-  .mynotes .mn-actions button, .mynotes .mn-imp { font-size: 12.5px; padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 20px; cursor: pointer; color: var(--ink-2); }
-  .mynotes .mn-actions #mn-add { background: var(--link); color: #fff; border-color: var(--link); }
-  .mynotes .mn-actions #mn-add:hover { background: #0052a3; }
-  .mynotes .mn-actions button:hover { background: #f0f3f8; }
-  .mynotes .mn-imp { display: inline-flex; align-items: center; gap: 6px; }
-  .mynotes .mn-msg { font-size: 11.5px; color: var(--green); display: block; margin-top: 6px; line-height: 1.5; }
-  /* 侧栏笔记索引 */
-  .mynotes .mn-index { margin-top: 14px; }
-  .mynotes .mn-index-h { font-size: 12px; color: var(--ink-3); margin-bottom: 6px; }
-  .mynotes .mn-index-list { display: flex; flex-direction: column; gap: 6px; }
-  .mynotes .mn-compact {
+  .mynotes-form .mn-form { background: #f8f9fc; border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 12px 10px; }
+  .mynotes-form .mn-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mynotes-form .mn-row2 label { font-size: 11.5px; color: var(--ink-3); display: flex; flex-direction: column; gap: 3px; }
+  .mynotes-form .mn-row2 input, .mynotes-form .mn-row2 select { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; width: 100%; box-sizing: border-box; }
+  .mynotes-form .mn-full { display: flex; flex-direction: column; gap: 3px; margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
+  .mynotes-form .mn-full input { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; width: 100%; box-sizing: border-box; }
+  .mynotes-form textarea { width: 100%; margin-top: 8px; min-height: 56px; font-size: 13px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; resize: vertical; box-sizing: border-box; }
+  .mynotes-form .mn-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+  .mynotes-form .mn-actions button, .mynotes-form .mn-imp { font-size: 12.5px; padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 20px; cursor: pointer; color: var(--ink-2); }
+  .mynotes-form .mn-actions #mn-add { background: var(--link); color: #fff; border-color: var(--link); }
+  .mynotes-form .mn-actions #mn-add:hover { background: #0052a3; }
+  .mynotes-form .mn-actions button:hover { background: #f0f3f8; }
+  .mynotes-form .mn-imp { display: inline-flex; align-items: center; gap: 6px; }
+  .mynotes-form .mn-msg { font-size: 11.5px; color: var(--green); display: block; margin-top: 6px; line-height: 1.5; }
+  /* 笔记索引（点击跳到回测明细） */
+  .mynotes-form .mn-index { margin-top: 14px; }
+  .mynotes-form .mn-index-h { font-size: 12px; color: var(--ink-3); margin-bottom: 6px; }
+  .mynotes-form .mn-index-list { display: flex; flex-direction: column; gap: 6px; }
+  .mynotes-form .mn-compact {
     border: 1px solid var(--line-2); border-radius: 8px; padding: 6px 8px;
     font-size: 12px; background: #fafbfc; cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
   }
-  .mynotes .mn-compact:hover { background: #f0f3f8; border-color: var(--link); }
-  .mynotes .mn-compact .top { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-  .mynotes .mn-compact .st.bull { color: var(--green); font-weight: 700; }
-  .mynotes .mn-compact .st.bear { color: var(--accent); font-weight: 700; }
-  .mynotes .mn-compact .date { color: var(--ink-3); font-size: 11.5px; }
-  .mynotes .mn-compact .code { font-weight: 600; }
-  .mynotes .mn-compact .dur { font-size: 11px; padding: 0 6px; border-radius: 10px; border: 1px solid var(--line-2); }
-  .mynotes .mn-compact .status { margin-left: auto; font-size: 11px; color: var(--ink-3); }
-  .mynotes .mn-compact .status.local { color: #b8860b; }
-  .mynotes .mn-compact .status.closed { color: var(--green); }
-  .mynotes .mn-compact .txt { color: var(--ink-2); font-size: 11.5px; line-height: 1.5; margin-top: 3px;
+  .mynotes-form .mn-compact:hover { background: #f0f3f8; border-color: var(--link); }
+  .mynotes-form .mn-compact .top { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .mynotes-form .mn-compact .st.bull { color: var(--green); font-weight: 700; }
+  .mynotes-form .mn-compact .st.bear { color: var(--accent); font-weight: 700; }
+  .mynotes-form .mn-compact .date { color: var(--ink-3); font-size: 11.5px; }
+  .mynotes-form .mn-compact .code { font-weight: 600; }
+  .mynotes-form .mn-compact .dur { font-size: 11px; padding: 0 6px; border-radius: 10px; border: 1px solid var(--line-2); }
+  .mynotes-form .mn-compact .status { margin-left: auto; font-size: 11px; color: var(--ink-3); }
+  .mynotes-form .mn-compact .status.local { color: #b8860b; }
+  .mynotes-form .mn-compact .status.closed { color: var(--green); }
+  .mynotes-form .mn-compact .txt { color: var(--ink-2); font-size: 11.5px; line-height: 1.5; margin-top: 3px;
     overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-  /* 主区 */
-  .mynotes .mn-main { min-width: 0; }
-  .mynotes .mn-side { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; overflow-x: hidden; padding-right: 6px; overscroll-behavior: contain; }
-  .mynotes .mn-side::-webkit-scrollbar { width: 6px; }
-  .mynotes .mn-side::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
-  .mynotes .mn-main .bt-h { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; }
-  .mynotes .mn-main .bt-sub { font-size: 12px; color: var(--ink-3); margin: 4px 0 14px; }
-  .mynotes .mn-note { border-left: 3px solid var(--line-2); background: #fafbfc; border-radius: 0 8px 8px 0; padding: 8px 11px; margin-bottom: 8px; font-size: 12.5px; scroll-margin-top: 12px; }
-  .mynotes .mn-note:last-child { margin-bottom: 0; }
-  .mynotes .mn-note.highlight { border-left-color: var(--link); background: #eef5fc; }
-  .mynotes .mn-note .meta { display: flex; gap: 8px; align-items: center; color: var(--ink-3); font-size: 11.5px; margin-bottom: 3px; flex-wrap: wrap; }
-  .mynotes .mn-note .tag-local { background: #ffeaa7; color: #b8860b; padding: 1px 8px; border-radius: 20px; font-weight: 600; }
-  .mynotes .mn-note .tag-back { background: #dfe6e9; color: #636e72; padding: 1px 8px; border-radius: 20px; }
-  .mynotes .mn-note .txt { color: var(--ink); line-height: 1.6; }
-  .mynotes .mn-note .txt a { color: var(--link); text-decoration: none; }
-  .mynotes .mn-note .st.bull { color: var(--green); font-weight: 700; }
-  .mynotes .mn-note .st.bear { color: var(--accent); font-weight: 700; }
-  /* 移动端堆叠 */
-  @media (max-width: 900px) {
-    .mynotes { grid-template-columns: 1fr; padding: 14px 14px 16px; }
-    .mynotes .mn-side { position: static; max-height: none; overflow: visible; padding-right: 0; }
-  }
+  /* 回测明细卡片 */
+  .mynotes-result .bt-h { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; }
+  .mynotes-result .bt-sub { font-size: 12px; color: var(--ink-3); margin: 4px 0 14px; }
+  .mynotes-result .mn-note { border-left: 3px solid var(--line-2); background: #fafbfc; border-radius: 0 8px 8px 0; padding: 8px 11px; margin-bottom: 8px; font-size: 12.5px; scroll-margin-top: 12px; }
+  .mynotes-result .mn-note:last-child { margin-bottom: 0; }
+  .mynotes-result .mn-note.highlight { border-left-color: var(--link); background: #eef5fc; }
+  .mynotes-result .mn-note .meta { display: flex; gap: 8px; align-items: center; color: var(--ink-3); font-size: 11.5px; margin-bottom: 3px; flex-wrap: wrap; }
+  .mynotes-result .mn-note .tag-local { background: #ffeaa7; color: #b8860b; padding: 1px 8px; border-radius: 20px; font-weight: 600; }
+  .mynotes-result .mn-note .tag-back { background: #dfe6e9; color: #636e72; padding: 1px 8px; border-radius: 20px; }
+  .mynotes-result .mn-note .txt { color: var(--ink); line-height: 1.6; }
+  .mynotes-result .mn-note .txt a { color: var(--link); text-decoration: none; }
+  .mynotes-result .mn-note .st.bull { color: var(--green); font-weight: 700; }
+  .mynotes-result .mn-note .st.bear { color: var(--accent); font-weight: 700; }
 
   .loadmore {
     display: block; margin: 16px auto 0; padding: 9px 22px; font-size: 13px;
@@ -476,29 +514,45 @@
 </head>
 <body>
 <div class="wrap">
-
-  <div class="hero">
-    <div class="avatar">药</div>
-    <div>
-      <h1>metalslime · 雪球药神</h1>
-      <div class="sub">
-        <a href="https://xueqiu.com/u/2292705444" target="_blank" rel="noopener">xueqiu.com/u/2292705444</a>
-        &nbsp;·&nbsp; 创新药与 AI 产业链观察
+  <!-- 全局侧边栏导航 -->
+  <aside class="side-nav">
+    <div class="sn-head">
+      <div class="avatar">药</div>
+      <div>
+        <h1>metalslime · 雪球药神</h1>
+        <div class="xq"><a href="https://xueqiu.com/u/2292705444" target="_blank" rel="noopener" style="color:var(--ink-3);text-decoration:none">xueqiu.com/u/2292705444</a></div>
       </div>
     </div>
-    <div class="stats">
-      <div class="stat"><div class="v" id="stat-total">--</div><div class="l">已收录</div></div>
-      <div class="stat"><div class="v" id="stat-post">--</div><div class="l">原贴</div></div>
-      <div class="stat"><div class="v" id="stat-comment">--</div><div class="l">评论</div></div>
-      <div class="stat"><div class="v" id="stat-repost">--</div><div class="l">转发</div></div>
-      <div class="stat"><div class="v" id="stat-range">--</div><div class="l">时间跨度</div></div>
+    <div class="sn-stats">
+      <div class="sn-stat"><div class="v" id="stat-total">--</div><div class="l">已收录</div></div>
+      <div class="sn-stat"><div class="v" id="stat-post">--</div><div class="l">原贴</div></div>
+      <div class="sn-stat"><div class="v" id="stat-comment">--</div><div class="l">评论</div></div>
+      <div class="sn-stat"><div class="v" id="stat-repost">--</div><div class="l">转发</div></div>
+      <div class="sn-stat"><div class="v" id="stat-range">--</div><div class="l">跨度</div></div>
     </div>
-  </div>
+    <div class="sn-notice">📌 原贴+评论+转发全收录；评论/转发已内嵌「被评论/被转的原文」便于理解上下文。数据按月分块，首屏仅加载索引+最新月。</div>
+    <nav id="sidenav">
+      <a class="sn-top" href="#daily">📅 每日复盘</a>
+      <details class="sn-group" open>
+        <summary>💊 药神板块</summary>
+        <a class="sn-link" href="#analyst" data-target="analyst">首席观点</a>
+        <a class="sn-link" href="#backtest" data-target="backtest">回测情况</a>
+        <a class="sn-link" href="#posts" data-target="posts">发言情况</a>
+      </details>
+      <details class="sn-group" open>
+        <summary>📝 我的投资笔记</summary>
+        <a class="sn-link" href="#mn-form" data-target="mn-form">录入笔记</a>
+        <a class="sn-link" href="#mn-result" data-target="mn-result">回测结果</a>
+      </details>
+    </nav>
+    <div class="sn-foot">
+      数据每 12 小时自动更新 ·<br>
+      <a href="https://github.com/a9f7/xueqiuyaoshen" target="_blank" rel="noopener">源码仓库</a>
+    </div>
+  </aside>
 
-  <div class="notice">
-    📌 <b>原贴 + 评论 + 转发 全收录</b> —— 评论/转发已内嵌「被评论/被转的原文」便于理解上下文；并新增
-    <b>自选股变化追踪</b>（点上方「自选股变化」）。数据按月分块，首屏仅加载索引+最新月，自动化每 12 小时增量回填。
-  </div>
+  <!-- 主区：所有 section -->
+  <main class="main-content">
 
   <section class="analyst" id="analyst" style="display:none">
     <div class="an-head">
@@ -561,6 +615,56 @@
     </div>
   </section>
 
+  <section class="backtest" id="backtest" style="display:none">
+    <div class="bt-h"><span class="badge">回测</span> 观点回测 · 他说得准不准（β剥离 + 命中率/IC）</div>
+    <div class="bt-sub" id="bt-sub"></div>
+    <div class="bt-cards" id="bt-cards"></div>
+    <div class="bt-sec-h">各窗口命中率（T+N 日实际涨跌方向与观点一致的比例，带样本量 N）</div>
+    <div class="bt-horizon" id="bt-horizon"></div>
+    <div class="bt-sec-h" style="margin-top:16px">分板块命中率（样本量 ≥ 3）</div>
+    <div id="bt-sector"></div>
+    <div class="bt-sec-h" style="margin-top:16px">分立场命中率（以 T+5 计）</div>
+    <div class="bt-stance" id="bt-stance"></div>
+    <div class="bt-sec-h" style="margin-top:18px">匹配久期回测（按观点表述的短/中期分别验证，未明确久期不计入）</div>
+    <div id="bt-duration"></div>
+    <div class="bt-sec-h" style="margin-top:16px">近期观点信号（窗口未闭合 · 跟随 / 观望 / 反向）</div>
+    <div id="bt-signals"></div>
+    <div class="bt-note" id="bt-note"></div>
+  </section>
+
+  <!-- 发言情况：搜索 + 标签 + 自选股 + 时间线 -->
+  <section class="posts-anchor" id="posts">
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="搜索发言/评论内容、股票代码、@提及…">
+      <select id="month"><option value="">全部已加载月份</option></select>
+      <select id="kind">
+        <option value="">全部类型</option>
+        <option value="post">原贴</option>
+        <option value="comment">评论</option>
+        <option value="repost">转发</option>
+      </select>
+      <button id="ssBtn">自选股变化</button>
+      <button id="loadAll">加载全部</button>
+      <div class="meta" id="meta">加载中…</div>
+    </div>
+
+    <div class="tagfilter" id="tagfilter">
+      <span class="tf-label">标签筛选</span>
+      <div class="tf-chips" id="tf-chips"></div>
+      <button class="tf-clear" id="tfClear">清除</button>
+    </div>
+
+    <div class="selfstock" id="selfstock">
+      <h2>自选股 / 关注股票变化</h2>
+      <div class="ss-sub" id="ss-sub"></div>
+      <div class="ss-summary" id="ss-summary"></div>
+      <div class="ss-list" id="ss-list"></div>
+    </div>
+
+    <div class="timeline" id="timeline"></div>
+    <button id="loadMore" class="loadmore" hidden>加载更多</button>
+  </section>
+
   <section class="daily" id="daily" style="display:none">
     <div class="d-head">
       <div>
@@ -596,108 +700,56 @@
     </div>
   </section>
 
-  <section class="backtest" id="backtest" style="display:none">
-    <div class="bt-h"><span class="badge">回测</span> 观点回测 · 他说得准不准（β剥离 + 命中率/IC）</div>
-    <div class="bt-sub" id="bt-sub"></div>
-    <div class="bt-cards" id="bt-cards"></div>
-    <div class="bt-sec-h">各窗口命中率（T+N 日实际涨跌方向与观点一致的比例，带样本量 N）</div>
-    <div class="bt-horizon" id="bt-horizon"></div>
-    <div class="bt-sec-h" style="margin-top:16px">分板块命中率（样本量 ≥ 3）</div>
-    <div id="bt-sector"></div>
-    <div class="bt-sec-h" style="margin-top:16px">分立场命中率（以 T+5 计）</div>
-    <div class="bt-stance" id="bt-stance"></div>
-    <div class="bt-sec-h" style="margin-top:18px">匹配久期回测（按观点表述的短/中期分别验证，未明确久期不计入）</div>
-    <div id="bt-duration"></div>
-    <div class="bt-sec-h" style="margin-top:16px">近期观点信号（窗口未闭合 · 跟随 / 观望 / 反向）</div>
-    <div id="bt-signals"></div>
-    <div class="bt-note" id="bt-note"></div>
-  </section>
-
-  <section class="mynotes" id="mynotes" style="display:none">
-    <!-- 左侧栏：表单 + 已录入笔记索引（sticky，可滚） -->
-    <div class="mn-side">
-      <div class="mn-head">
-        <div class="bt-h"><span class="badge">我的</span> 投资笔记</div>
-        <div class="mn-sub" id="mn-sub-side"></div>
+  <!-- 我的投资笔记：录入 -->
+  <section class="mynotes-form" id="mn-form" style="display:none">
+    <div class="bt-h"><span class="badge">我的</span> 录入笔记</div>
+    <div class="bt-sub">填写后保存到浏览器本地；导出 JSON 提交到 <code>data/my_notes.json</code> 后流水线自动回测。</div>
+    <div class="mn-form">
+      <div class="mn-row2">
+        <label>日期<input type="date" id="mn-date"></label>
+        <label>立场<select id="mn-stance"><option>看多</option><option>看空</option></select></label>
       </div>
-
-      <div class="mn-form">
-        <div class="mn-row2">
-          <label>日期<input type="date" id="mn-date"></label>
-          <label>立场<select id="mn-stance"><option>看多</option><option>看空</option></select></label>
-        </div>
-        <label class="mn-full">股票代码<input type="text" id="mn-code" placeholder="SH600519 / SZ000858 / HK00700"></label>
-        <label class="mn-full">久期<select id="mn-dur">
-          <option value="">自动(按文本)</option>
-          <option>短期</option>
-          <option>中长期</option>
-          <option>超长期</option>
-          <option>未明确</option>
-        </select></label>
-        <textarea id="mn-text" placeholder="笔记内容…（含 短线/日内/十年/长期 等词会自动判定久期）"></textarea>
-        <div class="mn-actions">
-          <button id="mn-add">添加笔记</button>
-          <button id="mn-export">导出 JSON</button>
-          <label class="mn-imp">导入 JSON<input type="file" id="mn-import" accept="application/json"></label>
-        </div>
-        <span id="mn-msg" class="mn-msg"></span>
+      <label class="mn-full">股票代码<input type="text" id="mn-code" placeholder="SH600519 / SZ000858 / HK00700"></label>
+      <label class="mn-full">久期<select id="mn-dur">
+        <option value="">自动(按文本)</option>
+        <option>短期</option>
+        <option>中长期</option>
+        <option>超长期</option>
+        <option>未明确</option>
+      </select></label>
+      <textarea id="mn-text" placeholder="笔记内容…（含 短线/日内/十年/长期 等词会自动判定久期）"></textarea>
+      <div class="mn-actions">
+        <button id="mn-add">添加笔记</button>
+        <button id="mn-export">导出 JSON</button>
+        <label class="mn-imp">导入 JSON<input type="file" id="mn-import" accept="application/json"></label>
       </div>
-
-      <div class="mn-index">
-        <div class="mn-index-h">笔记索引（点击跳到主区明细）</div>
-        <div class="mn-index-list" id="mn-compact-list"></div>
-      </div>
+      <span id="mn-msg" class="mn-msg"></span>
     </div>
-
-    <!-- 主区：回测总览 + 匹配久期 + 逐条笔记回测明细 -->
-    <div class="mn-main">
-      <div class="bt-h"><span class="badge">回测</span> 我的观点回测（β剥离 + 命中率/IC，与观点回测同源）</div>
-      <div class="bt-sub" id="mn-sub"></div>
-
-      <div class="bt-sec-h">我的回测总览</div>
-      <div class="bt-cards" id="mn-cards"></div>
-      <div id="mn-duration"></div>
-
-      <div class="bt-sec-h" style="margin-top:16px">我的笔记（含逐窗口回测；本地新增的标「待回测」）</div>
-      <div id="mn-list"></div>
+    <div class="mn-index">
+      <div class="mn-index-h">笔记索引（点击跳到回测明细）</div>
+      <div class="mn-index-list" id="mn-compact-list"></div>
     </div>
   </section>
 
-  <div class="toolbar">
-    <input type="search" id="q" placeholder="搜索发言/评论内容、股票代码、@提及…">
-    <select id="month"><option value="">全部已加载月份</option></select>
-    <select id="kind">
-      <option value="">全部类型</option>
-      <option value="post">原贴</option>
-      <option value="comment">评论</option>
-      <option value="repost">转发</option>
-    </select>
-    <button id="ssBtn">自选股变化</button>
-    <button id="loadAll">加载全部</button>
-    <div class="meta" id="meta">加载中…</div>
-  </div>
+  <!-- 我的投资笔记：回测结果 -->
+  <section class="mynotes-result" id="mn-result" style="display:none">
+    <div class="bt-h"><span class="badge">回测</span> 我的观点回测（β剥离 + 命中率/IC，与观点回测同源）</div>
+    <div class="bt-sub" id="mn-sub"></div>
 
-  <div class="tagfilter" id="tagfilter">
-    <span class="tf-label">标签筛选</span>
-    <div class="tf-chips" id="tf-chips"></div>
-    <button class="tf-clear" id="tfClear">清除</button>
-  </div>
+    <div class="bt-sec-h">我的回测总览</div>
+    <div class="bt-cards" id="mn-cards"></div>
+    <div id="mn-duration"></div>
 
-  <div class="selfstock" id="selfstock">
-    <h2>自选股 / 关注股票变化</h2>
-    <div class="ss-sub" id="ss-sub"></div>
-    <div class="ss-summary" id="ss-summary"></div>
-    <div class="ss-list" id="ss-list"></div>
-  </div>
-
-  <div class="timeline" id="timeline"></div>
-  <button id="loadMore" class="loadmore" hidden>加载更多</button>
+    <div class="bt-sec-h" style="margin-top:16px">我的笔记（含逐窗口回测；本地新增的标「待回测」）</div>
+    <div id="mn-list"></div>
+  </section>
 
   <footer>
     数据每 12 小时自动更新 ·
     <a href="https://github.com/a9f7/xueqiuyaoshen" target="_blank" rel="noopener">源码仓库</a>
   </footer>
-</div>
+  </main><!-- /.main-content -->
+</div><!-- /.wrap -->
 
 <script>
   const $ = (s, r) => (r || document).querySelector(s);
@@ -985,16 +1037,59 @@
     }
   }
 
+  function initSideNav() {
+    const nav = $("#sidenav"); if (!nav) return;
+    const links = nav.querySelectorAll(".sn-link, .sn-top");
+    links.forEach(a => {
+      a.addEventListener("click", (e) => {
+        const target = a.getAttribute("href");
+        if (!target || !target.startsWith("#")) return;
+        const el = $(target);
+        if (!el) return;
+        e.preventDefault();
+        // 把目标 section 设为 display:block（如果还在 hidden）以便能滚到
+        if (el.style.display === "none") el.style.display = "block";
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+        // 同步激活态
+        links.forEach(x => x.classList.remove("active"));
+        a.classList.add("active");
+        // 把所在 details 展开
+        const group = a.closest(".sn-group");
+        if (group) group.open = true;
+        history.replaceState(null, "", target);
+      });
+    });
+    // IntersectionObserver：当前可见 section 自动高亮
+    const targets = ["daily", "analyst", "backtest", "posts", "mn-form", "mn-result"]
+      .map(id => document.getElementById(id)).filter(Boolean);
+    const obs = new IntersectionObserver((entries) => {
+      // 选最靠近视口顶部且可见的那个
+      const visible = entries.filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (!visible) return;
+      const id = visible.target.id;
+      links.forEach(a => {
+        const t = a.getAttribute("href") || "";
+        a.classList.toggle("active", t === "#" + id);
+        const grp = a.closest(".sn-group");
+        if (grp && t === "#" + id) grp.open = true;
+      });
+    }, { rootMargin: "-80px 0px -55% 0px", threshold: [0, 0.1, 0.3] });
+    targets.forEach(t => obs.observe(t));
+  }
+
   async function load() {
     try {
       postIndex = await fetch("data/posts_index.json", { cache: "no-cache" }).then(r => r.json());
       paintStats();
       buildMonthSelect();
       loadTagIndex();
+      initSideNav();   // 侧栏 nav-link 点击 + IntersectionObserver
       loadAnalyst();   // 非阻塞：小文件，独立渲染，不拖慢时间线
       loadDailyReview();   // 非阻塞：每日首席视角总结面板
       loadBacktest();   // 非阻塞：观点回测面板
       loadMyNotes();   // 非阻塞：我的投资笔记面板
+      initSideNav();   // 侧栏 nav-link 点击 + IntersectionObserver 激活态
       const months = postIndex.months || [];
       // 先加载最新 1 个月（首屏最快），渲染后再后台补齐第 2 个月
       if (months[0]) await loadMonth(months[0].file);
@@ -1502,7 +1597,7 @@
     }
     fetch("data/my_notes_backtest.json", { cache: "no-cache" })
       .then(r => r.json())
-      .then(d => { window.__mnLastData = d; renderMyNotes(d); $("#mynotes").style.display = "block"; })
+      .then(d => { window.__mnLastData = d; renderMyNotes(d); $("#mn-form").style.display = "block"; $("#mn-result").style.display = "block"; })
       .catch(() => { /* 无数据不阻断主流程 */ });
   }
 
