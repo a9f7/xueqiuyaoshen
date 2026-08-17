@@ -1078,7 +1078,7 @@
     $("#bt-sub").textContent =
       `数据源：${ov.benchmark_available ? "东方财富日线（含沪深300基准）" : "基准行情缺失"}` +
       ` · 回测事件 ${ov.n_events || 0} 条（跳过 ${ov.events_skipped || 0}）` +
-      ` · 久期 短期${ov.duration_counts ? ov.duration_counts["短期"] : "?"} / 中长期${ov.duration_counts ? ov.duration_counts["中长期"] : "?"} / 未明确${ov.duration_counts ? ov.duration_counts["未明确"] : "?"}` +
+      ` · 久期 短期${ov.duration_counts ? ov.duration_counts["短期"] : "?"} / 中长期${ov.duration_counts ? ov.duration_counts["中长期"] : "?"} / 超长期${ov.duration_counts ? ov.duration_counts["超长期"] : "?"} / 未明确${ov.duration_counts ? ov.duration_counts["未明确"] : "?"}` +
       ` · 更新于 ${d.generated_at || ""}`;
     // 概览卡片
     const card = (k, v, cls, sub) =>
@@ -1095,7 +1095,7 @@
       a5 != null ? (a5 > 0 ? "good" : "bad") : "", "剥离大盘后");
     $("#bt-cards").innerHTML = cards;
     // 各窗口命中率
-    const hzOrder = [1, 3, 5, 7, 10, 20, 60, 120];
+    const hzOrder = [1, 3, 5, 7, 10, 20, 60, 120, 250, 360, 1000];
     $("#bt-horizon").innerHTML = hzOrder.map(k => {
       const v = hr[String(k)];
       if (v == null) return "";
@@ -1162,7 +1162,8 @@
     $("#bt-signals").innerHTML = sigs.map(s => {
       const cls = s.signal === "跟随" ? "follow" : s.signal === "反向" ? "reverse" : "watch";
       const status = s.closed_horizon ? `T+${s.closed_horizon}已闭合` : "进行中";
-      const durTag = s.duration ? `<span style="color:${s.duration === "短期" ? "#00b894" : (s.duration === "中长期" ? "#6c5ce7" : "var(--ink-3)")}">${s.duration}</span>` : "";
+      const durHue = { "短期": "#00b894", "中长期": "#6c5ce7", "超长期": "#e17055" };
+      const durTag = s.duration ? `<span style="color:${durHue[s.duration] || "var(--ink-3)"}">${s.duration}</span>` : "";
       return `<div class="bt-sig">
         <div class="meta"><span class="sig ${cls}">${s.signal}</span>`
           + `<span>${esc(s.date)}</span><span>${s.stance}</span>`
