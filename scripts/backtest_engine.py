@@ -285,30 +285,27 @@ def _sign(x):
     return 1 if x > 0 else (-1 if x < 0 else 0)
 
 
-def main():
-    print("[backtest] 抽取事件...", flush=True)
-    events = build_events()
-    print(f"[backtest] 可回测事件（看多/看空且含个股）: {len(events)}", flush=True)
-    if not events:
-        _dump_empty("无满足「看多/看空且含具体个股」的发言，无法回测。")
-        return
+def run_backtest(events):
+    """对给定事件列表跑完整回测，返回 out dict（不写文件）。
 
+    events 结构与 build_events() 一致：每条含 date/code/stance/sector/duration/text/url。
+    供「我的投资笔记」等独立来源复用同一套 β剥离 + 匹配久期 + 命中率/IC 逻辑。
+    空列表或全缺行情时返回带 note 的空结构（不写文件，由调用方决定是否落盘）。
+    """
+    if not events:
+        return _empty_out("无满足回测条件的事件（看多/看空且含具体个股）。")
     bench = md.get_kline(PRIMARY_BENCH)
     bench_series = [(r[0], r[2]) for r in bench["rows"]] if bench else None
-    print(f"[backtest] 基准沪深300: {'OK' if bench_series else '缺失(仅算原始收益)'}", flush=True)
-
-    # 预拉取涉及的个股/板块行情
     need = set()
     for ev in events:
-        need.add(md.xq_to_secid(ev["code"]))
-        if ev["sector"] and ev["sector"] in SECTOR_SECID:
+        sid = md.xq_to_secid(ev["code"])
+        if sid:
+            need.add(sid)
+        if ev.get("sector") and ev["sector"] in SECTOR_SECID:
             need.add(SECTOR_SECID[ev["sector"]])
-    print(f"[backtest] 需拉取行情标的: {len(need)}", flush=True)
     for s in need:
         md.get_kline(s)
-
-    # 计算每事件各窗口
-    per_event = []  # {ev, wins, by_horizon}
+    per_event = []
     missing_price = 0
     for ev in events:
         res = compute_event(ev, bench_series)
@@ -316,11 +313,10 @@ def main():
             missing_price += 1
             continue
         per_event.append((ev, res))
-
     if not per_event:
-        _dump_empty("行情数据缺失，无法计算收益（请确认运行环境能访问东方财富 push2his 或新浪财经行情接口）。"
-                    f"已抽取 {len(events)} 条候选事件，待行情可用后重跑即可。")
-        return
+        return _empty_out("行情数据缺失，无法计算收益（请确认运行环境能访问东方财富 push2his 或新浪财经行情接口）。"
+                          f"已抽取 {len(events)} 条候选事件，待行情可用后重跑即可。",
+                          benchmark_available=(bench_series is not None))
 
     # 聚合
     n = len(per_event)
@@ -479,26 +475,39 @@ def main():
         "recent_signals": recent,
         "benchmark_available": bench_series is not None,
     }
-    json.dump(out, open(DATA / "backtest.json", "w", encoding="utf-8"),
-              ensure_ascii=False, indent=2)
-    print(f"[backtest] 完成：{n} 事件（缺行情 {missing_price}）；"
-          f"久期 短期={duration_counts.get('短期',0)} 中长期={duration_counts.get('中长期',0)} 超长期={duration_counts.get('超长期',0)} 未明确={duration_counts.get('未明确',0)}；"
-          f"整体命中率 T+5={overall_hit.get(5)}；IC={overall_ic}；近期信号 {len(recent)} 条 -> data/backtest.json",
-          flush=True)
+    return out
 
 
-def _dump_empty(msg):
-    out = {
+def _empty_out(msg, benchmark_available=None):
+    return {
         "generated_at": datetime.now(__import__("datetime").timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "method": "β剥离 + 命中率/IC",
-        "overall": {"n_events": 0, "events_skipped": 0, "hit_rate_by_horizon": {},
+        "method": "β剥离(个股收益-β×沪深300) + 各窗口命中率/IC；数据源：东方财富/新浪日线",
+        "overall": {"n_events": 0, "events_skipped": 0,
+                    "duration_counts": {"短期": 0, "中长期": 0, "超长期": 0, "未明确": 0},
+                    "hit_rate_by_horizon": {}, "n_by_horizon": {},
                     "ic": None, "avg_alpha_by_horizon": {}},
-        "by_sector": [], "by_stance": {}, "recent_signals": [],
-        "benchmark_available": None, "note": msg,
+        "by_duration": [], "by_sector": [], "by_stance": {}, "recent_signals": [],
+        "benchmark_available": benchmark_available, "note": msg,
     }
+
+
+def main():
+    print("[backtest] 抽取事件...", flush=True)
+    events = build_events()
+    print(f"[backtest] 可回测事件（看多/看空且含个股）: {len(events)}", flush=True)
+    out = run_backtest(events)
     json.dump(out, open(DATA / "backtest.json", "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
-    print("[backtest] 空结果 ->", msg, flush=True)
+    n = out["overall"]["n_events"]
+    if n == 0:
+        print("[backtest] 空结果 ->", out.get("note", ""), flush=True)
+        return
+    dc = out["overall"]["duration_counts"]
+    print(f"[backtest] 完成：{n} 事件（缺行情 {out['overall']['events_skipped']}）；"
+          f"久期 短期={dc['短期']} 中长期={dc['中长期']} 超长期={dc['超长期']} 未明确={dc['未明确']}；"
+          f"整体命中率 T+5={out['overall']['hit_rate_by_horizon'].get('5')}；"
+          f"IC={out['overall']['ic']}；近期信号 {len(out['recent_signals'])} 条 -> data/backtest.json",
+          flush=True)
 
 
 if __name__ == "__main__":

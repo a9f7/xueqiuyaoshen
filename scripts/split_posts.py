@@ -127,4 +127,11 @@ if __name__ == "__main__":
         subprocess.run([sys.executable, str(backtest)], check=False)
     except Exception as e:
         print("[split] 生成 backtest.json 失败（不影响分块）:", e)
+    # 同步生成「我的投资笔记」回测（data/my_notes_backtest.json）：复用同一引擎，对 data/my_notes.json 回测。
+    try:
+        import subprocess
+        mynotes = Path(__file__).resolve().parent / "my_notes_backtest.py"
+        subprocess.run([sys.executable, str(mynotes)], check=False)
+    except Exception as e:
+        print("[split] 生成 my_notes_backtest.json 失败（不影响分块）:", e)
 

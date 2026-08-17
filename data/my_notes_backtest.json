@@ -1,0 +1,443 @@
+{
+  "generated_at": "2026-08-17T03:59:18Z",
+  "method": "β剥离(个股收益-β×沪深300) + 各窗口命中率/IC；数据源：东方财富/新浪日线",
+  "overall": {
+    "n_events": 4,
+    "events_skipped": 0,
+    "duration_counts": {
+      "短期": 1,
+      "中长期": 2,
+      "超长期": 1,
+      "未明确": 0
+    },
+    "hit_rate_by_horizon": {
+      "1": 1.0,
+      "3": 0.75,
+      "5": 0.5,
+      "7": 0.75,
+      "10": 0.5,
+      "20": 0.75,
+      "60": 0.5,
+      "120": 0.75,
+      "250": 0.75,
+      "360": 0.5,
+      "1000": 0.5
+    },
+    "n_by_horizon": {
+      "1": 4,
+      "3": 4,
+      "5": 4,
+      "7": 4,
+      "10": 4,
+      "20": 4,
+      "60": 4,
+      "120": 4,
+      "250": 4,
+      "360": 4,
+      "1000": 2
+    },
+    "ic": 0.333,
+    "avg_alpha_by_horizon": {
+      "1": 0.0079,
+      "3": 0.0122,
+      "5": 0.0405,
+      "7": 0.0331,
+      "10": 0.0416,
+      "20": 0.0533,
+      "60": 0.0124,
+      "120": 0.0185,
+      "250": -0.0142,
+      "360": -0.0885,
+      "1000": -0.0764
+    }
+  },
+  "by_duration": [
+    {
+      "duration": "短期",
+      "label": "T+1/3/5（短窗口）",
+      "hue": "#00b894",
+      "n_events": 1,
+      "n_matched": 3,
+      "matched_hit_rate": 0.667,
+      "hit_rate_by_horizon": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 0.0
+      },
+      "n_by_horizon": {
+        "1": 1,
+        "3": 1,
+        "5": 1
+      },
+      "ic": 0.333,
+      "avg_alpha": -0.0033
+    },
+    {
+      "duration": "中长期",
+      "label": "T+20/60/120（长窗口）",
+      "hue": "#6c5ce7",
+      "n_events": 2,
+      "n_matched": 6,
+      "matched_hit_rate": 0.5,
+      "hit_rate_by_horizon": {
+        "20": 0.5,
+        "60": 0.5,
+        "120": 0.5
+      },
+      "n_by_horizon": {
+        "20": 2,
+        "60": 2,
+        "120": 2
+      },
+      "ic": 0.0,
+      "avg_alpha": -0.0345
+    },
+    {
+      "duration": "超长期",
+      "label": "T+250/360/1000（十年级）",
+      "hue": "#e17055",
+      "n_events": 1,
+      "n_matched": 3,
+      "matched_hit_rate": 0.333,
+      "hit_rate_by_horizon": {
+        "250": 1.0,
+        "360": 0.0,
+        "1000": 0.0
+      },
+      "n_by_horizon": {
+        "250": 1,
+        "360": 1,
+        "1000": 1
+      },
+      "ic": -0.333,
+      "avg_alpha": 0.1157
+    }
+  ],
+  "by_sector": [],
+  "by_stance": {
+    "看多": {
+      "n": 3,
+      "hit_rate": 0.6666666666666666
+    },
+    "看空": {
+      "n": 1,
+      "hit_rate": 0.0
+    }
+  },
+  "recent_signals": [
+    {
+      "date": "2023-09-15",
+      "code": "SH601318",
+      "stance": "看多",
+      "sector": "",
+      "duration": "中长期",
+      "signal": "观望",
+      "basis_hit_rate": 0.5,
+      "closed_horizon": 360,
+      "url": "",
+      "text": "中长期看多中国平安：寿险改革见底，低估值+高分红，拿住等价值回归。示例笔记，可删除。"
+    }
+  ],
+  "benchmark_available": true,
+  "notes": [
+    {
+      "date": "2023-03-10",
+      "code": "SH600519",
+      "stance": "看多",
+      "duration": "短期",
+      "text": "短线看多茅台：回调到1800附近企稳，短线博弈反弹，止损1750。示例笔记，可删除。",
+      "url": "",
+      "closed_horizon": 360,
+      "results": {
+        "1": {
+          "ret": 0.0069,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "3": {
+          "ret": 0.0005,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "5": {
+          "ret": -0.0046,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "7": {
+          "ret": 0.0143,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "10": {
+          "ret": 0.0164,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "20": {
+          "ret": 0.0124,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "60": {
+          "ret": -0.0469,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "120": {
+          "ret": 0.0663,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "250": {
+          "ret": -0.0234,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "360": {
+          "ret": -0.1753,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "1000": null
+      }
+    },
+    {
+      "date": "2022-07-01",
+      "code": "SZ300750",
+      "stance": "看空",
+      "duration": "中长期",
+      "text": "中长期看空宁德时代：估值仍偏高，产能过剩周期未结束，长线持有性价比不足。示例笔记，可删除。",
+      "url": "",
+      "closed_horizon": 1000,
+      "results": {
+        "1": {
+          "ret": -0.0012,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "3": {
+          "ret": -0.0012,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "5": {
+          "ret": 0.0351,
+          "sign": 1,
+          "hit": false,
+          "closed": true
+        },
+        "7": {
+          "ret": -0.0363,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "10": {
+          "ret": 0.0198,
+          "sign": 1,
+          "hit": false,
+          "closed": true
+        },
+        "20": {
+          "ret": -0.0269,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "60": {
+          "ret": -0.1798,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "120": {
+          "ret": -0.2272,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "250": {
+          "ret": -0.5657,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "360": {
+          "ret": -0.7046,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        },
+        "1000": {
+          "ret": -0.2463,
+          "sign": -1,
+          "hit": true,
+          "closed": true
+        }
+      }
+    },
+    {
+      "date": "2021-01-08",
+      "code": "SH600036",
+      "stance": "看多",
+      "duration": "超长期",
+      "text": "超长期看多招商银行：十年十倍逻辑，永久持有吃分红复利的标的。示例笔记，可删除。",
+      "url": "",
+      "closed_horizon": 1000,
+      "results": {
+        "1": {
+          "ret": 0.0391,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "3": {
+          "ret": 0.0601,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "5": {
+          "ret": 0.0974,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "7": {
+          "ret": 0.1127,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "10": {
+          "ret": 0.1082,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "20": {
+          "ret": 0.1747,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "60": {
+          "ret": 0.0828,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "120": {
+          "ret": 0.0708,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "250": {
+          "ret": 0.0665,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "360": {
+          "ret": -0.147,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "1000": {
+          "ret": -0.0976,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        }
+      }
+    },
+    {
+      "date": "2023-09-15",
+      "code": "SH601318",
+      "stance": "看多",
+      "duration": "中长期",
+      "text": "中长期看多中国平安：寿险改革见底，低估值+高分红，拿住等价值回归。示例笔记，可删除。",
+      "url": "",
+      "closed_horizon": 360,
+      "results": {
+        "1": {
+          "ret": 0.002,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "3": {
+          "ret": -0.0063,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "5": {
+          "ret": 0.023,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "7": {
+          "ret": -0.013,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "10": {
+          "ret": -0.023,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "20": {
+          "ret": -0.0663,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "60": {
+          "ret": -0.2152,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "120": {
+          "ret": -0.148,
+          "sign": -1,
+          "hit": false,
+          "closed": true
+        },
+        "250": {
+          "ret": 0.1604,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "360": {
+          "ret": 0.099,
+          "sign": 1,
+          "hit": true,
+          "closed": true
+        },
+        "1000": null
+      }
+    }
+  ],
+  "note_skipped": 0
+}

@@ -66,6 +66,7 @@ DATA_FILES = [
     "selfstock.json", "selfstock_raw.json", "posts_index.json",
     "tags_index.json", "analysis_recent.json", "user.json", "xueqiu.db",
     "daily_review.md", "daily_review.json", "backtest.json",
+    "my_notes.json", "my_notes_backtest.json",
 ]
 
 
