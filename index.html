@@ -385,9 +385,13 @@
     font-size: 11px; color: var(--ink-3); line-height: 1.6; margin-top: 8px; }
   .side-nav .sn-foot a { color: var(--link); text-decoration: none; }
   .main-content { min-width: 0; padding: 16px 22px 32px; }
-  /* 各主区 section 锚点偏移（避免 sticky nav 遮挡） */
-  .backtest, .daily, .mynotes-form, .mynotes-result, .analyst, .posts-anchor {
-    scroll-margin-top: 16px; }
+
+  /* === 单视图切换：一次只显示一个板块（侧栏点哪显示哪） === */
+  .view { animation: viewFadeIn .22s ease-out; }
+  @keyframes viewFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .view { animation: none; } }
+
+  /* 各主区 section 锚点偏移（侧栏点哪显示哪；切换时滚到顶即可，不再使用 scrollIntoView） */
 
   /* 移动端 < 900px：侧栏横向贴顶 / 折叠 */
   @media (max-width: 900px) {
@@ -554,7 +558,7 @@
   <!-- 主区：所有 section -->
   <main class="main-content">
 
-  <section class="analyst" id="analyst" style="display:none">
+  <section class="analyst view" id="analyst" data-view="analyst" hidden>
     <div class="an-head">
       <div>
         <div class="an-title"><span class="dot">●</span> 首席视角 · 近 <span id="an-days">15</span> 天发言解读</div>
@@ -615,7 +619,7 @@
     </div>
   </section>
 
-  <section class="backtest" id="backtest" style="display:none">
+  <section class="backtest view" id="backtest" data-view="backtest" hidden>
     <div class="bt-h"><span class="badge">回测</span> 观点回测 · 他说得准不准（β剥离 + 命中率/IC）</div>
     <div class="bt-sub" id="bt-sub"></div>
     <div class="bt-cards" id="bt-cards"></div>
@@ -633,7 +637,7 @@
   </section>
 
   <!-- 发言情况：搜索 + 标签 + 自选股 + 时间线 -->
-  <section class="posts-anchor" id="posts">
+  <section class="posts-anchor view" id="posts" data-view="posts">
     <div class="toolbar">
       <input type="search" id="q" placeholder="搜索发言/评论内容、股票代码、@提及…">
       <select id="month"><option value="">全部已加载月份</option></select>
@@ -665,7 +669,7 @@
     <button id="loadMore" class="loadmore" hidden>加载更多</button>
   </section>
 
-  <section class="daily" id="daily" style="display:none">
+  <section class="daily view" id="daily" data-view="daily" hidden>
     <div class="d-head">
       <div>
         <div class="d-title"><span class="badge">每日</span> 首席视角 · 每日发言标的与观点总结</div>
@@ -701,7 +705,7 @@
   </section>
 
   <!-- 我的投资笔记：录入 -->
-  <section class="mynotes-form" id="mn-form" style="display:none">
+  <section class="mynotes-form view" id="mn-form" data-view="mn-form" hidden>
     <div class="bt-h"><span class="badge">我的</span> 录入笔记</div>
     <div class="bt-sub">填写后保存到浏览器本地；导出 JSON 提交到 <code>data/my_notes.json</code> 后流水线自动回测。</div>
     <div class="mn-form">
@@ -732,7 +736,7 @@
   </section>
 
   <!-- 我的投资笔记：回测结果 -->
-  <section class="mynotes-result" id="mn-result" style="display:none">
+  <section class="mynotes-result view" id="mn-result" data-view="mn-result" hidden>
     <div class="bt-h"><span class="badge">回测</span> 我的观点回测（β剥离 + 命中率/IC，与观点回测同源）</div>
     <div class="bt-sub" id="mn-sub"></div>
 
@@ -1037,45 +1041,55 @@
     }
   }
 
-  function initSideNav() {
-    const nav = $("#sidenav"); if (!nav) return;
-    const links = nav.querySelectorAll(".sn-link, .sn-top");
-    links.forEach(a => {
-      a.addEventListener("click", (e) => {
-        const target = a.getAttribute("href");
-        if (!target || !target.startsWith("#")) return;
-        const el = $(target);
-        if (!el) return;
-        e.preventDefault();
-        // 把目标 section 设为 display:block（如果还在 hidden）以便能滚到
-        if (el.style.display === "none") el.style.display = "block";
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-        // 同步激活态
-        links.forEach(x => x.classList.remove("active"));
-        a.classList.add("active");
-        // 把所在 details 展开
-        const group = a.closest(".sn-group");
-        if (group) group.open = true;
-        history.replaceState(null, "", target);
-      });
+  // 支持的视图 ID（与侧栏链接 / section.data-view 一一对应）
+  const VIEWS = ["daily", "analyst", "backtest", "posts", "mn-form", "mn-result"];
+  const DEFAULT_VIEW = "posts";
+
+  // 单视图切换：只保留目标可见，其它全部隐藏
+  function switchView(targetId, opts) {
+    opts = opts || {};
+    if (!VIEWS.includes(targetId)) targetId = DEFAULT_VIEW;
+    // 1) 互斥显隐
+    document.querySelectorAll(".view").forEach(v => {
+      if (v.dataset.view === targetId) v.removeAttribute("hidden");
+      else v.setAttribute("hidden", "");
     });
-    // IntersectionObserver：当前可见 section 自动高亮
-    const targets = ["daily", "analyst", "backtest", "posts", "mn-form", "mn-result"]
-      .map(id => document.getElementById(id)).filter(Boolean);
-    const obs = new IntersectionObserver((entries) => {
-      // 选最靠近视口顶部且可见的那个
-      const visible = entries.filter(e => e.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-      if (!visible) return;
-      const id = visible.target.id;
-      links.forEach(a => {
-        const t = a.getAttribute("href") || "";
-        a.classList.toggle("active", t === "#" + id);
-        const grp = a.closest(".sn-group");
-        if (grp && t === "#" + id) grp.open = true;
-      });
-    }, { rootMargin: "-80px 0px -55% 0px", threshold: [0, 0.1, 0.3] });
-    targets.forEach(t => obs.observe(t));
+    // 2) 同步侧栏激活态 & 自动展开所在 details
+    document.querySelectorAll("#sidenav .sn-link, #sidenav .sn-top").forEach(a => {
+      const isActive = a.getAttribute("href") === "#" + targetId;
+      a.classList.toggle("active", isActive);
+      const grp = a.closest(".sn-group");
+      if (grp && isActive) grp.open = true;
+    });
+    // 3) 滚回顶部（按用户要求：不滚动展开内容，直接显示）
+    window.scrollTo({ top: 0, behavior: opts.smooth ? "smooth" : "auto" });
+    // 4) 同步 URL hash（支持深链 + 浏览器后退）
+    if (opts.updateHash !== false) {
+      if (location.hash.slice(1) !== targetId) {
+        history.replaceState(null, "", "#" + targetId);
+      }
+    }
+  }
+
+  function initSideNav() {
+    const nav = $("#sidenav");
+    if (!nav) return;
+    // 1) 点击互斥切换（替代之前的 scrollIntoView + IntersectionObserver）
+    nav.addEventListener("click", (e) => {
+      const a = e.target.closest(".sn-link, .sn-top");
+      if (!a) return;
+      const target = (a.getAttribute("href") || "").slice(1);
+      if (!VIEWS.includes(target)) return;
+      e.preventDefault();
+      switchView(target);
+    });
+    // 2) 浏览器后退 / 深链
+    window.addEventListener("hashchange", () => {
+      switchView(location.hash.slice(1), { updateHash: false, smooth: true });
+    });
+    // 3) 初始视图：URL hash > 默认
+    const initial = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : DEFAULT_VIEW;
+    switchView(initial, { updateHash: false });
   }
 
   async function load() {
@@ -1084,12 +1098,11 @@
       paintStats();
       buildMonthSelect();
       loadTagIndex();
-      initSideNav();   // 侧栏 nav-link 点击 + IntersectionObserver
+      initSideNav();   // 侧栏 nav-link 点击 + 视图切换 + hash 深链
       loadAnalyst();   // 非阻塞：小文件，独立渲染，不拖慢时间线
       loadDailyReview();   // 非阻塞：每日首席视角总结面板
       loadBacktest();   // 非阻塞：观点回测面板
       loadMyNotes();   // 非阻塞：我的投资笔记面板
-      initSideNav();   // 侧栏 nav-link 点击 + IntersectionObserver 激活态
       const months = postIndex.months || [];
       // 先加载最新 1 个月（首屏最快），渲染后再后台补齐第 2 个月
       if (months[0]) await loadMonth(months[0].file);
@@ -1111,7 +1124,7 @@
     try {
       const d = await fetch("data/analysis_recent.json", { cache: "no-cache" }).then(r => r.json());
       renderAnalyst(d);
-      $("#analyst").style.display = "block";
+      // 视图显隐完全由侧栏点击控制（见 switchView / initSideNav），不在这里改样式
     } catch (e) { /* 分析数据缺失不阻断主流程 */ }
   }
 
@@ -1235,7 +1248,7 @@
     try {
       const d = await fetch("data/daily_review.json", { cache: "no-cache" }).then(r => r.json());
       renderDaily(d);
-      $("#daily").style.display = "block";
+      // 视图显隐完全由侧栏点击控制
     } catch (e) { /* 每日总结缺失不阻断主流程 */ }
   }
 
@@ -1299,7 +1312,7 @@
     try {
       const d = await fetch("data/backtest.json", { cache: "no-cache" }).then(r => r.json());
       renderBacktest(d);
-      $("#backtest").style.display = "block";
+      // 视图显隐完全由侧栏点击控制
     } catch (e) { /* 回测数据缺失不阻断主流程 */ }
   }
 
@@ -1597,7 +1610,7 @@
     }
     fetch("data/my_notes_backtest.json", { cache: "no-cache" })
       .then(r => r.json())
-      .then(d => { window.__mnLastData = d; renderMyNotes(d); $("#mn-form").style.display = "block"; $("#mn-result").style.display = "block"; })
+      .then(d => { window.__mnLastData = d; renderMyNotes(d); /* 视图显隐完全由侧栏点击控制 */ })
       .catch(() => { /* 无数据不阻断主流程 */ });
   }
 
