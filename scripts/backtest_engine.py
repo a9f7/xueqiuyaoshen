@@ -7,6 +7,7 @@
   - 对接真实行情（东方财富日线），做 T+1/3/5/7/10/20 窗口收益；
   - β 剥离：个股收益 = 大盘β + 超额收益α；回测只看 α（发言的真实增量信息）；
   - 命中率 / IC 回测：分窗口、分板块、分立场统计（一律带样本量 N）；
+  - 观点久期：按发帖文本判定「短线 / 中长期」，匹配久期回测（短线看 T+1/3/5，中长期看 T+20/60/120），T+5 总基线保留；
   - 自动预测：近期未闭合事件给出 跟随 / 观望 / 反向 信号 + 依据命中率。
 
 设计原则（沿用参考实现）：
@@ -31,8 +32,21 @@ DATA = ROOT / "data"
 sys.path.insert(0, str(HERE))
 import market_data as md
 
-HORIZONS = [1, 3, 5, 7, 10, 20]
+HORIZONS = [1, 3, 5, 7, 10, 20, 60, 120]  # 计算窗口（含中长期 60/120 日）
 PRIMARY_BENCH = "1.000300"  # 沪深300
+
+# 观点久期：按发帖文本判定该观点是「短线」还是「中长期」，再匹配对应验证窗口。
+# 目的：短期观点不应拿 T+120 去验证，中长期观点也不该只盯 T+5。
+SHORT_KW = ["短线", "日内", "今天", "明天", "本周", "这几天", "波段", "超短", "抢反弹",
+            "尾盘", "早盘", "盘中", "隔日", "快进快出", "一两天", "三五天", "做T",
+            "日内回转", "当天", "急拉", "回调", "跳水"]
+LONG_KW = ["中长期", "中长线", "长线", "长持", "长拿", "价值投资", "价值股", "价值",
+           "拿住", "持有不动", "半年", "一年", "明年", "基本面", "赛道", "格局", "躺平",
+           "三年", "五年", "长期", "穿越牛熊", "不动", "拿长", "定投", "年线", "月线",
+           "周线", "穿越周期"]
+DURATIONS = {"短期": [1, 3, 5], "中长期": [20, 60, 120]}
+DURATION_LABEL = {"短期": "T+1/3/5（短窗口）", "中长期": "T+20/60/120（长窗口）"}
+DURATION_HUE = {"短期": "#00b894", "中长期": "#6c5ce7"}
 
 # 板块名 -> 东方财富板块 secid（market_data.SECTOR_SECID 已含，这里直接复用）
 SECTOR_SECID = md.SECTOR_SECID
@@ -133,6 +147,23 @@ def extract_subject(post):
     return {"code": code, "stance": stance, "sector": sector}
 
 
+def classify_duration(text):
+    """按发帖全文判定观点久期：短线 / 中长期 / 未明确（无明确表述）。
+
+    逻辑：分别统计短/中长关键词命中数，同票取多者；都未命中则 未明确。
+    未明确事件仍计入 T+5 总基线，但不进「匹配久期」回测。
+    """
+    s = sum(1 for kw in SHORT_KW if kw in text)
+    l = sum(1 for kw in LONG_KW if kw in text)
+    if s > 0 and l == 0:
+        return "短期"
+    if l > 0 and s == 0:
+        return "中长期"
+    if s > 0 and l > 0:
+        return "短期" if s >= l else "中长期"
+    return "未明确"
+
+
 def build_events():
     """从 posts.json 抽出可回测事件列表。"""
     path = DATA / "posts.json"
@@ -147,13 +178,15 @@ def build_events():
         dt = parse_created_at(p.get("created_at"))
         if not dt:
             continue
+        text_full = p.get("text") or ""
         events.append({
             "date": dt,
             "code": sub["code"],
             "stance": sub["stance"],
             "sector": sub["sector"],
+            "duration": classify_duration(text_full),
             "url": p.get("url", ""),
-            "text": (p.get("text") or "")[:120],
+            "text": text_full[:120],
         })
     events.sort(key=lambda x: x["date"])
     return events
@@ -284,9 +317,18 @@ def main():
     by_horizon = {k: {"hit": 0, "n": 0, "ic_sum": 0.0, "alpha_sum": 0.0} for k in HORIZONS}
     by_sector = defaultdict(lambda: {"hit": 0, "n": 0, "ic_sum": 0.0})
     by_stance = {"看多": {"hit": 0, "n": 0}, "看空": {"hit": 0, "n": 0}}
+    # 匹配久期回测：每个久期类仅用其对应窗口聚合
+    by_duration = {
+        dur: {"n_events": 0,
+              "by_horizon": {k: {"hit": 0, "n": 0, "ic_sum": 0.0, "alpha_sum": 0.0} for k in hs},
+              "ic_sum": 0.0, "alpha_sum": 0.0, "n_all": 0}
+        for dur, hs in DURATIONS.items()
+    }
+    duration_counts = defaultdict(int)
 
     for ev, res in per_event:
         sname = "看多" if ev["stance"] == 1 else "看空"
+        duration_counts[ev["duration"]] += 1
         for k, v in res.items():
             bh = by_horizon[k]
             bh["n"] += 1
@@ -303,6 +345,25 @@ def main():
                     bs["hit"] += 1
                 bs["ic_sum"] += ev["stance"] * d
         by_stance[sname]["n"] += 1
+        # 匹配久期：仅在该事件所属久期的窗口里累计
+        dur = ev["duration"]
+        if dur in by_duration:
+            bd = by_duration[dur]
+            bd["n_events"] += 1
+            for k in DURATIONS[dur]:
+                if k not in res:
+                    continue
+                cell = bd["by_horizon"][k]
+                cell["n"] += 1
+                d = _sign(res[k]["stock_ret"])
+                is_hit = (d == ev["stance"])
+                if is_hit:
+                    cell["hit"] += 1
+                cell["ic_sum"] += ev["stance"] * d
+                cell["alpha_sum"] += (res[k]["alpha"] or 0)
+                bd["ic_sum"] += ev["stance"] * d
+                bd["alpha_sum"] += (res[k]["alpha"] or 0)
+                bd["n_all"] += 1
         # 用 T+5 作为该事件代表窗口判命中（用于分立场统计）
         if 5 in res:
             d = _sign(res[5]["stock_ret"])
@@ -325,6 +386,28 @@ def main():
         s: {"n": v["n"], "hit_rate": (v["hit"] / v["n"]) if v["n"] else None}
         for s, v in by_stance.items()
     }
+
+    # 匹配久期回测结果：每个久期类按自身窗口聚合，给出匹配命中率/IC
+    duration_list = []
+    for dur, hs in DURATIONS.items():
+        bd = by_duration[dur]
+        if bd["n_events"] == 0:
+            continue
+        n_total = sum(bd["by_horizon"][k]["n"] for k in hs)
+        matched_hit = (sum(bd["by_horizon"][k]["hit"] for k in hs) / n_total) if n_total else None
+        duration_list.append({
+            "duration": dur,
+            "label": DURATION_LABEL[dur],
+            "hue": DURATION_HUE[dur],
+            "n_events": bd["n_events"],
+            "n_matched": n_total,
+            "matched_hit_rate": round(matched_hit, 3) if matched_hit is not None else None,
+            "hit_rate_by_horizon": {str(k): (round(bd["by_horizon"][k]["hit"] / bd["by_horizon"][k]["n"], 3)
+                                             if bd["by_horizon"][k]["n"] else None) for k in hs},
+            "n_by_horizon": {str(k): bd["by_horizon"][k]["n"] for k in hs},
+            "ic": round(bd["ic_sum"] / bd["n_all"], 3) if bd["n_all"] else None,
+            "avg_alpha": round(bd["alpha_sum"] / bd["n_all"], 4) if bd["n_all"] else None,
+        })
 
     # 近期观点 -> 预测/验证信号（最近 60 天内的观点，标注最大已闭合窗口）
     recent = []
@@ -351,6 +434,7 @@ def main():
             "code": ev["code"],
             "stance": "看多" if ev["stance"] == 1 else "看空",
             "sector": ev["sector"] or "",
+            "duration": ev["duration"],
             "signal": signal,
             "basis_hit_rate": round(basis_hr, 3),
             "closed_horizon": closed,
@@ -366,6 +450,11 @@ def main():
         "overall": {
             "n_events": n,
             "events_skipped": missing_price,
+            "duration_counts": {
+                "短期": duration_counts.get("短期", 0),
+                "中长期": duration_counts.get("中长期", 0),
+                "未明确": duration_counts.get("未明确", 0),
+            },
             "hit_rate_by_horizon": {str(k): (round(overall_hit[k], 3) if overall_hit[k] is not None else None)
                                     for k in HORIZONS},
             "n_by_horizon": {str(k): by_horizon[k]["n"] for k in HORIZONS},
@@ -373,6 +462,7 @@ def main():
             "avg_alpha_by_horizon": {str(k): round(by_horizon[k]["alpha_sum"] / by_horizon[k]["n"], 4)
                                      if by_horizon[k]["n"] else None for k in HORIZONS},
         },
+        "by_duration": duration_list,
         "by_sector": sector_list,
         "by_stance": stance_list,
         "recent_signals": recent,
@@ -380,8 +470,9 @@ def main():
     }
     json.dump(out, open(DATA / "backtest.json", "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
-    print(f"[backtest] 完成：{n} 事件（缺行情 {missing_price}）；整体命中率 T+5="
-          f"{overall_hit.get(5)}；IC={overall_ic}；近期信号 {len(recent)} 条 -> data/backtest.json",
+    print(f"[backtest] 完成：{n} 事件（缺行情 {missing_price}）；"
+          f"久期 短期={duration_counts.get('短期',0)} 中长期={duration_counts.get('中长期',0)} 未明确={duration_counts.get('未明确',0)}；"
+          f"整体命中率 T+5={overall_hit.get(5)}；IC={overall_ic}；近期信号 {len(recent)} 条 -> data/backtest.json",
           flush=True)
 
 

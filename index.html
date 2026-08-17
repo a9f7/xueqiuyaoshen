@@ -520,6 +520,8 @@
     <div id="bt-sector"></div>
     <div class="bt-sec-h" style="margin-top:16px">分立场命中率（以 T+5 计）</div>
     <div class="bt-stance" id="bt-stance"></div>
+    <div class="bt-sec-h" style="margin-top:18px">匹配久期回测（按观点表述的短/中期分别验证，未明确久期不计入）</div>
+    <div id="bt-duration"></div>
     <div class="bt-sec-h" style="margin-top:16px">近期观点信号（窗口未闭合 · 跟随 / 观望 / 反向）</div>
     <div id="bt-signals"></div>
     <div class="bt-note" id="bt-note"></div>
@@ -1076,6 +1078,7 @@
     $("#bt-sub").textContent =
       `数据源：${ov.benchmark_available ? "东方财富日线（含沪深300基准）" : "基准行情缺失"}` +
       ` · 回测事件 ${ov.n_events || 0} 条（跳过 ${ov.events_skipped || 0}）` +
+      ` · 久期 短期${ov.duration_counts ? ov.duration_counts["短期"] : "?"} / 中长期${ov.duration_counts ? ov.duration_counts["中长期"] : "?"} / 未明确${ov.duration_counts ? ov.duration_counts["未明确"] : "?"}` +
       ` · 更新于 ${d.generated_at || ""}`;
     // 概览卡片
     const card = (k, v, cls, sub) =>
@@ -1092,7 +1095,7 @@
       a5 != null ? (a5 > 0 ? "good" : "bad") : "", "剥离大盘后");
     $("#bt-cards").innerHTML = cards;
     // 各窗口命中率
-    const hzOrder = [1, 3, 5, 7, 10, 20];
+    const hzOrder = [1, 3, 5, 7, 10, 20, 60, 120];
     $("#bt-horizon").innerHTML = hzOrder.map(k => {
       const v = hr[String(k)];
       if (v == null) return "";
@@ -1121,16 +1124,50 @@
     };
     $("#bt-stance").innerHTML = stBox("看多", "bull") + stBox("看空", "bear") ||
       `<div class="bt-note">暂无分立场数据。</div>`;
+    // 匹配久期回测
+    const durs = d.by_duration || [];
+    $("#bt-duration").innerHTML = durs.map(dr => {
+      const mh = dr.matched_hit_rate;
+      const mcls = mh != null ? (mh >= 0.5 ? "good" : "bad") : "";
+      const mtxt = mh != null ? (mh >= 0.5 ? "跑赢随机" : "弱于随机") : "";
+      const cards =
+        `<div class="bt-card" style="flex:1 1 150px"><div class="k">${dr.duration}匹配命中率</div>`
+        + `<div class="v ${mcls}">${mh != null ? (mh * 100).toFixed(1) + "%" : "—"}`
+        + `<small>${mtxt}</small></div>`
+        + `<div class="k" style="margin-top:4px">窗口 ${dr.label}</div></div>`
+        + `<div class="bt-card" style="flex:1 1 130px"><div class="k">IC（久期）</div>`
+        + `<div class="v ${dr.ic != null ? (dr.ic > 0 ? "good" : "bad") : ""}">${dr.ic != null ? dr.ic.toFixed(3) : "—"}</div>`
+        + `<div class="k" style="margin-top:4px">事件 ${dr.n_events} · 观测 ${dr.n_matched}</div></div>`
+        + `<div class="bt-card" style="flex:1 1 130px"><div class="k">平均超额α（久期）</div>`
+        + `<div class="v ${dr.avg_alpha != null ? (dr.avg_alpha > 0 ? "good" : "bad") : ""}">${dr.avg_alpha != null ? (dr.avg_alpha * 100).toFixed(2) + "%" : "—"}</div>`
+        + `<div class="k" style="margin-top:4px">剥离大盘后</div></div>`;
+      const hz = dr.hit_rate_by_horizon || {};
+      const nb = dr.n_by_horizon || {};
+      const order = Object.keys(hz);
+      const bars = order.map(k => {
+        const v = hz[k];
+        if (v == null) return "";
+        const col = v >= 0.5 ? "var(--green)" : "var(--accent)";
+        return `<div class="bt-hz"><div class="h">T+${k}</div>`
+          + `<div class="r" style="color:${col}">${(v * 100).toFixed(0)}%</div>`
+          + `<div class="n">N=${nb[k] || ""}</div></div>`;
+      }).join("");
+      const hue = dr.hue || "#6c5ce7";
+      return `<div style="border-left:3px solid ${hue};padding-left:10px;margin-bottom:12px">`
+        + `<div class="bt-cards" style="margin-bottom:8px">${cards}</div>`
+        + `<div class="bt-horizon">${bars}</div></div>`;
+    }).join("") || `<div class="bt-note">无明确表达短/中长期的观点（多数帖子未提及持有周期，已计入上方 T+5 总基线）。</div>`;
     // 近期信号
     const sigs = d.recent_signals || [];
     $("#bt-signals").innerHTML = sigs.map(s => {
       const cls = s.signal === "跟随" ? "follow" : s.signal === "反向" ? "reverse" : "watch";
       const status = s.closed_horizon ? `T+${s.closed_horizon}已闭合` : "进行中";
+      const durTag = s.duration ? `<span style="color:${s.duration === "短期" ? "#00b894" : (s.duration === "中长期" ? "#6c5ce7" : "var(--ink-3)")}">${s.duration}</span>` : "";
       return `<div class="bt-sig">
         <div class="meta"><span class="sig ${cls}">${s.signal}</span>`
           + `<span>${esc(s.date)}</span><span>${s.stance}</span>`
           + (s.sector ? `<span>${esc(s.sector)}</span>` : "")
-          + `<span>${esc(s.code)}</span><span>${status}</span>`
+          + `<span>${esc(s.code)}</span>${durTag}<span>${status}</span>`
           + `<span>依据命中率 ${(s.basis_hit_rate * 100).toFixed(0)}%</span></div>
         <div class="txt">${esc(s.text)} <a href="${esc(s.url)}" target="_blank" rel="noopener">原文 ↗</a></div>
       </div>`;
