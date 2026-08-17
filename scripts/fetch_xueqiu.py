@@ -48,7 +48,7 @@ COOKIE_FILE = os.path.join(ROOT, "data", "xq_cookie.txt")
 CHROME_PATH = os.environ.get("XQ_CHROME_PATH", r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe")
 USER_ID = 2292705444
 BATCH_PER_BROWSER = 30  # 每个浏览器会话最多抓多少页（避免渲染器崩溃）
-FALLBACK_MAXPAGE = {"posts": 811, "comments": 1600, "reposts": 60}
+FALLBACK_MAXPAGE = {"posts": 900, "comments": 1700, "reposts": 60}
 COOLDOWN_SEC = 1800  # 触发风控后该 cookie 冷却 30 分钟
 
 # 模式 -> (API type, raw 子目录)
@@ -258,11 +258,16 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
                     except Exception:
                         j = None
                     if isinstance(j, dict) and 'statuses' in j:
-                        with open(out_file, 'w', encoding='utf-8') as f:
-                            json.dump(j, f, ensure_ascii=False, indent=2)
                         total = j.get('total')
                         if total:
                             maxpage = max(maxpage or 0, math.ceil(total / 20))
+                        # 空页 = 已到最旧页末尾（type 分页连续，0 条即越界）；不落盘、停止继续往后抓
+                        if not j.get('statuses') and not force:
+                            print(f"  page={pno}: 0 statuses (已到末尾 maxPage={maxpage})，停止回填", flush=True)
+                            stopped_this = True
+                            break
+                        with open(out_file, 'w', encoding='utf-8') as f:
+                            json.dump(j, f, ensure_ascii=False, indent=2)
                         print(f"  page={pno}: {len(j['statuses'])} statuses, total={total}, maxPage={maxpage}", flush=True)
                         saved += 1
                         saved_this = True
