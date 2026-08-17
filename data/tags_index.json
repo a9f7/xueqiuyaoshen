@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-17T11:37:50Z",
+  "updated": "2026-08-17T15:36:56Z",
   "total_tagged": 28155,
   "distinct_tags": 45,
   "tags": [
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 7882,
+      "count": 7883,
       "dim": "industry"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 6671,
+      "count": 6672,
       "dim": "perspective"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 5274,
+      "count": 5275,
       "dim": "region"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3640,
+      "count": 3639,
       "dim": "industry"
     },
     {
@@ -75,12 +75,12 @@
     },
     {
       "tag": "中观",
-      "count": 2841,
+      "count": 2840,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2167,
+      "count": 2166,
       "dim": "stance"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1525,
+      "count": 1526,
       "dim": "ctype"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "tag": "债券",
-      "count": 442,
+      "count": 441,
       "dim": "asset"
     },
     {
