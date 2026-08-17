@@ -375,22 +375,76 @@
   .backtest .bt-sig .txt a { color: var(--link); text-decoration: none; }
   .backtest .bt-note { font-size: 12px; color: var(--ink-3); margin-top: 12px; line-height: 1.7; }
 
-  /* 我的投资笔记 */
-  .mynotes { margin-top: 16px; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 20px; box-shadow: var(--shadow); }
+  /* 我的投资笔记 — 侧边栏布局（宽屏两列：左 320px sticky 表单+索引，右主区放回测） */
+  .mynotes {
+    margin-top: 16px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px 20px;
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+  }
   .mynotes .bt-h .badge { background: linear-gradient(135deg, #0984e3, #0066cc); }
-  .mynotes .mn-form { background: #f8f9fc; border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
-  .mynotes .mn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
-  .mynotes .mn-row label { font-size: 12px; color: var(--ink-3); display: flex; flex-direction: column; gap: 3px; }
-  .mynotes .mn-row input, .mynotes .mn-row select { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
-  .mynotes .mn-row input[type=text] { width: 180px; }
-  .mynotes textarea { width: 100%; margin-top: 10px; min-height: 58px; font-size: 13px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; resize: vertical; box-sizing: border-box; }
-  .mynotes .mn-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 10px; }
-  .mynotes .mn-actions button, .mynotes .mn-imp { font-size: 12.5px; padding: 6px 14px; border: 1px solid var(--line); background: #fff; border-radius: 20px; cursor: pointer; color: var(--ink-2); }
+  /* 侧栏：sticky，溢出可滚 */
+  .mynotes .mn-side {
+    position: sticky;
+    top: 12px;
+    align-self: start;
+    max-height: calc(100vh - 24px);
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .mynotes .mn-side::-webkit-scrollbar { width: 6px; }
+  .mynotes .mn-side::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
+  /* 侧栏标题区 */
+  .mynotes .mn-head { border-bottom: 1px dashed var(--line-2); padding-bottom: 10px; margin-bottom: 12px; }
+  .mynotes .mn-sub { font-size: 12px; color: var(--ink-3); margin-top: 6px; line-height: 1.6; }
+  /* 表单：单列满宽 */
+  .mynotes .mn-form { background: #f8f9fc; border: 1px solid var(--line-2); border-radius: 12px; padding: 12px 12px 10px; }
+  .mynotes .mn-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mynotes .mn-row2 label { font-size: 11.5px; color: var(--ink-3); display: flex; flex-direction: column; gap: 3px; }
+  .mynotes .mn-row2 input, .mynotes .mn-row2 select { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; width: 100%; box-sizing: border-box; }
+  .mynotes .mn-full { display: flex; flex-direction: column; gap: 3px; margin-top: 8px; font-size: 11.5px; color: var(--ink-3); }
+  .mynotes .mn-full input { font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: #fff; width: 100%; box-sizing: border-box; }
+  .mynotes textarea { width: 100%; margin-top: 8px; min-height: 56px; font-size: 13px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; resize: vertical; box-sizing: border-box; }
+  .mynotes .mn-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+  .mynotes .mn-actions button, .mynotes .mn-imp { font-size: 12.5px; padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 20px; cursor: pointer; color: var(--ink-2); }
+  .mynotes .mn-actions #mn-add { background: var(--link); color: #fff; border-color: var(--link); }
+  .mynotes .mn-actions #mn-add:hover { background: #0052a3; }
   .mynotes .mn-actions button:hover { background: #f0f3f8; }
   .mynotes .mn-imp { display: inline-flex; align-items: center; gap: 6px; }
-  .mynotes .mn-msg { font-size: 12px; color: var(--green); }
-  .mynotes .mn-note { border-left: 3px solid var(--line-2); background: #fafbfc; border-radius: 0 8px 8px 0; padding: 8px 11px; margin-bottom: 8px; font-size: 12.5px; }
+  .mynotes .mn-msg { font-size: 11.5px; color: var(--green); display: block; margin-top: 6px; line-height: 1.5; }
+  /* 侧栏笔记索引 */
+  .mynotes .mn-index { margin-top: 14px; }
+  .mynotes .mn-index-h { font-size: 12px; color: var(--ink-3); margin-bottom: 6px; }
+  .mynotes .mn-index-list { display: flex; flex-direction: column; gap: 6px; }
+  .mynotes .mn-compact {
+    border: 1px solid var(--line-2); border-radius: 8px; padding: 6px 8px;
+    font-size: 12px; background: #fafbfc; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .mynotes .mn-compact:hover { background: #f0f3f8; border-color: var(--link); }
+  .mynotes .mn-compact .top { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .mynotes .mn-compact .st.bull { color: var(--green); font-weight: 700; }
+  .mynotes .mn-compact .st.bear { color: var(--accent); font-weight: 700; }
+  .mynotes .mn-compact .date { color: var(--ink-3); font-size: 11.5px; }
+  .mynotes .mn-compact .code { font-weight: 600; }
+  .mynotes .mn-compact .dur { font-size: 11px; padding: 0 6px; border-radius: 10px; border: 1px solid var(--line-2); }
+  .mynotes .mn-compact .status { margin-left: auto; font-size: 11px; color: var(--ink-3); }
+  .mynotes .mn-compact .status.local { color: #b8860b; }
+  .mynotes .mn-compact .status.closed { color: var(--green); }
+  .mynotes .mn-compact .txt { color: var(--ink-2); font-size: 11.5px; line-height: 1.5; margin-top: 3px;
+    overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  /* 主区 */
+  .mynotes .mn-main { min-width: 0; }
+  .mynotes .mn-main .bt-h { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; }
+  .mynotes .mn-main .bt-sub { font-size: 12px; color: var(--ink-3); margin: 4px 0 14px; }
+  .mynotes .mn-note { border-left: 3px solid var(--line-2); background: #fafbfc; border-radius: 0 8px 8px 0; padding: 8px 11px; margin-bottom: 8px; font-size: 12.5px; scroll-margin-top: 12px; }
   .mynotes .mn-note:last-child { margin-bottom: 0; }
+  .mynotes .mn-note.highlight { border-left-color: var(--link); background: #eef5fc; }
   .mynotes .mn-note .meta { display: flex; gap: 8px; align-items: center; color: var(--ink-3); font-size: 11.5px; margin-bottom: 3px; flex-wrap: wrap; }
   .mynotes .mn-note .tag-local { background: #ffeaa7; color: #b8860b; padding: 1px 8px; border-radius: 20px; font-weight: 600; }
   .mynotes .mn-note .tag-back { background: #dfe6e9; color: #636e72; padding: 1px 8px; border-radius: 20px; }
@@ -398,6 +452,11 @@
   .mynotes .mn-note .txt a { color: var(--link); text-decoration: none; }
   .mynotes .mn-note .st.bull { color: var(--green); font-weight: 700; }
   .mynotes .mn-note .st.bear { color: var(--accent); font-weight: 700; }
+  /* 移动端堆叠 */
+  @media (max-width: 900px) {
+    .mynotes { grid-template-columns: 1fr; padding: 14px 14px 16px; }
+    .mynotes .mn-side { position: static; max-height: none; overflow: visible; padding-right: 0; }
+  }
 
   .loadmore {
     display: block; margin: 16px auto 0; padding: 9px 22px; font-size: 13px;
@@ -552,31 +611,53 @@
   </section>
 
   <section class="mynotes" id="mynotes" style="display:none">
-    <div class="bt-h"><span class="badge">我的</span> 投资笔记 · 我的观点回测（β剥离 + 命中率/IC，与观点回测同源）</div>
-    <div class="bt-sub" id="mn-sub"></div>
-
-    <div class="mn-form">
-      <div class="mn-row">
-        <label>日期<input type="date" id="mn-date"></label>
-        <label>股票代码<input type="text" id="mn-code" placeholder="SH600519 / SZ000858 / HK00700"></label>
-        <label>立场<select id="mn-stance"><option>看多</option><option>看空</option></select></label>
-        <label>久期<select id="mn-dur"><option value="">自动(按文本)</option><option>短期</option><option>中长期</option><option>超长期</option><option>未明确</option></select></label>
+    <!-- 左侧栏：表单 + 已录入笔记索引（sticky，可滚） -->
+    <div class="mn-side">
+      <div class="mn-head">
+        <div class="bt-h"><span class="badge">我的</span> 投资笔记</div>
+        <div class="mn-sub" id="mn-sub-side"></div>
       </div>
-      <textarea id="mn-text" placeholder="笔记内容…（含 短线/日内/十年/长期 等词会自动判定久期）"></textarea>
-      <div class="mn-actions">
-        <button id="mn-add">添加笔记</button>
-        <button id="mn-export">导出 JSON</button>
-        <label class="mn-imp">导入 JSON<input type="file" id="mn-import" accept="application/json"></label>
+
+      <div class="mn-form">
+        <div class="mn-row2">
+          <label>日期<input type="date" id="mn-date"></label>
+          <label>立场<select id="mn-stance"><option>看多</option><option>看空</option></select></label>
+        </div>
+        <label class="mn-full">股票代码<input type="text" id="mn-code" placeholder="SH600519 / SZ000858 / HK00700"></label>
+        <label class="mn-full">久期<select id="mn-dur">
+          <option value="">自动(按文本)</option>
+          <option>短期</option>
+          <option>中长期</option>
+          <option>超长期</option>
+          <option>未明确</option>
+        </select></label>
+        <textarea id="mn-text" placeholder="笔记内容…（含 短线/日内/十年/长期 等词会自动判定久期）"></textarea>
+        <div class="mn-actions">
+          <button id="mn-add">添加笔记</button>
+          <button id="mn-export">导出 JSON</button>
+          <label class="mn-imp">导入 JSON<input type="file" id="mn-import" accept="application/json"></label>
+        </div>
         <span id="mn-msg" class="mn-msg"></span>
+      </div>
+
+      <div class="mn-index">
+        <div class="mn-index-h">笔记索引（点击跳到主区明细）</div>
+        <div class="mn-index-list" id="mn-compact-list"></div>
       </div>
     </div>
 
-    <div class="bt-sec-h" style="margin-top:16px">我的回测总览</div>
-    <div class="bt-cards" id="mn-cards"></div>
-    <div id="mn-duration"></div>
+    <!-- 主区：回测总览 + 匹配久期 + 逐条笔记回测明细 -->
+    <div class="mn-main">
+      <div class="bt-h"><span class="badge">回测</span> 我的观点回测（β剥离 + 命中率/IC，与观点回测同源）</div>
+      <div class="bt-sub" id="mn-sub"></div>
 
-    <div class="bt-sec-h" style="margin-top:16px">我的笔记（含逐窗口回测；本地新增的标「待回测」）</div>
-    <div id="mn-list"></div>
+      <div class="bt-sec-h">我的回测总览</div>
+      <div class="bt-cards" id="mn-cards"></div>
+      <div id="mn-duration"></div>
+
+      <div class="bt-sec-h" style="margin-top:16px">我的笔记（含逐窗口回测；本地新增的标「待回测」）</div>
+      <div id="mn-list"></div>
+    </div>
   </section>
 
   <div class="toolbar">
@@ -1290,7 +1371,7 @@
       strip = `<div class="bt-note">${n.skipped ? "未回测（缺行情/代码无效/无日期）" : "待回测：导出 JSON 并提交后，流水线会自动计算"}</div>`;
     }
     const closed = n.closed_horizon ? `T+${n.closed_horizon}已闭合` : "进行中";
-    return `<div class="mn-note">
+    return `<div class="mn-note" id="mn-${n.id || ''}">
       <div class="meta"><span class="st ${stCls}">${n.stance}</span>`
         + `<span>${esc(n.date)}</span><span>${esc(n.code)}</span>${durTag}`
         + `<span>${closed}</span>${tag}</div>
@@ -1298,14 +1379,35 @@
       <div class="txt">${esc(n.text)}${n.url ? ` <a href="${esc(n.url)}" target="_blank" rel="noopener">原文 ↗</a>` : ""}</div>
     </div>`;
   }
+  // 侧栏紧凑行：仅日期/立场/代码/久期/状态 两行，紧凑
+  function mnRenderCompact(n, src) {
+    const stCls = n.stance === "看多" ? "bull" : "bear";
+    const durColor = DUR_HUE[n.duration] || "var(--ink-3)";
+    const isLocal = src === "local";
+    const statusCls = isLocal ? "status local" : (n.closed_horizon ? "status closed" : "status");
+    const statusTxt = isLocal ? "待回测" : (n.closed_horizon ? `T+${n.closed_horizon}✓` : "进行中");
+    return `<div class="mn-compact" data-anchor="mn-${n.id || ''}">
+      <div class="top">
+        <span class="st ${stCls}">${n.stance}</span>
+        <span class="code">${esc(n.code)}</span>
+        <span class="dur" style="color:${durColor};border-color:${durColor}">${esc(n.duration || "未明确")}</span>
+        <span class="date">${esc(n.date || "")}</span>
+        <span class="${statusCls}">${statusTxt}</span>
+      </div>
+      <div class="txt">${esc(n.text || "")}</div>
+    </div>`;
+  }
   function renderMyNotes(d) {
     const ov = d.overall || {};
     const hr = ov.hit_rate_by_horizon || {}, hr5 = hr["5"];
     const skip = d.note_skipped ? ` + 本地未回测 ${d.note_skipped}` : "";
-    $("#mn-sub").textContent =
+    const subText =
       `回测笔记 ${ov.n_events || 0} 条（跳过 ${ov.events_skipped || 0}${skip}）`
       + ` · 数据源：${ov.benchmark_available ? "东方财富/新浪日线（含沪深300）" : "基准行情缺失"}`
       + ` · 更新于 ${d.generated_at || ""}`;
+    $("#mn-sub").textContent = subText;
+    const sideSub = $("#mn-sub-side");
+    if (sideSub) sideSub.textContent = (ov.n_events || 0) + " 条已回测笔记 · 累计 " + (d.notes || []).length + " 条";
     let cards = "";
     cards += mnCard("我的 T+5 命中率", hr5 != null ? (hr5 * 100).toFixed(1) + "%" : "—",
       hr5 != null ? (hr5 >= 0.5 ? "good" : "bad") : "", hr5 != null ? (hr5 >= 0.5 ? "跑赢随机" : "弱于随机") : "");
@@ -1325,8 +1427,30 @@
     jsonNotes.forEach(n => merged.push({ src: "json", n }));
     local.forEach(ln => { if (!jsonById[ln.id]) merged.push({ src: "local", n: ln }); });
     merged.sort((a, b) => (b.n.date || "").localeCompare(a.n.date || ""));
+    // 主区：完整逐窗口回测
     $("#mn-list").innerHTML = merged.map(({ src, n }) => mnRenderNoteRow(n, src)).join("")
-      || `<div class="bt-note">还没有笔记。在上方表单添加，或导入/提交 data/my_notes.json 后即可回测。</div>`;
+      || `<div class="bt-note">还没有笔记。在左侧表单添加，或导入/提交 data/my_notes.json 后即可回测。</div>`;
+    // 侧栏：紧凑索引
+    const compactList = $("#mn-compact-list");
+    if (compactList) {
+      compactList.innerHTML = merged.length
+        ? merged.map(({ src, n }) => mnRenderCompact(n, src)).join("")
+        : `<div class="bt-note" style="padding:6px 4px">还没有笔记</div>`;
+      compactList.querySelectorAll(".mn-compact").forEach(el => {
+        el.addEventListener("click", () => {
+          const id = el.getAttribute("data-anchor");
+          const target = id && document.getElementById(id);
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "center" });
+            target.classList.add("highlight");
+            setTimeout(() => target.classList.remove("highlight"), 1500);
+          } else {
+            // 本地未回测的，没有锚点 → 只滚到列表顶
+            const list = $("#mn-list"); if (list) list.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      });
+    }
   }
   function loadMyNotes() {
     // 绑定表单事件（仅一次）
