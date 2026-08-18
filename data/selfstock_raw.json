@@ -1,6 +1,6 @@
 {
   "user_id": 2292705444,
-  "fetched_at": 1786926272091,
+  "fetched_at": 1787012665467,
   "total": 129,
   "items": [
     {
@@ -566,7 +566,7 @@
     },
     {
       "symbol": "ISRG",
-      "name": "达芬奇手术机器人",
+      "name": "直觉外科",
       "marketplace": "US",
       "exchange": "NASDAQ",
       "watched": 1658461579426,
@@ -1072,7 +1072,7 @@
     },
     {
       "symbol": "SLB",
-      "name": "SLB",
+      "name": "SLB LMTD ORD",
       "marketplace": "US",
       "exchange": "NYSE",
       "watched": 1732812511960,
