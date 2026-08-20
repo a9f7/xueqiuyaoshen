@@ -1,41 +1,41 @@
 {
-  "updated": "2026-08-20T10:20:51Z",
-  "total_tagged": 28533,
+  "updated": "2026-08-20T14:20:56Z",
+  "total_tagged": 28534,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9233,
+      "count": 9234,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9049,
+      "count": 9048,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8289,
+      "count": 8287,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8070,
+      "count": 8072,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7025,
+      "count": 7027,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6807,
+      "count": 6806,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5613,
+      "count": 5617,
       "dim": "stance"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 5027,
+      "count": 5030,
       "dim": "perspective"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "tag": "消费",
-      "count": 3676,
+      "count": 3675,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3566,
+      "count": 3568,
       "dim": "ctype"
     },
     {
@@ -70,12 +70,12 @@
     },
     {
       "tag": "看空",
-      "count": 3000,
+      "count": 2999,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2879,
+      "count": 2878,
       "dim": "perspective"
     },
     {
@@ -95,12 +95,12 @@
     },
     {
       "tag": "随笔",
-      "count": 1433,
+      "count": 1434,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1309,
+      "count": 1307,
       "dim": "industry"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 910,
+      "count": 911,
       "dim": "asset"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "tag": "债券",
-      "count": 449,
+      "count": 450,
       "dim": "asset"
     },
     {
@@ -175,7 +175,7 @@
     },
     {
       "tag": "汽车",
-      "count": 285,
+      "count": 284,
       "dim": "industry"
     },
     {
