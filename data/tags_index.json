@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-20T18:20:41Z",
+  "updated": "2026-08-20T22:20:44Z",
   "total_tagged": 28534,
   "distinct_tags": 45,
   "tags": [
@@ -15,7 +15,7 @@
     },
     {
       "tag": "行情点评",
-      "count": 8287,
+      "count": 8286,
       "dim": "ctype"
     },
     {
@@ -25,7 +25,7 @@
     },
     {
       "tag": "股票",
-      "count": 7027,
+      "count": 7026,
       "dim": "asset"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 5617,
+      "count": 5616,
       "dim": "stance"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4794,
+      "count": 4793,
       "dim": "industry"
     },
     {
