@@ -1,36 +1,36 @@
 {
-  "updated": "2026-08-20T06:21:56Z",
+  "updated": "2026-08-20T10:20:51Z",
   "total_tagged": 28533,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9231,
+      "count": 9233,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9050,
+      "count": 9049,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8290,
+      "count": 8289,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8071,
+      "count": 8070,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7023,
+      "count": 7025,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6809,
+      "count": 6807,
       "dim": "perspective"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 5026,
+      "count": 5027,
       "dim": "perspective"
     },
     {
@@ -55,27 +55,27 @@
     },
     {
       "tag": "消费",
-      "count": 3678,
+      "count": 3676,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3567,
+      "count": 3566,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3233,
+      "count": 3232,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 2996,
+      "count": 3000,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2880,
+      "count": 2879,
       "dim": "perspective"
     },
     {
@@ -95,12 +95,12 @@
     },
     {
       "tag": "随笔",
-      "count": 1434,
+      "count": 1433,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1308,
+      "count": 1309,
       "dim": "industry"
     },
     {
@@ -120,12 +120,12 @@
     },
     {
       "tag": "商品",
-      "count": 909,
+      "count": 910,
       "dim": "asset"
     },
     {
       "tag": "黄金有色",
-      "count": 816,
+      "count": 814,
       "dim": "industry"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 602,
+      "count": 601,
       "dim": "ctype"
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "tag": "ETF",
-      "count": 358,
+      "count": 359,
       "dim": "asset"
     },
     {
