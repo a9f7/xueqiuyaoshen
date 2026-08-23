@@ -1,16 +1,16 @@
 {
-  "updated": "2026-08-23T18:20:38Z",
-  "total_tagged": 28714,
+  "updated": "2026-08-23T22:20:35Z",
+  "total_tagged": 28713,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9318,
+      "count": 9317,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9111,
+      "count": 9110,
       "dim": "ctype"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4840,
+      "count": 4838,
       "dim": "industry"
     },
     {
@@ -60,12 +60,12 @@
     },
     {
       "tag": "个股分析",
-      "count": 3589,
+      "count": 3588,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3252,
+      "count": 3253,
       "dim": "industry"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "复盘",
-      "count": 2225,
+      "count": 2224,
       "dim": "stance"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "tag": "债券",
-      "count": 450,
+      "count": 449,
       "dim": "asset"
     },
     {
