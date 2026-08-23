@@ -1,71 +1,71 @@
 {
-  "updated": "2026-08-23T02:29:05Z",
-  "total_tagged": 28713,
+  "updated": "2026-08-23T06:20:43Z",
+  "total_tagged": 28712,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9320,
+      "count": 9316,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9115,
+      "count": 9120,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8322,
+      "count": 8318,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8131,
+      "count": 8130,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7076,
+      "count": 7072,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6871,
+      "count": 6870,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5652,
+      "count": 5650,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5363,
+      "count": 5361,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5070,
+      "count": 5072,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4853,
+      "count": 4848,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3693,
+      "count": 3698,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3587,
+      "count": 3590,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3253,
+      "count": 3252,
       "dim": "industry"
     },
     {
@@ -75,12 +75,12 @@
     },
     {
       "tag": "中观",
-      "count": 2899,
+      "count": 2895,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2228,
+      "count": 2227,
       "dim": "stance"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1571,
+      "count": 1569,
       "dim": "ctype"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "tag": "互联网",
-      "count": 1313,
+      "count": 1314,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1307,
+      "count": 1308,
       "dim": "region"
     },
     {
@@ -125,7 +125,7 @@
     },
     {
       "tag": "外汇",
-      "count": 814,
+      "count": 813,
       "dim": "asset"
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "tag": "全球",
-      "count": 502,
+      "count": 501,
       "dim": "region"
     },
     {
@@ -200,7 +200,7 @@
     },
     {
       "tag": "军工",
-      "count": 143,
+      "count": 142,
       "dim": "industry"
     },
     {
