@@ -1,41 +1,41 @@
 {
-  "updated": "2026-08-23T14:20:46Z",
-  "total_tagged": 28716,
+  "updated": "2026-08-23T18:20:38Z",
+  "total_tagged": 28714,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9319,
+      "count": 9318,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9117,
+      "count": 9111,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8318,
+      "count": 8322,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8131,
+      "count": 8129,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7073,
+      "count": 7072,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6881,
+      "count": 6886,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5653,
+      "count": 5654,
       "dim": "stance"
     },
     {
@@ -45,17 +45,17 @@
     },
     {
       "tag": "微观",
-      "count": 5072,
+      "count": 5073,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4843,
+      "count": 4840,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3701,
+      "count": 3703,
       "dim": "industry"
     },
     {
@@ -65,7 +65,7 @@
     },
     {
       "tag": "金融",
-      "count": 3251,
+      "count": 3252,
       "dim": "industry"
     },
     {
@@ -75,12 +75,12 @@
     },
     {
       "tag": "中观",
-      "count": 2894,
+      "count": 2893,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2226,
+      "count": 2225,
       "dim": "stance"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1570,
+      "count": 1569,
       "dim": "ctype"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 912,
+      "count": 911,
       "dim": "asset"
     },
     {
@@ -130,7 +130,7 @@
     },
     {
       "tag": "黄金有色",
-      "count": 811,
+      "count": 810,
       "dim": "industry"
     },
     {
