@@ -1,96 +1,96 @@
 {
-  "updated": "2026-08-22T22:21:46Z",
-  "total_tagged": 28680,
+  "updated": "2026-08-23T00:38:50Z",
+  "total_tagged": 28713,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9316,
+      "count": 9320,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9108,
+      "count": 9115,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8310,
+      "count": 8322,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8126,
+      "count": 8129,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7072,
+      "count": 7077,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6862,
+      "count": 6871,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5648,
+      "count": 5652,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5355,
+      "count": 5364,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5063,
+      "count": 5070,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4841,
+      "count": 4850,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3693,
+      "count": 3694,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3582,
+      "count": 3587,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3248,
+      "count": 3253,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 3015,
+      "count": 3020,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2895,
+      "count": 2898,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2226,
+      "count": 2228,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2054,
+      "count": 2058,
       "dim": "other"
     },
     {
       "tag": "数据",
-      "count": 1566,
+      "count": 1570,
       "dim": "ctype"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "tag": "互联网",
-      "count": 1309,
+      "count": 1312,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1305,
+      "count": 1307,
       "dim": "region"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 1000,
+      "count": 1002,
       "dim": "industry"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 603,
+      "count": 604,
       "dim": "ctype"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 479,
+      "count": 481,
       "dim": "stance"
     },
     {
@@ -165,17 +165,17 @@
     },
     {
       "tag": "日本",
-      "count": 425,
+      "count": 426,
       "dim": "region"
     },
     {
       "tag": "ETF",
-      "count": 359,
+      "count": 360,
       "dim": "asset"
     },
     {
       "tag": "汽车",
-      "count": 287,
+      "count": 288,
       "dim": "industry"
     },
     {
@@ -200,7 +200,7 @@
     },
     {
       "tag": "军工",
-      "count": 142,
+      "count": 143,
       "dim": "industry"
     },
     {
