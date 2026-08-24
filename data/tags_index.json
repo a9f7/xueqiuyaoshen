@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-24T18:20:42Z",
+  "updated": "2026-08-24T22:20:41Z",
   "total_tagged": 28742,
   "distinct_tags": 45,
   "tags": [
@@ -10,7 +10,7 @@
     },
     {
       "tag": "答疑",
-      "count": 9117,
+      "count": 9118,
       "dim": "ctype"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 6889,
+      "count": 6890,
       "dim": "perspective"
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "tag": "地产",
-      "count": 1280,
+      "count": 1279,
       "dim": "industry"
     },
     {
