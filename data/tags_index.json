@@ -1,31 +1,31 @@
 {
-  "updated": "2026-08-24T06:26:57Z",
-  "total_tagged": 28743,
+  "updated": "2026-08-24T10:21:21Z",
+  "total_tagged": 28741,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9328,
+      "count": 9326,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9115,
+      "count": 9114,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8334,
+      "count": 8333,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8135,
+      "count": 8133,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7082,
+      "count": 7080,
       "dim": "asset"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 5663,
+      "count": 5662,
       "dim": "stance"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3592,
+      "count": 3591,
       "dim": "ctype"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "看空",
-      "count": 3028,
+      "count": 3027,
       "dim": "stance"
     },
     {
@@ -80,17 +80,17 @@
     },
     {
       "tag": "复盘",
-      "count": 2225,
+      "count": 2223,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2062,
+      "count": 2063,
       "dim": "other"
     },
     {
       "tag": "数据",
-      "count": 1571,
+      "count": 1570,
       "dim": "ctype"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 482,
+      "count": 481,
       "dim": "stance"
     },
     {
