@@ -1,21 +1,21 @@
 {
-  "updated": "2026-08-24T10:21:21Z",
+  "updated": "2026-08-24T14:20:42Z",
   "total_tagged": 28741,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9326,
+      "count": 9328,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9114,
+      "count": 9115,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8333,
+      "count": 8332,
       "dim": "ctype"
     },
     {
@@ -25,7 +25,7 @@
     },
     {
       "tag": "股票",
-      "count": 7080,
+      "count": 7079,
       "dim": "asset"
     },
     {
@@ -35,27 +35,27 @@
     },
     {
       "tag": "看多",
-      "count": 5662,
+      "count": 5659,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5362,
+      "count": 5360,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5083,
+      "count": 5082,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4840,
+      "count": 4842,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3707,
+      "count": 3706,
       "dim": "industry"
     },
     {
@@ -75,17 +75,17 @@
     },
     {
       "tag": "中观",
-      "count": 2892,
+      "count": 2890,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2223,
+      "count": 2224,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2063,
+      "count": 2064,
       "dim": "other"
     },
     {
@@ -100,12 +100,12 @@
     },
     {
       "tag": "互联网",
-      "count": 1317,
+      "count": 1316,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1309,
+      "count": 1308,
       "dim": "region"
     },
     {
@@ -135,7 +135,7 @@
     },
     {
       "tag": "传媒游戏",
-      "count": 807,
+      "count": 806,
       "dim": "industry"
     },
     {
