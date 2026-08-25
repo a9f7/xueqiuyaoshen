@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-25T02:29:23Z",
+  "updated": "2026-08-25T06:20:39Z",
   "total_tagged": 28759,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9341,
+      "count": 9340,
       "dim": "region"
     },
     {
@@ -15,7 +15,7 @@
     },
     {
       "tag": "行情点评",
-      "count": 8332,
+      "count": 8331,
       "dim": "ctype"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1569,
+      "count": 1570,
       "dim": "ctype"
     },
     {
