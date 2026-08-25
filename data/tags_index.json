@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-25T18:21:12Z",
-  "total_tagged": 28754,
+  "updated": "2026-08-25T22:22:58Z",
+  "total_tagged": 28753,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,17 +10,17 @@
     },
     {
       "tag": "答疑",
-      "count": 9132,
+      "count": 9133,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8324,
+      "count": 8323,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8135,
+      "count": 8134,
       "dim": "industry"
     },
     {
@@ -30,12 +30,12 @@
     },
     {
       "tag": "宏观",
-      "count": 6884,
+      "count": 6883,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5652,
+      "count": 5651,
       "dim": "stance"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4835,
+      "count": 4834,
       "dim": "industry"
     },
     {
@@ -60,12 +60,12 @@
     },
     {
       "tag": "个股分析",
-      "count": 3593,
+      "count": 3592,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3269,
+      "count": 3268,
       "dim": "industry"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 2885,
+      "count": 2884,
       "dim": "perspective"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 908,
+      "count": 907,
       "dim": "asset"
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "tag": "能源",
-      "count": 791,
+      "count": 790,
       "dim": "industry"
     },
     {
