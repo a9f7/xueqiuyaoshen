@@ -1,81 +1,81 @@
 {
-  "updated": "2026-08-24T22:20:41Z",
-  "total_tagged": 28742,
+  "updated": "2026-08-25T00:38:43Z",
+  "total_tagged": 28758,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9330,
+      "count": 9342,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9118,
+      "count": 9127,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8333,
+      "count": 8334,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8135,
+      "count": 8140,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7079,
+      "count": 7076,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6890,
+      "count": 6891,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5658,
+      "count": 5657,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5360,
+      "count": 5362,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5082,
+      "count": 5089,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4844,
+      "count": 4842,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3705,
+      "count": 3716,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3590,
+      "count": 3596,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3261,
+      "count": 3266,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 3027,
+      "count": 3030,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2890,
+      "count": 2886,
       "dim": "perspective"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "其他",
-      "count": 2064,
+      "count": 2065,
       "dim": "other"
     },
     {
@@ -95,22 +95,22 @@
     },
     {
       "tag": "随笔",
-      "count": 1441,
+      "count": 1445,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1316,
+      "count": 1314,
       "dim": "industry"
     },
     {
       "tag": "中国香港",
-      "count": 1308,
+      "count": 1304,
       "dim": "region"
     },
     {
       "tag": "地产",
-      "count": 1279,
+      "count": 1278,
       "dim": "industry"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 911,
+      "count": 909,
       "dim": "asset"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 603,
+      "count": 602,
       "dim": "ctype"
     },
     {
@@ -210,7 +210,7 @@
     },
     {
       "tag": "通信",
-      "count": 125,
+      "count": 126,
       "dim": "industry"
     },
     {
@@ -225,7 +225,7 @@
     },
     {
       "tag": "加密货币",
-      "count": 38,
+      "count": 39,
       "dim": "asset"
     }
   ]

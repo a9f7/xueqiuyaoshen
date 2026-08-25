@@ -1167,7 +1167,7 @@
     ]
   },
   "current": {
-    "date": "2026-08-24",
+    "date": "2026-08-25",
     "items": [
       {
         "symbol": "ZH3389064",
@@ -2044,7 +2044,7 @@
       },
       {
         "symbol": "SLB",
-        "name": "SLB",
+        "name": "SLB LMTD ORD",
         "marketplace": "US",
         "exchange": "NYSE",
         "watched": 1732812511960,
@@ -2335,7 +2335,7 @@
   "changes": {
     "added": [],
     "removed": [],
-    "as_of": "2026-08-24"
+    "as_of": "2026-08-25"
   },
   "mentioned": [
     {
