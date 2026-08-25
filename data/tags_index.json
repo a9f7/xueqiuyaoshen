@@ -1,26 +1,26 @@
 {
-  "updated": "2026-08-25T00:38:43Z",
-  "total_tagged": 28758,
+  "updated": "2026-08-25T02:29:23Z",
+  "total_tagged": 28759,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9342,
+      "count": 9341,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9127,
+      "count": 9131,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8334,
+      "count": 8332,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8140,
+      "count": 8139,
       "dim": "industry"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 6891,
+      "count": 6889,
       "dim": "perspective"
     },
     {
@@ -40,27 +40,27 @@
     },
     {
       "tag": "中国",
-      "count": 5362,
+      "count": 5365,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5089,
+      "count": 5084,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4842,
+      "count": 4835,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3716,
+      "count": 3724,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3596,
+      "count": 3595,
       "dim": "ctype"
     },
     {
@@ -70,27 +70,27 @@
     },
     {
       "tag": "看空",
-      "count": 3030,
+      "count": 3031,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2886,
+      "count": 2885,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2224,
+      "count": 2223,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2065,
+      "count": 2067,
       "dim": "other"
     },
     {
       "tag": "数据",
-      "count": 1570,
+      "count": 1569,
       "dim": "ctype"
     },
     {
@@ -105,7 +105,7 @@
     },
     {
       "tag": "中国香港",
-      "count": 1304,
+      "count": 1305,
       "dim": "region"
     },
     {
@@ -120,17 +120,17 @@
     },
     {
       "tag": "商品",
-      "count": 909,
+      "count": 908,
       "dim": "asset"
     },
     {
       "tag": "外汇",
-      "count": 815,
+      "count": 816,
       "dim": "asset"
     },
     {
       "tag": "黄金有色",
-      "count": 809,
+      "count": 807,
       "dim": "industry"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 481,
+      "count": 480,
       "dim": "stance"
     },
     {
