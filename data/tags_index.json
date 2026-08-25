@@ -1,11 +1,11 @@
 {
-  "updated": "2026-08-25T06:20:39Z",
-  "total_tagged": 28759,
+  "updated": "2026-08-25T10:20:44Z",
+  "total_tagged": 28758,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9340,
+      "count": 9339,
       "dim": "region"
     },
     {
@@ -20,17 +20,17 @@
     },
     {
       "tag": "科技",
-      "count": 8139,
+      "count": 8138,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7076,
+      "count": 7077,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6889,
+      "count": 6890,
       "dim": "perspective"
     },
     {
@@ -45,12 +45,12 @@
     },
     {
       "tag": "微观",
-      "count": 5084,
+      "count": 5082,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4835,
+      "count": 4834,
       "dim": "industry"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1570,
+      "count": 1568,
       "dim": "ctype"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 1003,
+      "count": 1002,
       "dim": "industry"
     },
     {
@@ -129,13 +129,13 @@
       "dim": "asset"
     },
     {
-      "tag": "黄金有色",
+      "tag": "传媒游戏",
       "count": 807,
       "dim": "industry"
     },
     {
-      "tag": "传媒游戏",
-      "count": 806,
+      "tag": "黄金有色",
+      "count": 807,
       "dim": "industry"
     },
     {
