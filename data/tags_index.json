@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-25T22:22:58Z",
-  "total_tagged": 28753,
+  "updated": "2026-08-26T00:40:52Z",
+  "total_tagged": 28761,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,37 +10,37 @@
     },
     {
       "tag": "答疑",
-      "count": 9133,
+      "count": 9132,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8323,
+      "count": 8324,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8134,
+      "count": 8133,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7074,
+      "count": 7075,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6883,
+      "count": 6885,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5651,
+      "count": 5650,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5364,
+      "count": 5362,
       "dim": "region"
     },
     {
@@ -50,32 +50,32 @@
     },
     {
       "tag": "医药",
-      "count": 4834,
+      "count": 4838,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3723,
+      "count": 3722,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3592,
+      "count": 3594,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3268,
+      "count": 3269,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 3032,
+      "count": 3031,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2884,
+      "count": 2886,
       "dim": "perspective"
     },
     {
@@ -85,17 +85,17 @@
     },
     {
       "tag": "其他",
-      "count": 2069,
+      "count": 2071,
       "dim": "other"
     },
     {
       "tag": "数据",
-      "count": 1568,
+      "count": 1569,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1445,
+      "count": 1446,
       "dim": "ctype"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 1002,
+      "count": 1003,
       "dim": "industry"
     },
     {
@@ -130,12 +130,12 @@
     },
     {
       "tag": "传媒游戏",
-      "count": 807,
+      "count": 808,
       "dim": "industry"
     },
     {
       "tag": "黄金有色",
-      "count": 806,
+      "count": 805,
       "dim": "industry"
     },
     {
@@ -145,17 +145,17 @@
     },
     {
       "tag": "政策解读",
-      "count": 602,
+      "count": 603,
       "dim": "ctype"
     },
     {
       "tag": "全球",
-      "count": 504,
+      "count": 505,
       "dim": "region"
     },
     {
       "tag": "风险提示",
-      "count": 480,
+      "count": 483,
       "dim": "stance"
     },
     {
@@ -165,7 +165,7 @@
     },
     {
       "tag": "日本",
-      "count": 426,
+      "count": 425,
       "dim": "region"
     },
     {
