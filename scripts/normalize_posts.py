@@ -108,6 +108,32 @@ def main():
     all_posts.sort(key=lambda s: s.get("created_at", 0), reverse=True)
     normed = [normalize(s) for s in all_posts]
 
+    # ---- 累积归档（append-only）----------------------------------------
+    # 每小时任务用 --newest 8 覆盖重写第 1~8 页，被新帖挤出第 8 页的旧帖
+    # 会脱离 raw 覆盖范围（第 9 页起的文件是更早时点的快照），若直接以 raw
+    # 全量重写 posts.json 就会造成"中段时间线空洞"。因此这里与已有
+    # posts.json 做并集：raw 里的新版本优先（互动计数更新），历史记录保留。
+    prev = []
+    pj = DATA / "posts.json"
+    if pj.exists():
+        try:
+            prev = json.loads(open(pj, encoding="utf-8", errors="replace").read(), strict=False)
+        except Exception as e:
+            print(f"[warn] 读取已有 posts.json 失败，跳过归档合并: {e}", file=sys.stderr)
+            prev = []
+    merged = {}
+    for p in prev:
+        if p.get("id"):
+            merged[p["id"]] = p
+    kept = len(merged)
+    for p in normed:
+        if p.get("id"):
+            merged[p["id"]] = p
+    out = sorted(merged.values(), key=lambda p: p.get("created_at") or 0, reverse=True)
+    added = len(out) - kept
+    print(f"[merge] raw {len(normed)} 条 + 历史归档 {kept} 条 -> {len(out)} 条（新增 {added}）")
+    normed = out
+
     with open(DATA / "posts.json", "w", encoding="utf-8") as f:
         json.dump(normed, f, ensure_ascii=False, indent=2)
     with open(DATA / "posts_raw.json", "w", encoding="utf-8") as f:

@@ -109,6 +109,33 @@ def load_post_ids():
     return set(p.get("id") for p in json.loads(open(pj, encoding="utf-8", errors="replace").read(), strict=False) if p.get("id"))
 
 
+def merge_archive(items, path, label):
+    """与已有归一化文件做并集（append-only）。
+
+    每小时任务用 --newest 8 覆盖重写 raw 第 1~8 页，被挤出窗口的旧记录会脱离
+    raw 覆盖范围（第 9 页起是更早时点快照），若直接全量重写就会出现中段空洞。
+    本函数保留历史记录，raw 里的新版本（互动计数更新）优先覆盖同 id。
+    """
+    prev = []
+    if path.exists():
+        try:
+            prev = json.loads(open(path, encoding="utf-8", errors="replace").read(), strict=False)
+        except Exception as e:
+            print(f"[warn] 读取已有 {path.name} 失败，跳过归档合并: {e}", file=sys.stderr)
+            prev = []
+    merged = {}
+    for it in prev:
+        if it.get("id"):
+            merged[it["id"]] = it
+    kept = len(merged)
+    for it in items:
+        if it.get("id"):
+            merged[it["id"]] = it
+    out = list(merged.values())
+    print(f"[merge] {label}: raw {len(items)} 条 + 历史归档 {kept} 条 -> {len(out)} 条（新增 {len(out) - kept}）")
+    return out
+
+
 def main():
     post_ids = load_post_ids()
     print(f"[norm] posts.json 基准 ID 数: {len(post_ids)}")
@@ -142,6 +169,9 @@ def main():
             if not sid:
                 continue
             reposts.append(norm_item(s, "repost"))
+
+    comments = merge_archive(comments, DATA / "comments.json", "评论")
+    reposts = merge_archive(reposts, DATA / "reposts.json", "转发")
 
     comments.sort(key=lambda x: x.get("created_at") or 0, reverse=True)
     reposts.sort(key=lambda x: x.get("created_at") or 0, reverse=True)
