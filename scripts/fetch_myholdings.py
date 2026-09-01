@@ -7,22 +7,22 @@
   - 部署到 GitHub Pages 的是【加密】产物 data/my_holdings.enc.json，无密码解不开。
   - 加密密码从 data/.holdings_pwd（gitignore）或环境变量 HOLDINGS_PWD 读取。
 
+抓取方式：playwright 浏览器内 fetch（带登录 cookie）。
+  裸 urllib 直连雪球 API 会被 WAF 拦截（403 / 返回 HTML 登录页），必须用浏览器上下文。
+
 用法：
-  # 用内置假数据走通「加密 -> 部署密文」流程（无需 cookie，用于端到端验证）
+  # 用内置假数据走通「加密 -> 部署密文」流程（无需 cookie）
   python fetch_myholdings.py --mock
 
   # 真实抓取（需先放好 cookie 与密码）
   python fetch_myholdings.py
-
-依赖：仅标准库（urllib / hashlib）。雪球持仓 API 需要登录态 cookie。
 """
 import os
 import sys
 import json
 import time
 import re
-import urllib.request
-import urllib.error
+from playwright.sync_api import sync_playwright
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, ".."))
@@ -35,15 +35,7 @@ PROBE_OUT = os.path.join(ROOT, "data", "_holdings_probe.json")
 sys.path.insert(0, HERE)
 from holdings_crypto import encrypt_obj
 
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36")
-HEADERS = {
-    "User-Agent": UA,
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Encoding": "identity",
-    "Referer": "https://xueqiu.com/",
-    "X-Requested-With": "XMLHttpRequest",
-}
+CHROME_PATH = r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe"
 
 # 候选持仓/组合 API（登录态）。真实可用端点以你账号探测结果为准。
 CANDIDATE_TEMPLATES = [
@@ -75,25 +67,44 @@ def get_uid(cookie):
     return m.group(1) if m else None
 
 
-def http_get(url, cookie):
-    headers = dict(HEADERS)
-    if cookie:
-        headers["Cookie"] = cookie
-    req = urllib.request.Request(url, headers=headers)
-    try:
-        with urllib.request.urlopen(req, timeout=20) as r:
-            return r.status, r.read()
-    except urllib.error.HTTPError as e:
-        return e.code, e.read()
-    except Exception as e:  # 网络层失败
-        return 0, str(e).encode("utf-8")
+def parse_cookies(cs):
+    out = []
+    for part in cs.split(";"):
+        part = part.strip()
+        if "=" not in part:
+            continue
+        n, _, v = part.partition("=")
+        out.append({"name": n.strip(), "value": v.strip(), "domain": ".xueqiu.com",
+                    "path": "/", "secure": False, "httpOnly": False, "expires": -1})
+    return out
 
 
-def parse_json(status, raw):
-    try:
-        return status, json.loads(raw.decode("utf-8", "replace"))
-    except Exception:
-        return status, {"_raw_preview": raw[:200].decode("utf-8", "replace")}
+def pw_session(cookie, urls):
+    """单个 playwright 会话内依次 fetch 多个候选 URL（绕过 WAF）。返回 [(status, json), ...]"""
+    out = []
+    with sync_playwright() as p:
+        b = p.chromium.launch(executable_path=CHROME_PATH, headless=True,
+                              args=["--no-sandbox", "--disable-dev-shm-usage",
+                                    "--disable-blink-features=AutomationControlled"])
+        ctx = b.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+            locale="zh-CN")
+        ctx.add_init_script("Object.defineProperty(navigator,'webdriver',{get:()=>undefined});")
+        ctx.add_cookies(parse_cookies(cookie))
+        pg = ctx.new_page()
+        pg.goto("https://xueqiu.com/", wait_until="domcontentloaded", timeout=25000)
+        for url in urls:
+            d = pg.evaluate("""async (url)=>{
+              try{
+                const r=await fetch(url,{credentials:'include'});
+                const t=await r.text();
+                let j; try{ j=JSON.parse(t); }catch(e){ j={'_raw':t.slice(0,160)}; }
+                return {status:r.status, json:j};
+              }catch(e){ return {status:0, json:{'_err':e.message}}; }
+            }""", url)
+            out.append((d.get("status"), d.get("json")))
+        b.close()
+    return out
 
 
 def _num(x):
@@ -149,21 +160,6 @@ def extract_holdings(j):
     return items
 
 
-def probe(cookie, uid):
-    ts = int(time.time() * 1000)
-    results = {}
-    for tpl in CANDIDATE_TEMPLATES:
-        if "{uid}" in tpl and not uid:
-            continue
-        url = tpl.format(uid=uid or "", ts=ts)
-        status, j = parse_json(*http_get(url, cookie))
-        arr_len = len(extract_holdings(j)) if isinstance(j, dict) else 0
-        top = list(j.keys())[:10] if isinstance(j, dict) else type(j).__name__
-        results[url] = {"status": status, "array_len": arr_len, "top_keys": top}
-        print(f"  probe status={status} arr={arr_len} {url[:78]}")
-    return results
-
-
 def _mock_holdings():
     now = int(time.time() * 1000)
     return [
@@ -196,19 +192,22 @@ def main():
             print("[holdings] 未找到 cookie：请写入 data/my_xq_cookie.txt 或设置 XQ_MY_COOKIE")
             sys.exit(2)
         print(f"[holdings] cookie: 有 | uid={uid}")
-        probe(cookie, uid)
-        json.dump(probe(cookie, uid), open(PROBE_OUT, "w", encoding="utf-8"),
-                  ensure_ascii=False, indent=2)
+        ts = int(time.time() * 1000)
+        urls = [tpl.format(uid=uid or "", ts=ts) for tpl in CANDIDATE_TEMPLATES
+                if ("{uid}" not in tpl) or uid]
+        results = pw_session(cookie, urls)
+        probe = {}
+        for u, (st, j) in zip(urls, results):
+            arr = len(extract_holdings(j)) if isinstance(j, dict) else 0
+            probe[u] = {"status": st, "array_len": arr}
+            print(f"  probe status={st} arr={arr} {u[:70]}")
+        json.dump(probe, open(PROBE_OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
         holdings = None
-        for tpl in CANDIDATE_TEMPLATES:
-            if "{uid}" in tpl and not uid:
-                continue
-            url = tpl.format(uid=uid or "", ts=int(time.time() * 1000))
-            status, j = parse_json(*http_get(url, cookie))
+        for (st, j) in results:
             items = extract_holdings(j) if isinstance(j, dict) else []
             if items:
                 holdings = items
-                print(f"[holdings] 命中 API：{len(items)} 项 -> {url[:70]}")
+                print(f"[holdings] 命中 API：{len(items)} 项")
                 break
         if not holdings:
             print("[holdings] 候选 API 均未解析到持仓；原始响应已存:", PROBE_OUT)
