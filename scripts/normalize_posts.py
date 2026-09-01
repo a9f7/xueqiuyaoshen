@@ -10,6 +10,7 @@
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -85,7 +86,32 @@ def normalize(s):
         "user_id": user.get("id", 2292705444),
     }
 
+def self_heal():
+    """最佳努力自愈：从部署仓库 git 历史抢救可能丢失的帖文。
+
+    背景：每小时任务用 --newest 8 覆盖重写 raw 第 1~8 页，被挤出第 8 页的旧帖
+    脱离 raw 覆盖范围；这些帖虽已不在 raw 中，但仍保存在部署仓库的 git 历史里。
+    若某次运行前 posts.json 被重置回 raw 基线（15511），本步会从 git 历史把它们
+    并集补回，确保 normalize 的并集逻辑始终建立在完整基线上，避免时间线再次空洞。
+    任何异常均被吞掉，绝不阻断主流程。
+    """
+    try:
+        repo = Path.home() / "AppData" / "Local" / "Temp" / "xq_deploy"
+        if not (repo / ".git").exists():
+            return
+        r = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "recover_from_git.py"), "--apply"],
+            capture_output=True, text=True, timeout=300,
+        )
+        for line in r.stdout.splitlines():
+            if "[apply] posts.json:" in line or "[found]" in line:
+                print("[self-heal]", line.strip())
+    except Exception as e:
+        print(f"[self-heal] skipped: {e}")
+
+
 def main():
+    self_heal()
     RAW.mkdir(parents=True, exist_ok=True)
     DATA.mkdir(parents=True, exist_ok=True)
 
