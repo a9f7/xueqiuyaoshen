@@ -1,16 +1,16 @@
 {
-  "updated": "2026-09-01T14:21:42Z",
-  "total_tagged": 29303,
+  "updated": "2026-09-01T18:21:51Z",
+  "total_tagged": 29305,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9504,
+      "count": 9506,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9262,
+      "count": 9263,
       "dim": "ctype"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 8379,
+      "count": 8380,
       "dim": "industry"
     },
     {
@@ -30,12 +30,12 @@
     },
     {
       "tag": "宏观",
-      "count": 6957,
+      "count": 6958,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5765,
+      "count": 5767,
       "dim": "stance"
     },
     {
@@ -50,12 +50,12 @@
     },
     {
       "tag": "医药",
-      "count": 4940,
+      "count": 4941,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3840,
+      "count": 3841,
       "dim": "industry"
     },
     {
@@ -130,7 +130,7 @@
     },
     {
       "tag": "外汇",
-      "count": 819,
+      "count": 820,
       "dim": "asset"
     },
     {
