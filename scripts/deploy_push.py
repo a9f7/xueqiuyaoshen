@@ -67,6 +67,7 @@ DATA_FILES = [
     "tags_index.json", "analysis_recent.json", "user.json", "xueqiu.db",
     "daily_review.md", "daily_review.json", "backtest.json",
     "my_notes.json", "my_notes_backtest.json",
+    "my_holdings.enc.json",
 ]
 
 

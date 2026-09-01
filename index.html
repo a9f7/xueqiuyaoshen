@@ -514,6 +514,24 @@
     .analyst .an-grid, .analyst .an-cols { grid-template-columns: 1fr; }
     .analyst .an-verdict { margin-left: 0; max-width: none; }
   }
+  /* 我的持仓（加密 + 密码门） */
+  .mynotes-holdings .mn-holdings-gate { display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:#f8f9fc; border:1px solid var(--line-2); border-radius:12px; padding:14px 16px; margin:8px 0 16px; }
+  .mynotes-holdings .mn-holdings-gate label { font-size:13px; color:var(--ink-2); display:flex; align-items:center; gap:8px; }
+  .mynotes-holdings .mn-holdings-gate input[type=password] { font-size:14px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; min-width:220px; }
+  .mynotes-holdings .mn-holdings-gate button { font-size:13px; padding:8px 16px; border:none; border-radius:8px; background:var(--link); color:#fff; cursor:pointer; }
+  .mynotes-holdings .mn-holdings-gate button:hover { opacity:.9; }
+  .mynotes-holdings .mn-holdings-gate button:disabled { opacity:.5; cursor:default; }
+  .mynotes-holdings .mh-summary { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
+  .mynotes-holdings .mh-card { background:#f8f9fc; border:1px solid var(--line-2); border-radius:12px; padding:12px 18px; min-width:120px; }
+  .mynotes-holdings .mh-card .v { font-size:20px; font-weight:700; color:var(--ink); }
+  .mynotes-holdings .mh-card .l { font-size:12px; color:var(--ink-3); margin-top:2px; }
+  .mynotes-holdings .mh-tbl { overflow-x:auto; }
+  .mynotes-holdings .mh-tbl table { width:100%; border-collapse:collapse; font-size:13px; }
+  .mynotes-holdings .mh-tbl th, .mynotes-holdings .mh-tbl td { padding:8px 10px; border-bottom:1px solid var(--line-2); text-align:left; }
+  .mynotes-holdings .mh-tbl th { color:var(--ink-3); font-weight:600; background:#fafbfd; }
+  .mynotes-holdings .mh-tbl .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .mynotes-holdings .pos { color:#0a8f3c; }
+  .mynotes-holdings .neg { color:#c0392b; }
 </style>
 </head>
 <body>
@@ -547,6 +565,10 @@
         <summary>📝 我的投资笔记</summary>
         <a class="sn-link" href="#mn-form" data-target="mn-form">录入笔记</a>
         <a class="sn-link" href="#mn-result" data-target="mn-result">回测结果</a>
+      </details>
+      <details class="sn-group" open>
+        <summary>💰 我的持仓</summary>
+        <a class="sn-link" href="#mn-holdings" data-target="mn-holdings">模拟盈亏</a>
       </details>
     </nav>
     <div class="sn-foot">
@@ -746,6 +768,21 @@
 
     <div class="bt-sec-h" style="margin-top:16px">我的笔记（含逐窗口回测；本地新增的标「待回测」）</div>
     <div id="mn-list"></div>
+  </section>
+
+  <!-- 我的持仓：加密密文 + 密码门 -->
+  <section class="mynotes-holdings view" id="mn-holdings" data-view="mn-holdings" hidden>
+    <div class="bt-h"><span class="badge">加密</span> 我的模拟盈亏持仓</div>
+    <div class="bt-sub">数据经加密后部署，仅你能用本地设置的密码解密查看。cookie 与明文均不出本机。</div>
+    <div class="mn-holdings-gate" id="mh-gate">
+      <label>输入密码查看持仓
+        <input type="password" id="mh-pwd" placeholder="本地设置的密码" autocomplete="off">
+      </label>
+      <button id="mh-unlock">解密查看</button>
+      <span id="mh-msg" class="mn-msg"></span>
+    </div>
+    <div id="mh-summary" class="mh-summary" style="display:none"></div>
+    <div id="mh-table" class="mh-table" style="display:none"></div>
   </section>
 
   <footer>
@@ -1042,7 +1079,7 @@
   }
 
   // 支持的视图 ID（与侧栏链接 / section.data-view 一一对应）
-  const VIEWS = ["daily", "analyst", "backtest", "posts", "mn-form", "mn-result"];
+  const VIEWS = ["daily", "analyst", "backtest", "posts", "mn-form", "mn-result", "mn-holdings"];
   const DEFAULT_VIEW = "posts";
 
   // 单视图切换：只保留目标可见，其它全部隐藏
@@ -1103,6 +1140,7 @@
       loadDailyReview();   // 非阻塞：每日首席视角总结面板
       loadBacktest();   // 非阻塞：观点回测面板
       loadMyNotes();   // 非阻塞：我的投资笔记面板
+      loadHoldings();  // 非阻塞：预取加密持仓密文
       const months = postIndex.months || [];
       // 先加载最新 1 个月（首屏最快），渲染后再后台补齐第 2 个月
       if (months[0]) await loadMonth(months[0].file);
@@ -1653,6 +1691,98 @@
     $("#meta").textContent = `已加载 ${allPosts.length} / 总 ${postIndex.total} 条（全部）`;
     render();
   });
+
+  // ===== 我的持仓：加密密文 + 密码门 =====
+  let __mhBlob = null;
+  function b64ToBytes(b64){ const bin=atob(b64); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return u; }
+  function hexToBytes(hex){ const u=new Uint8Array(hex.length/2); for(let i=0;i<hex.length/2;i++)u[i]=parseInt(hex.substr(i*2,2),16); return u; }
+  function u64be(n){ const u=new Uint8Array(8); for(let i=7;i>=0;i--){ u[i]=n & 0xff; n=Math.floor(n/256); } return u; }
+  function concatBytes(a,b){ const u=new Uint8Array(a.length+b.length); u.set(a,0); u.set(b,a.length); return u; }
+  function fmtMoney(n){ if(n==null||isNaN(n)) return "--"; const neg=n<0; const s=Math.abs(n).toLocaleString("zh-CN",{maximumFractionDigits:2}); return (neg?"-":"")+s; }
+
+  async function decryptHoldings(blob, password){
+    if(!window.crypto || !crypto.subtle) throw new Error("当前浏览器不支持 Web Crypto");
+    const enc=new TextEncoder();
+    const salt=hexToBytes(blob.salt);
+    const ct=b64ToBytes(blob.ct);
+    const rounds=Number(blob.rounds)||200000;
+    const keyMat=await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveBits"]);
+    const bits=await crypto.subtle.deriveBits({name:"PBKDF2", salt, iterations:rounds, hash:"SHA-256"}, keyMat, 256);
+    const key=new Uint8Array(bits);
+    const ks=new Uint8Array(ct.length);
+    let produced=0, c=0;
+    while(produced<ct.length){
+      const blk=new Uint8Array(await crypto.subtle.digest("SHA-256", concatBytes(key, u64be(c))));
+      for(let i=0;i<blk.length && produced<ct.length;i++) ks[produced++]=blk[i];
+      c++;
+    }
+    const pt=new Uint8Array(ct.length);
+    for(let i=0;i<ct.length;i++) pt[i]=ct[i]^ks[i];
+    return JSON.parse(new TextDecoder().decode(pt));
+  }
+
+  function mhMsg(s, isErr){
+    const el=$("#mh-msg"); if(!el) return;
+    el.textContent=s||""; el.style.color=isErr?"#c0392b":"#0a8f3c";
+  }
+
+  async function loadHoldings(){
+    try{
+      const d=await fetch("data/my_holdings.enc.json",{cache:"no-cache"}).then(r=>{ if(!r.ok) throw 0; return r.json(); });
+      __mhBlob=d; mhMsg("已载入加密数据，请输入密码解密", false);
+    }catch(e){ __mhBlob=null; mhMsg("暂无可解密的持仓数据（请先运行抓取脚本生成密文）", true); }
+  }
+
+  function renderHoldings(d){
+    const sum=$("#mh-summary"), tbl=$("#mh-table");
+    if(sum) sum.style.display="block"; if(tbl) tbl.style.display="block";
+    const totalV=d.total_value||0, totalP=d.total_profit||0;
+    const cost= totalV-totalP;
+    const rate= cost>0 ? (totalP/cost*100) : 0;
+    if(sum) sum.innerHTML=
+      `<div class="mh-card"><div class="v">${fmtMoney(totalV)}</div><div class="l">总市值</div></div>`+
+      `<div class="mh-card"><div class="v ${totalP>=0?'pos':'neg'}">${fmtMoney(totalP)}</div><div class="l">总盈亏</div></div>`+
+      `<div class="mh-card"><div class="v ${totalP>=0?'pos':'neg'}">${rate.toFixed(2)}%</div><div class="l">收益率</div></div>`+
+      `<div class="mh-card"><div class="v">${d.count||0}</div><div class="l">持仓数</div></div>`;
+    const rows=(d.items||[]).map(it=>{
+      const p=it.profit||0;
+      const r= (it.profit_rate!=null)? it.profit_rate
+             : (it.cost&&it.current)? ((it.current-it.cost)/it.cost*100) : null;
+      return `<tr>
+        <td>${esc(it.symbol||'')}</td>
+        <td>${esc(it.name||'')}</td>
+        <td class="num">${fmtMoney(it.value)}</td>
+        <td class="num">${it.weight!=null?Number(it.weight).toFixed(1)+'%':''}</td>
+        <td class="num">${fmtMoney(it.current)}</td>
+        <td class="num">${fmtMoney(it.cost)}</td>
+        <td class="num ${p>=0?'pos':'neg'}">${fmtMoney(p)}</td>
+        <td class="num ${p>=0?'pos':'neg'}">${r!=null?Number(r).toFixed(2)+'%':''}</td>
+      </tr>`;
+    }).join("");
+    if(tbl) tbl.innerHTML=`<table class="mh-tbl"><thead><tr>
+      <th>代码</th><th>名称</th><th class="num">市值</th><th class="num">仓位</th>
+      <th class="num">现价</th><th class="num">成本</th><th class="num">盈亏额</th><th class="num">盈亏率</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+  }
+
+  // 密码门事件绑定（DOM 已就绪，script 位于 body 末尾）
+  (function bindHoldingsGate(){
+    const btn=$("#mh-unlock"); if(!btn) return;
+    btn.addEventListener("click", async ()=>{
+      if(!__mhBlob){ mhMsg("没有可解密的数据", true); return; }
+      const pwd=$("#mh-pwd").value;
+      if(!pwd){ mhMsg("请输入密码", true); return; }
+      btn.disabled=true; mhMsg("解密中…", false);
+      try{
+        const data=await decryptHoldings(__mhBlob, pwd);
+        renderHoldings(data);
+        mhMsg("解密成功", false);
+        $("#mh-pwd").value="";
+      }catch(e){ mhMsg("密码错误或数据损坏", true); }
+      finally{ btn.disabled=false; }
+    });
+    const inp=$("#mh-pwd"); if(inp) inp.addEventListener("keydown", e=>{ if(e.key==="Enter") btn.click(); });
+  })();
 
   load();
 </script>

@@ -10,6 +10,9 @@ data/posts_raw_pretty.json
 # cookies 等敏感凭据（不入库）
 data/xq_cookie.txt
 data/xq_cookies.txt
+data/my_xq_cookie.txt
+data/.holdings_pwd
+data/my_holdings.json
 
 # GitHub PAT（本地推送用，绝不入库）
 .github_token
