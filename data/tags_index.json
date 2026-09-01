@@ -1,16 +1,16 @@
 {
-  "updated": "2026-09-01T02:42:51Z",
-  "total_tagged": 29269,
+  "updated": "2026-09-01T06:21:55Z",
+  "total_tagged": 29285,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9491,
+      "count": 9492,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9250,
+      "count": 9251,
       "dim": "ctype"
     },
     {
@@ -25,22 +25,22 @@
     },
     {
       "tag": "股票",
-      "count": 7171,
+      "count": 7184,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6953,
+      "count": 6955,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5746,
+      "count": 5760,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5420,
+      "count": 5434,
       "dim": "region"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3812,
+      "count": 3826,
       "dim": "industry"
     },
     {
@@ -70,12 +70,12 @@
     },
     {
       "tag": "看空",
-      "count": 3098,
+      "count": 3100,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 2979,
+      "count": 2993,
       "dim": "perspective"
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "tag": "地产",
-      "count": 1278,
+      "count": 1280,
       "dim": "industry"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 608,
+      "count": 609,
       "dim": "ctype"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 490,
+      "count": 491,
       "dim": "stance"
     },
     {
@@ -190,7 +190,7 @@
     },
     {
       "tag": "期权",
-      "count": 183,
+      "count": 184,
       "dim": "asset"
     },
     {
