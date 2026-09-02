@@ -68,6 +68,7 @@ DATA_FILES = [
     "daily_review.md", "daily_review.json", "backtest.json",
     "my_notes.json", "my_notes_backtest.json",
     "my_holdings.enc.json",
+    "my_trades.enc.json",
     "factor_history.json",
 ]
 
