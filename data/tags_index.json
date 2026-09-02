@@ -1,46 +1,46 @@
 {
-  "updated": "2026-09-02T00:40:31Z",
-  "total_tagged": 29318,
+  "updated": "2026-09-02T02:30:09Z",
+  "total_tagged": 29328,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9510,
+      "count": 9513,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9272,
+      "count": 9275,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8497,
+      "count": 8499,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8388,
+      "count": 8390,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7190,
+      "count": 7191,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6960,
+      "count": 6963,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5768,
+      "count": 5769,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5436,
+      "count": 5439,
       "dim": "region"
     },
     {
@@ -50,12 +50,12 @@
     },
     {
       "tag": "医药",
-      "count": 4944,
+      "count": 4945,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3843,
+      "count": 3849,
       "dim": "industry"
     },
     {
@@ -70,17 +70,17 @@
     },
     {
       "tag": "看空",
-      "count": 3102,
+      "count": 3103,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 3004,
+      "count": 3005,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2258,
+      "count": 2259,
       "dim": "stance"
     },
     {
@@ -90,17 +90,17 @@
     },
     {
       "tag": "数据",
-      "count": 1599,
+      "count": 1603,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1476,
+      "count": 1479,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1376,
+      "count": 1379,
       "dim": "industry"
     },
     {
@@ -190,7 +190,7 @@
     },
     {
       "tag": "期权",
-      "count": 184,
+      "count": 186,
       "dim": "asset"
     },
     {
