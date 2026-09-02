@@ -144,29 +144,24 @@ function render(data){
   });
 
   document.getElementById('content').innerHTML = `
-    <div class="grid cards" style="margin-bottom:14px">${holdCards.map(c=>
-      `<div class="card"><div class="k">${c[0]}</div><div class="v">${c[1]}</div>
-       <div class="s ${c[3]>0?'up':(c[3]<0?'down':'flat')}">${c[2]}</div></div>`).join('')}</div>
-
-    <section><h2>宏观因子实时卡片</h2>
-      <div class="grid cards">${facHtml}</div>
-      <div class="note">涨=红 / 跌=绿（A股习惯）。南向净买入需接入数据源后显示。美债、油价、指数来自 Yahoo Finance 公开接口。</div>
-    </section>
-
-    <section><h2>持仓净值走势</h2>
-      <div class="panel"><div class="chart-box"><canvas id="navChart"></canvas></div></div>
-    </section>
-
-    <section><h2>宏观因子归一化对比（首点=100）</h2>
-      <div class="panel"><div class="chart-box tall"><canvas id="facChart"></canvas></div>
-        <div class="note">不同量纲归一到同一基准，便于看"节奏同步/背离"。油价上行 vs 美债收益率上行，往往是组合的主要拉扯。</div>
+    <section><h2>我的看盘</h2>
+      <div class="grid cards" style="margin-bottom:14px">${holdCards.map(c=>
+        `<div class="card"><div class="k">${c[0]}</div><div class="v">${c[1]}</div>
+         <div class="s ${c[3]>0?'up':(c[3]<0?'down':'flat')}">${c[2]}</div></div>`).join('')}</div>
+      <div class="flex">
+        <div class="panel"><div class="chart-box"><canvas id="navChart"></canvas></div>
+          <div class="note">总资产 / 市值随每次快照更新。</div></div>
+        ${segHtml?`<div class="panel"><h3 style="font-size:13px;color:var(--sub);margin-bottom:10px;font-weight:600">分市场快照</h3>${segHtml}</div>`:''}
       </div>
     </section>
 
-    ${segHtml?`<section><h2>分市场快照</h2><div class="panel">${segHtml}</div></section>`:''}
-
-    <section><h2>最新快照明细</h2>
-      <div class="panel"><table id="detail"><thead><tr>
+    <section><h2>宏观因子</h2>
+      <div class="grid cards">${facHtml}</div>
+      <div class="note">涨=红 / 跌=绿（A股习惯）。南向净买入需接入数据源后显示。美债、油价、指数来自 Yahoo Finance 公开接口。</div>
+      <div class="panel" style="margin-top:14px"><div class="chart-box tall"><canvas id="facChart"></canvas></div>
+        <div class="note">不同量纲归一到同一基准（首点=100），便于看"节奏同步/背离"。油价上行 vs 美债收益率上行，往往是组合的主要拉扯。</div>
+      </div>
+      <div class="panel" style="margin-top:14px"><table id="detail"><thead><tr>
         <th>因子</th><th class="num">最新值</th><th class="num">日变动</th><th class="num">单位</th>
       </tr></thead><tbody>
         ${FACTOR_ORDER.map(([key,zh,unit])=>{
