@@ -1,16 +1,16 @@
 {
-  "updated": "2026-09-01T22:22:03Z",
-  "total_tagged": 29305,
+  "updated": "2026-09-02T00:40:31Z",
+  "total_tagged": 29318,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9506,
+      "count": 9510,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9263,
+      "count": 9272,
       "dim": "ctype"
     },
     {
@@ -20,22 +20,22 @@
     },
     {
       "tag": "科技",
-      "count": 8380,
+      "count": 8388,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7187,
+      "count": 7190,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6958,
+      "count": 6960,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5767,
+      "count": 5768,
       "dim": "stance"
     },
     {
@@ -45,17 +45,17 @@
     },
     {
       "tag": "微观",
-      "count": 5176,
+      "count": 5179,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4941,
+      "count": 4944,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3841,
+      "count": 3843,
       "dim": "industry"
     },
     {
@@ -70,17 +70,17 @@
     },
     {
       "tag": "看空",
-      "count": 3100,
+      "count": 3102,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 3003,
+      "count": 3004,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2253,
+      "count": 2258,
       "dim": "stance"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1597,
+      "count": 1599,
       "dim": "ctype"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1374,
+      "count": 1376,
       "dim": "industry"
     },
     {
