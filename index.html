@@ -546,6 +546,15 @@
   .mynotes-holdings .mh-tbl th { position:sticky; top:0; z-index:2; }
   .mynotes-holdings .mh-tbl .mh-grp td { background:#eef2fb; font-weight:600; color:var(--ink-2); font-size:12.5px; border-top:2px solid var(--line); border-bottom:1px solid var(--line-2); }
   .mynotes-holdings .mh-tbl .nm { font-weight:500; color:var(--ink); }
+  /* 分区标题 / 历史表 / 空态 */
+  .mynotes-holdings .mh-sec { font-size:15px; font-weight:700; color:var(--ink); margin:22px 0 10px; padding-left:10px; border-left:4px solid var(--link); }
+  .mynotes-holdings .mh-sec-n { font-size:12.5px; font-weight:500; color:var(--ink-3); margin-left:6px; }
+  .mynotes-holdings .mh-sec-n::before { content:"("; }
+  .mynotes-holdings .mh-sec-n::after { content:")"; }
+  .mynotes-holdings .mh-tbl-hist th, .mynotes-holdings .mh-tbl-hist td { padding:7px 10px; }
+  .mynotes-holdings .mh-tbl-hist .nt { color:var(--ink-3); font-size:12px; }
+  .mynotes-holdings .mh-tbl .nt { color:var(--ink-3); font-size:12px; }
+  .mynotes-holdings .mh-empty { padding:24px; text-align:center; color:var(--ink-3); font-size:13px; }
   .mynotes-holdings .mh-tbl .mk { color:var(--ink-3); font-size:12px; }
 </style>
 </head>
@@ -799,7 +808,12 @@
     <div id="mh-summary" class="mh-summary" style="display:none"></div>
     <div id="mh-ov" class="mh-ov" style="display:none"></div>
     <div id="mh-tabs" class="mh-tabs" style="display:none"></div>
+    <h3 id="mh-held-title" class="mh-sec" style="display:none"></h3>
     <div id="mh-table" class="mh-table" style="display:none"></div>
+    <h3 id="mh-hist-title" class="mh-sec" style="display:none"></h3>
+    <div id="mh-history" class="mh-table" style="display:none"></div>
+    <h3 id="mh-trades-title" class="mh-sec" style="display:none"></h3>
+    <div id="mh-trades" class="mh-table" style="display:none"></div>
   </section>
 
   <footer>
@@ -1711,6 +1725,7 @@
 
   // ===== 我的持仓：加密密文 + 密码门 =====
   let __mhBlob = null;
+  let __mhTradesBlob = null;
   function b64ToBytes(b64){ const bin=atob(b64); const u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return u; }
   function hexToBytes(hex){ const u=new Uint8Array(hex.length/2); for(let i=0;i<hex.length/2;i++)u[i]=parseInt(hex.substr(i*2,2),16); return u; }
   function u64be(n){ const u=new Uint8Array(8); for(let i=7;i>=0;i--){ u[i]=n & 0xff; n=Math.floor(n/256); } return u; }
@@ -1748,26 +1763,40 @@
       const d=await fetch("data/my_holdings.enc.json",{cache:"no-cache"}).then(r=>{ if(!r.ok) throw 0; return r.json(); });
       __mhBlob=d; mhMsg("已载入加密数据，请输入密码解密", false);
     }catch(e){ __mhBlob=null; mhMsg("暂无可解密的持仓数据（请先运行抓取脚本生成密文）", true); }
+    // 交易记录（可选；缺失不影响持仓展示）
+    try{
+      const t=await fetch("data/my_trades.enc.json",{cache:"no-cache"}).then(r=>{ if(!r.ok) throw 0; return r.json(); });
+      __mhTradesBlob=t;
+    }catch(e){ __mhTradesBlob=null; }
   }
 
   function mhCard(v, l, cls){
     return `<div class="mh-card"><div class="v ${cls||''}">${v}</div><div class="l">${l}</div></div>`;
   }
   function renderHoldings(d){
-    const sum=$("#mh-summary"), ov=$("#mh-ov"), tabs=$("#mh-tabs"), tbl=$("#mh-table");
-    if(sum) sum.style.display="block"; if(ov) ov.style.display="block";
-    if(tabs) tabs.style.display="flex"; if(tbl) tbl.style.display="block";
+    const sum=$("#mh-summary"), ov=$("#mh-ov"), tabs=$("#mh-tabs");
+    const tbl=$("#mh-table"), hist=$("#mh-history");
+    const heldTitle=$("#mh-held-title"), histTitle=$("#mh-hist-title");
+    [sum,ov,tabs,tbl,hist,heldTitle,histTitle].forEach(el=>{ if(el) el.style.display="block"; });
 
-    const tv=d.total_value||0, tp=d.total_profit||0, td=d.total_day_profit||0, ta=d.total_accum_profit||0;
-    const cost=tv-tp;
-    const rate= cost>0 ? (tp/cost*100) : 0;
+    const items=d.items||[];
+    // 当前持仓 vs 历史持仓（按是否有仓位划分，与雪球一致）
+    const held=items.filter(it=>((it.amount||0)>0 || (it.value||0)>0));
+    const histItems=items.filter(it=>!((it.amount||0)>0 || (it.value||0)>0));
+    const hv=held.reduce((a,b)=>a+(b.value||0),0);
+    const hp=held.reduce((a,b)=>a+(b.profit||0),0);
+    const hd=held.reduce((a,b)=>a+(b.day_profit||0),0);
+    const ha=held.reduce((a,b)=>a+(b.accum_profit||0),0);
+    const cost=hv-hp;
+    const rate= cost>0 ? (hp/cost*100) : 0;
+
     if(sum) sum.innerHTML=
-      mhCard(fmtMoney(tv), "持仓总市值(本组)") +
-      mhCard(fmtMoney(tp), "浮动盈亏", tp>=0?"pos":"neg") +
-      mhCard((tp>=0?"+":"")+rate.toFixed(2)+"%", "收益率", tp>=0?"pos":"neg") +
-      mhCard(fmtMoney(td), "今日盈亏", td>=0?"pos":"neg") +
-      mhCard(fmtMoney(ta), "累计盈亏", ta>=0?"pos":"neg") +
-      mhCard(d.count||0, "持仓数");
+      mhCard(fmtMoney(hv), "当前持仓市值") +
+      mhCard(fmtMoney(hp), "浮动盈亏", hp>=0?"pos":"neg") +
+      mhCard((hp>=0?"+":"")+rate.toFixed(2)+"%", "收益率", hp>=0?"pos":"neg") +
+      mhCard(fmtMoney(hd), "今日盈亏", hd>=0?"pos":"neg") +
+      mhCard(fmtMoney(ha), "累计盈亏", ha>=0?"pos":"neg") +
+      mhCard(held.length, "当前持仓数");
 
     // 账户总览（ALL 段，含其他组合的聚合口径）
     const s=d.summary||{};
@@ -1778,55 +1807,71 @@
         +` <span class="mh-note">（账户总市值含其他模拟组合，故高于上方「本组」持仓市值）</span>`;
     }
 
+    // 当前持仓：按市值降序
+    const heldSorted=held.slice().sort((a,b)=>(b.value||0)-(a.value||0));
     const segs=d.segments||[];
-    const items=d.items||[];
-    // 市场 tab
+
+    // 市场筛选 tab（作用于当前持仓）
     if(tabs){
-      const opts=[{key:"ALL",name:"全部",count:items.length}]
-        .concat(segs.map(sg=>({key:sg.market,name:sg.name,count:sg.count})));
+      const opts=[{key:"ALL",name:"全部",count:heldSorted.length}]
+        .concat(segs.map(sg=>({key:sg.market,name:sg.name,
+          count:heldSorted.filter(it=>it.market===sg.market).length})));
       tabs.innerHTML=opts.map(o=>`<button class="mh-tab" data-mk="${o.key}">${esc(o.name)} <span class="c">${o.count}</span></button>`).join("");
       tabs.querySelectorAll(".mh-tab").forEach(btn=>{
         btn.addEventListener("click",()=>{
           tabs.querySelectorAll(".mh-tab").forEach(b=>b.classList.remove("active"));
           btn.classList.add("active");
-          drawTable(items, segs, btn.dataset.mk);
+          drawHeld(heldSorted, btn.dataset.mk);
         });
       });
     }
-    drawTable(items, segs, "ALL");
+    if(heldTitle) heldTitle.innerHTML=`当前持仓 <span class="mh-sec-n">${heldSorted.length}</span>`;
+    if(histTitle) histTitle.innerHTML=`历史持仓 <span class="mh-sec-n">${histItems.length}</span> · 已清仓（按累计盈亏排序）`;
+    drawHeld(heldSorted, "ALL");
+    drawHistory(histItems);
   }
 
-  function drawTable(items, segs, mk){
+  function drawHeld(held, mk){
     const tbl=$("#mh-table"); if(!tbl) return;
-    const list = (mk==="ALL") ? items : items.filter(it=>it.market===mk);
-    let body="";
-    if(mk==="ALL" && segs.length){
-      // 按市场分组
-      for(const sg of segs){
-        const rows=items.filter(it=>it.market===sg.market);
-        const smv=rows.reduce((a,b)=>a+(b.value||0),0);
-        const sf=rows.reduce((a,b)=>a+(b.profit||0),0);
-        const sdy=rows.reduce((a,b)=>a+(b.day_profit||0),0);
-        body+=`<tr class="mh-grp"><td colspan="12">${esc(sg.name)} · ${rows.length} 只 · 市值 ${fmtMoney(smv)} · 浮动 ${fmtMoney(sf)} · 今日 ${fmtMoney(sdy)}</td></tr>`;
-        body+=rows.map(r=>rowHtml(r)).join("");
-      }
-    } else {
-      body=list.map(r=>rowHtml(r)).join("");
-    }
+    const list=(mk==="ALL")?held:held.filter(it=>it.market===mk);
+    const body=list.map(r=>rowHtml(r,false)).join("");
     tbl.innerHTML=`<table class="mh-tbl"><thead><tr>
       <th>代码</th><th>名称</th><th>市场</th><th class="num">现价</th><th class="num">成本</th>
       <th class="num">股数</th><th class="num">市值</th><th class="num">仓位</th>
       <th class="num">浮动盈亏</th><th class="num">盈亏率</th><th class="num">今日</th><th class="num">累计盈亏</th>
     </tr></thead><tbody>${body}</tbody></table>`;
+    if(!list.length) tbl.innerHTML=`<div class="mh-empty">该市场暂无持仓</div>`;
   }
 
-  function rowHtml(it){
+  function drawHistory(items){
+    const hist=$("#mh-history"); if(!hist) return;
+    const list=items.slice().sort((a,b)=>Math.abs(b.accum_profit||0)-Math.abs(a.accum_profit||0));
+    if(!list.length){ hist.innerHTML=`<div class="mh-empty">暂无历史持仓</div>`; return; }
+    const body=list.map(it=>rowHtml(it,true)).join("");
+    hist.innerHTML=`<table class="mh-tbl mh-tbl-hist"><thead><tr>
+      <th>代码</th><th>名称</th><th class="num">累计盈亏</th><th class="num">盈亏率</th><th class="num">备注</th>
+    </tr></thead><tbody>${body}</tbody></table>`;
+  }
+
+  function rowHtml(it, isHistory){
+    const cur=it.currency==="HKD"?"港":(it.currency==="USD"?"美":"¥");
+    if(isHistory){
+      // 历史持仓（雪球版式）：只展示有意义的累计盈亏
+      const ap=it.accum_profit||0;
+      const ar=it.accum_rate!=null? it.accum_rate : null;
+      return `<tr>
+        <td>${esc(it.symbol||'')}</td>
+        <td class="nm">${esc(it.name||'')}</td>
+        <td class="num ${ap>=0?'pos':'neg'}">${fmtMoney(ap)}</td>
+        <td class="num ${ap>=0?'pos':'neg'}">${ar!=null?Number(ar).toFixed(2)+'%':''}</td>
+        <td class="nt">已清仓</td>
+      </tr>`;
+    }
     const p=it.profit||0;
     const r=(it.profit_rate!=null)? it.profit_rate
            : (it.cost&&it.current)? ((it.current-it.cost)/it.cost*100) : null;
     const ap=it.accum_profit||0;
     const dy=it.day_profit||0;
-    const cur=it.currency==="HKD"?"港":(it.currency==="USD"?"美":"¥");
     return `<tr>
       <td>${esc(it.symbol||'')}</td>
       <td class="nm">${esc(it.name||'')}</td>
@@ -1843,6 +1888,37 @@
     </tr>`;
   }
 
+  function renderTrades(d){
+    const box=$("#mh-trades"), title=$("#mh-trades-title");
+    if(!box) return;
+    const items=d&&d.items?d.items:[];
+    if(!items.length){ return; }  // 无交易记录则不显示该区
+    if(title) title.innerHTML=`交易记录 <span class="mh-sec-n">${items.length}</span> · 来自雪球模拟组合`;
+    if(box) box.style.display="block";
+    if(title) title.style.display="block";
+    const typeMap={1:"买入",2:"卖出",3:"分红",4:"送转"};
+    const list=items.slice().sort((a,b)=>(b.created_at||0)-(a.created_at||0));
+    const body=list.map(it=>{
+      const ttype=it.type!=null?typeMap[it.type]:(it.action||"");
+      const pl=it.profit!=null?it.profit:null;
+      return `<tr>
+        <td class="nt">${it.created_at?new Date(it.created_at).toLocaleDateString("zh-CN"):""}</td>
+        <td class="nm">${esc(it.name||'')}</td>
+        <td>${esc(it.symbol||'')}</td>
+        <td class="nt">${esc(ttype)}</td>
+        <td class="num">${fmtMoney(it.price)}</td>
+        <td class="num">${fmtMoney(it.shares)}</td>
+        <td class="num">${fmtMoney(it.value)}</td>
+        <td class="num ${pl!=null?(pl>=0?'pos':'neg'):''}">${pl!=null?fmtMoney(pl):'--'}</td>
+        <td class="nt">${esc(it.note||'')}</td>
+      </tr>`;
+    }).join("");
+    box.innerHTML=`<table class="mh-tbl mh-tbl-trades"><thead><tr>
+      <th>日期</th><th>名称</th><th>代码</th><th>方向</th><th class="num">价格</th>
+      <th class="num">股数</th><th class="num">金额</th><th class="num">盈亏</th><th>备注</th>
+    </tr></thead><tbody>${body}</tbody></table>`;
+  }
+
   // 密码门事件绑定（DOM 已就绪，script 位于 body 末尾）
   (function bindHoldingsGate(){
     const btn=$("#mh-unlock"); if(!btn) return;
@@ -1854,6 +1930,10 @@
       try{
         const data=await decryptHoldings(__mhBlob, pwd);
         renderHoldings(data);
+        if(__mhTradesBlob){
+          try{ const td=await decryptHoldings(__mhTradesBlob, pwd); renderTrades(td); }
+          catch(e){ /* 交易记录解密失败不影响持仓 */ }
+        }
         mhMsg("解密成功", false);
         $("#mh-pwd").value="";
       }catch(e){ mhMsg("密码错误或数据损坏", true); }
