@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
 """抓取【你自己】雪球账号的模拟组合【交易记录】，加密后输出可部署密文。
 
-为什么能抓到：
-  /center/#/assets（我的资产）SPA 里「交易记录」tab 会带正确签名调用
-  tc.xueqiu.com/tc/snowx/MONI/transaction/list.json?gid=<组合ID>&row=50&pos=<游标>
-  我们用 playwright 打开该页，*拦截 SPA 自己发出的这个响应*，绕过 WAF。
+为什么能抓到（2026-09-02 修正）：
+  /center/#/assets（我的资产）SPA 页面里，tc.xueqiu.com 的 snowx 接口
+  **不需要前端 x 签名头**，只要在该页面上下文里用 fetch(credentials:'include')
+  直接调用即可（同源 referer + cookie 就够）：
+    - 组合列表：tc.xueqiu.com/tc/snowx/MONI/trans_group/list.json
+      -> result_data.trans_groups = [{gid, name}, ...]  （股票 / 基金 两组）
+    - 交易记录：tc.xueqiu.com/tc/snowx/MONI/transaction/list.json?gid=<gid>&row=50[&pos=<游标>]
+      -> result_data.transactions + result_data.pos（下一页游标）
 
-  与 fetch_myholdings.py 的区别：
-   - 交易记录是分页的（每页 50 条，next cursor 在 result_data.pos）。
-   - 账号可能有多组合（股票组合 + 基金组合），各自有独立交易记录，需逐个抓取。
+  历史坑（勿走回头路）：
+   - 旧实现靠点击页面「交易记录」tab 再拦截响应。该 tab 在当前 DOM 里【不存在】
+     （.moni__tabs__controls 为 null、找不到 innerText=='交易记录' 的元素），
+     所以永远拦不到 → 一直 0 条。现改为直接调 API。
+   - 正则只匹配 `MONI/transaction/list.json?gid=` 也会漏掉 SPA 实际发出的
+     `MONI/trans_group/list.json`（无 gid 参数）。
 
 隐私与安全（同 fetch_myholdings.py）：cookie/明文不出本机，部署的是加密密文。
 
 用法：
   python fetch_trades.py            # 真实抓取（cookie 来自 data/my_xq_cookie.txt 或 XQ_MY_COOKIE）
-  python fetch_trades.py --mock    # 内置假数据走通加密流程
+  python fetch_trades.py --mock     # 内置假数据走通加密流程
 """
 import os
 import re
@@ -35,8 +42,11 @@ sys.path.insert(0, HERE)
 from holdings_crypto import encrypt_obj
 
 CHROME_PATH = r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe"
-TX_RE = re.compile(r"MONI/transaction/list\.json\?gid=(\d+)")
-TG_RE = re.compile(r"MONI/trans_group/list\.json")
+
+GROUP_API = "https://tc.xueqiu.com/tc/snowx/MONI/trans_group/list.json"
+TX_API = "https://tc.xueqiu.com/tc/snowx/MONI/transaction/list.json?gid={gid}&row=50"
+MAX_PAGES = 80          # 每组合最多 80 页 * 50 = 4000 条，足够
+TYPE_LABEL = {1: "买入", 2: "卖出", 3: "分红", 4: "送转", 9: "除权除息"}
 
 
 def load_cookie():
@@ -72,20 +82,36 @@ def parse_cookies(cs):
     return out
 
 
-def _click_tab(pg, text):
-    """点击页面上 innerText==text 的元素（用于切到 交易记录 tab）。返回是否点到。"""
-    return pg.evaluate("""(t)=>{
-      const a=[...document.querySelectorAll('a,div,span,li,button')].find(e=>e.innerText&&e.innerText.trim()===t);
-      if(a){a.click();return true;}
-      return false;
-    }""", text)
+JS_FETCH = """async (u)=>{
+  try{
+    const res = await fetch(u,{credentials:'include',headers:{'X-Requested-With':'XMLHttpRequest'}});
+    const t = await res.text();
+    return {status:res.status, body:t};
+  }catch(e){ return {status:0, body:String(e)}; }
+}"""
+
+
+def _get_json(pg, url):
+    """在页面上下文里 fetch 并解析 JSON。失败返回 (status, None)。"""
+    try:
+        r = pg.evaluate(JS_FETCH, url)
+    except Exception as e:
+        return -1, None, str(e)
+    st = r.get("status")
+    body = r.get("body") or ""
+    if st != 200:
+        return st, None, body[:300]
+    try:
+        return st, json.loads(body), ""
+    except Exception:
+        return st, None, body[:300]
 
 
 def capture_trades(cookie):
-    """打开 /center/#/assets，逐个组合拦截 transaction/list.json，返回 {gid: [tx,...]}。"""
-    groups = {}          # gid -> list of transactions
-    group_meta = {}      # gid -> {name}
-    all_xq = []
+    """返回 ({gid: [tx,...]}, {gid: {'name':...}})，失败返回 (None, None)。"""
+    groups = {}
+    group_meta = {}
+    diag = {"steps": []}
     launch_kwargs = dict(headless=True,
                          args=["--no-sandbox", "--disable-dev-shm-usage",
                                "--disable-blink-features=AutomationControlled"])
@@ -101,102 +127,63 @@ def capture_trades(cookie):
         ctx.add_cookies(parse_cookies(cookie))
         pg = ctx.new_page()
 
-        captured = {}   # url -> (gid, body)
-        def on_resp(resp):
-            u = resp.url
-            if "xueqiu.com" in u:
-                all_xq.append(u)
-            m = TX_RE.search(u)
-            if m:
-                try:
-                    body = resp.body().decode("utf-8", "replace")
-                except Exception:
-                    body = ""
-                captured[u] = (m.group(1), body)
-        pg.on("response", on_resp)
+        # 必须先落地到雪球页面，后续 fetch 才带对的 referer / 同站 cookie
+        pg.goto("https://xueqiu.com/center/#/assets?t=%d" % int(time.time() * 1000),
+                wait_until="domcontentloaded", timeout=30000)
+        time.sleep(5)
 
-        pg.goto("https://xueqiu.com/center/#/assets?t=%d" % int(time.time()*1000),
-                wait_until="domcontentloaded", timeout=25000)
-        time.sleep(6)
-        _click_tab(pg, "股票")   # 触发 moni 组件渲染
-        time.sleep(4)
+        # 1) 组合列表
+        st, gj, err = _get_json(pg, GROUP_API)
+        diag["steps"].append({"api": "trans_group", "status": st, "err": err})
+        gids = []
+        if gj and (gj.get("result_data") or {}).get("trans_groups"):
+            for g in gj["result_data"]["trans_groups"]:
+                gid = str(g.get("gid") or "")
+                if not gid:
+                    continue
+                gids.append(gid)
+                group_meta[gid] = {"name": g.get("name") or "", "cash": g.get("cash")}
+        if not gids:
+            print("[trades] 组合列表获取失败（status=%s），回退到已知 gid" % st)
+            gids = ["2965180"]
+            group_meta.setdefault("2965180", {"name": "股票"})
+        print("[trades] 组合数=%d -> %s" % (
+            len(gids), ", ".join("%s(%s)" % (group_meta.get(g, {}).get("name", ""), g) for g in gids)))
 
-        # 找到组合切换 tab（.moni__tabs__controls a），逐个切换并抓交易
-        sec_count = pg.evaluate("""()=>{
-          const wrap=document.querySelector('.moni__tabs__controls');
-          if(!wrap) return 0;
-          return wrap.querySelectorAll('a').length;
-        }""")
-        print("[trades] 组合 tab 数:", sec_count)
-
-        # 先抓默认组合
-        _capture_current(pg, captured, groups, group_meta)
-
-        # 逐个切换其余组合
-        for i in range(1, max(sec_count, 1)):
-            ok = pg.evaluate("""(idx)=>{
-              const wrap=document.querySelector('.moni__tabs__controls');
-              if(!wrap) return false;
-              const a=wrap.querySelectorAll('a')[idx];
-              if(a){a.click();return true;}
-              return false;
-            }""", i)
-            if not ok:
-                break
-            time.sleep(3)
-            _capture_current(pg, captured, groups, group_meta)
+        # 2) 逐组合分页拉交易记录
+        for gid in gids:
+            url = TX_API.format(gid=gid)
+            seen_pos = set()
+            pages = 0
+            while pages < MAX_PAGES:
+                st, d, err = _get_json(pg, url)
+                if not d:
+                    diag["steps"].append({"api": "transaction", "gid": gid, "status": st, "err": err})
+                    break
+                rd = d.get("result_data") or {}
+                txs = rd.get("transactions") or []
+                pos = rd.get("pos")
+                if txs:
+                    groups.setdefault(gid, []).extend(txs)
+                pages += 1
+                if not txs or not pos or pos in seen_pos:
+                    break
+                seen_pos.add(pos)
+                url = TX_API.format(gid=gid) + "&pos=%s" % pos
+                time.sleep(0.4)
+            print("[trades] gid=%s (%s) 抓到 %d 条 / %d 页" % (
+                gid, group_meta.get(gid, {}).get("name", ""), len(groups.get(gid, [])), pages))
 
         b.close()
 
     if not groups:
         try:
-            json.dump({"matched": False, "all_xqiu": all_xq[-60:]},
+            json.dump({"matched": False, "diag": diag},
                       open(PROBE_OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
         except Exception:
             pass
-        return None
-    return groups
-
-
-def _capture_current(pg, captured, groups, group_meta):
-    """在当前选中组合下，点 交易记录 tab，拦截 transaction/list.json（含分页）。"""
-    captured.clear()
-    if not _click_tab(pg, "交易记录"):
-        return
-    # 轮询首屏
-    deadline = time.time() + 20
-    while not captured and time.time() < deadline:
-        time.sleep(0.5)
-    # 解析并跟进分页（pos 游标）
-    seen_pos = set()
-    for _ in range(40):  # 最多 40 页
-        if not captured:
-            break
-        # 取最新一条响应
-        url, (gid, body) = next(iter(captured.items()))
-        captured.clear()
-        try:
-            d = json.loads(body)
-        except Exception:
-            break
-        rd = (d.get("result_data") or {})
-        txs = rd.get("transactions") or []
-        pos = rd.get("pos")
-        groups.setdefault(gid, []).extend(txs)
-        group_meta.setdefault(gid, {})
-        if not pos or pos in seen_pos:
-            break
-        seen_pos.add(pos)
-        # 触发下一页：用捕获的 x 头 replay（best-effort）
-        # 通过页面 fetch 复用，pos 递增
-        nx = re.sub(r"pos=\d+", "pos=%s" % pos, url) if "pos=" in url else (url + ("&" if "?" in url else "?") + "pos=%s" % pos)
-        try:
-            pg.evaluate("""(u)=>fetch(u,{credentials:'include',headers:{'X-Requested-With':'XMLHttpRequest'}}).catch(()=>{})""", nx)
-        except Exception:
-            pass
-        time.sleep(2.5)
-        if not captured:
-            break
+        return None, None
+    return groups, group_meta
 
 
 def _num(x):
@@ -210,27 +197,36 @@ def _num(x):
         return None
 
 
-def parse_trades(groups):
-    """把 {gid:[tx]} 归一为交易记录列表。"""
+def parse_trades(groups, group_meta=None):
+    """把 {gid:[tx]} 归一为前端可渲染的交易记录列表。"""
+    group_meta = group_meta or {}
     items = []
     for gid, txs in groups.items():
+        gname = (group_meta.get(gid) or {}).get("name") or ""
         for t in txs:
+            tcode = t.get("type")
+            label = t.get("type_name") or TYPE_LABEL.get(tcode) or ""
+            note = (t.get("comment") or "").strip() or (t.get("desc") or "").strip()
             items.append({
                 "gid": gid,
+                "group": gname,
                 "tid": t.get("tid") or t.get("id"),
                 "symbol": str(t.get("symbol") or ""),
                 "name": t.get("name"),
-                "type": t.get("type"),             # 1买/2卖/3...见雪球
-                "action": t.get("action"),
+                # 前端逻辑：type 非空走内置 typeMap，否则用 action 文案。
+                # 雪球 type 码不止 1/2/3/4（还有 9 除权除息等），故统一置空、用 API 中文标签。
+                "type": None,
+                "type_code": tcode,
+                "action": label,
                 "price": _num(t.get("price")),
-                "shares": _num(t.get("shares") or t.get("amount")),
-                "value": _num(t.get("value") or t.get("current_value")),
-                "fee": _num(t.get("fee") or t.get("commission")),
-                "profit": _num(t.get("profit") or t.get("gain")),
-                "created_at": t.get("created_at") or t.get("time") or t.get("date"),
-                "note": t.get("note") or t.get("comment"),
+                "shares": _num(t.get("shares")),
+                "value": _num(t.get("amount") or t.get("value")),
+                "fee": _num(t.get("commission")),
+                "tax": _num(t.get("tax")),
+                "profit": _num(t.get("profit")),
+                "created_at": t.get("time") or t.get("created_at"),
+                "note": note,
             })
-    # 去重（同 gid+tid）
     seen = set()
     uniq = []
     for it in items:
@@ -239,19 +235,22 @@ def parse_trades(groups):
             continue
         seen.add(k)
         uniq.append(it)
+    uniq.sort(key=lambda x: x.get("created_at") or 0, reverse=True)
     return uniq
 
 
 def _mock_trades():
-    now = int(time.time()*1000)
+    now = int(time.time() * 1000)
     return {
         "2965180": [
-            {"tid": "t1", "symbol": "SZ000933", "name": "神火股份", "type": 1, "price": 25.3,
-             "shares": 2600, "value": 65780, "fee": 19.7, "profit": None, "created_at": now-86400000, "note": "建仓"},
-            {"tid": "t2", "symbol": "SZ000933", "name": "神火股份", "type": 2, "price": 27.15,
-             "shares": 2600, "value": 70590, "fee": 21.1, "profit": 4744.22, "created_at": now-3600000, "note": "清仓"},
+            {"tid": "t1", "symbol": "SZ000933", "name": "神火股份", "type": 1, "type_name": "买入",
+             "price": 25.3, "shares": 2600, "amount": 65780, "commission": 19.7, "time": now - 86400000,
+             "comment": "建仓"},
+            {"tid": "t2", "symbol": "SZ000933", "name": "神火股份", "type": 2, "type_name": "卖出",
+             "price": 27.15, "shares": 2600, "amount": 70590, "commission": 21.1, "time": now - 3600000,
+             "comment": "清仓"},
         ]
-    }
+    }, {"2965180": {"name": "股票"}}
 
 
 def main():
@@ -265,29 +264,41 @@ def main():
 
     if mock:
         print("[trades] MOCK 模式")
-        groups = _mock_trades()
+        groups, group_meta = _mock_trades()
     else:
         if not cookie:
-            print("[trades] 未找到 cookie")
+            print("[trades] 未找到 cookie：请更新 data/my_xq_cookie.txt 或设置 XQ_MY_COOKIE")
             sys.exit(2)
-        print(f"[trades] cookie: 有 | uid={uid} | 拦截 transaction/list.json …")
-        groups = capture_trades(cookie)
+        print(f"[trades] cookie: 有 | uid={uid} | 直调 tc.xueqiu.com snowx 接口 …")
+        groups, group_meta = capture_trades(cookie)
         if not groups:
-            print("[trades] 未捕获到交易记录（SPA 未发出请求 / WAF 限流 / cookie 过期）。已存日志:", PROBE_OUT)
+            print("[trades] 未抓到交易记录（WAF 限流 / cookie 过期）。保留上次密文。日志:", PROBE_OUT)
             sys.exit(3)
 
-    items = parse_trades(groups)
+    items = parse_trades(groups, group_meta)
+    by_group = {}
+    for it in items:
+        by_group[it["group"] or it["gid"]] = by_group.get(it["group"] or it["gid"], 0) + 1
     out = {
-        "fetched_at": int(time.time()*1000),
+        "fetched_at": int(time.time() * 1000),
         "uid": uid,
         "source": "mock" if mock else "xueqiu",
         "count": len(items),
+        "groups": {g: (group_meta or {}).get(g, {}).get("name", "") for g in groups},
         "items": items,
     }
     blob = encrypt_obj(out, password)
     json.dump(out, open(RAW_OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     json.dump(blob, open(ENC_OUT, "w", encoding="utf-8"), ensure_ascii=False)
-    print(f"[trades] 交易记录数={out['count']} -> {ENC_OUT}（密文）| {RAW_OUT}（明文）")
+    span = ""
+    ts = [i["created_at"] for i in items if i.get("created_at")]
+    if ts:
+        span = " | 区间 %s ~ %s" % (
+            time.strftime("%Y-%m-%d", time.localtime(min(ts) / 1000)),
+            time.strftime("%Y-%m-%d", time.localtime(max(ts) / 1000)))
+    print("[trades] 交易记录数=%d（%s）%s" % (
+        out["count"], ", ".join("%s:%d" % (k, v) for k, v in by_group.items()), span))
+    print("[trades] -> %s（密文，可部署）| %s（明文，gitignore）" % (ENC_OUT, RAW_OUT))
 
 
 if __name__ == "__main__":
