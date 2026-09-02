@@ -1,0 +1,103 @@
+name: fetch-and-publish
+
+on:
+  schedule:
+    # 每 12 小时（UTC 0,12）。可手动触发用于回填
+    - cron: "0 0,12 * * *"
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: "要抓取的页数（每页 ~20 条）"
+        required: false
+        default: "5"
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Fetch latest page(s) from xueqiu
+        env:
+          XQ_COOKIE: ${{ secrets.XQ_COOKIE }}
+        run: |
+          mkdir -p data/raw
+          PAGES=${PAGES:-5}
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            PAGES="${{ github.event.inputs.pages }}"
+          fi
+          python scripts/fetch_xueqiu.py --pages "$PAGES" --out data/raw
+
+      - name: Refresh my holdings (optional)
+        # 仅当配置了个人 cookie 与加密密码密钥时才运行；失败不阻断主流程。
+        # 需在仓库 Settings > Secrets 配置：XQ_MY_COOKIE（你的雪球登录 cookie）、HOLDINGS_PWD（与本地 data/.holdings_pwd 一致）
+        if: ${{ secrets.XQ_MY_COOKIE != '' }}
+        continue-on-error: true
+        env:
+          XQ_MY_COOKIE: ${{ secrets.XQ_MY_COOKIE }}
+          HOLDINGS_PWD: ${{ secrets.HOLDINGS_PWD }}
+        run: |
+          pip install playwright
+          python -m playwright install chromium
+          python scripts/fetch_myholdings.py
+
+      - name: Normalize & merge
+        run: |
+          python scripts/normalize_posts.py
+
+      - name: Generate summary
+        id: sum
+        run: |
+          python scripts/summarize.py > summary.md
+          cat summary.md
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A data/ index.html summary.md
+          if git diff --staged --quiet; then
+            echo "no changes"
+          else
+            git commit -m "chore: auto fetch $(date -u +%FT%TZ)"
+            git push
+          fi
+
+      - name: Notify (optional)
+        if: always()
+        run: |
+          echo "::notice::Done. See summary.md"
+
+  pages:
+    needs: fetch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+      - id: deploy
+        uses: actions/deploy-pages@v4
