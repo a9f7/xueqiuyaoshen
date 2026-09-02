@@ -532,6 +532,21 @@
   .mynotes-holdings .mh-tbl .num { text-align:right; font-variant-numeric:tabular-nums; }
   .mynotes-holdings .pos { color:#0a8f3c; }
   .mynotes-holdings .neg { color:#c0392b; }
+  /* 账户总览 + 市场筛选 */
+  .mynotes-holdings .mh-ov { font-size:12.5px; color:var(--ink-2); line-height:1.6; margin:0 0 14px; padding:10px 14px; background:#f8f9fc; border:1px solid var(--line-2); border-radius:10px; }
+  .mynotes-holdings .mh-ov b { color:var(--ink); font-weight:600; }
+  .mynotes-holdings .mh-note { color:var(--ink-3); font-size:11.5px; }
+  .mynotes-holdings .mh-tabs { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; }
+  .mynotes-holdings .mh-tab { font-size:13px; padding:6px 14px; border:1px solid var(--line); border-radius:999px; background:#fff; color:var(--ink-2); cursor:pointer; }
+  .mynotes-holdings .mh-tab:hover { border-color:var(--link); color:var(--link); }
+  .mynotes-holdings .mh-tab.active { background:var(--link); border-color:var(--link); color:#fff; }
+  .mynotes-holdings .mh-tab .c { opacity:.7; font-size:11px; margin-left:4px; }
+  /* 表格滚动 + 分组 + 货币徽标 */
+  .mynotes-holdings .mh-table { max-height:72vh; overflow:auto; border:1px solid var(--line-2); border-radius:10px; }
+  .mynotes-holdings .mh-tbl th { position:sticky; top:0; z-index:2; }
+  .mynotes-holdings .mh-tbl .mh-grp td { background:#eef2fb; font-weight:600; color:var(--ink-2); font-size:12.5px; border-top:2px solid var(--line); border-bottom:1px solid var(--line-2); }
+  .mynotes-holdings .mh-tbl .nm { font-weight:500; color:var(--ink); }
+  .mynotes-holdings .mh-tbl .mk { color:var(--ink-3); font-size:12px; }
 </style>
 </head>
 <body>
@@ -782,6 +797,8 @@
       <span id="mh-msg" class="mn-msg"></span>
     </div>
     <div id="mh-summary" class="mh-summary" style="display:none"></div>
+    <div id="mh-ov" class="mh-ov" style="display:none"></div>
+    <div id="mh-tabs" class="mh-tabs" style="display:none"></div>
     <div id="mh-table" class="mh-table" style="display:none"></div>
   </section>
 
@@ -1733,36 +1750,97 @@
     }catch(e){ __mhBlob=null; mhMsg("暂无可解密的持仓数据（请先运行抓取脚本生成密文）", true); }
   }
 
+  function mhCard(v, l, cls){
+    return `<div class="mh-card"><div class="v ${cls||''}">${v}</div><div class="l">${l}</div></div>`;
+  }
   function renderHoldings(d){
-    const sum=$("#mh-summary"), tbl=$("#mh-table");
-    if(sum) sum.style.display="block"; if(tbl) tbl.style.display="block";
-    const totalV=d.total_value||0, totalP=d.total_profit||0;
-    const cost= totalV-totalP;
-    const rate= cost>0 ? (totalP/cost*100) : 0;
+    const sum=$("#mh-summary"), ov=$("#mh-ov"), tabs=$("#mh-tabs"), tbl=$("#mh-table");
+    if(sum) sum.style.display="block"; if(ov) ov.style.display="block";
+    if(tabs) tabs.style.display="flex"; if(tbl) tbl.style.display="block";
+
+    const tv=d.total_value||0, tp=d.total_profit||0, td=d.total_day_profit||0, ta=d.total_accum_profit||0;
+    const cost=tv-tp;
+    const rate= cost>0 ? (tp/cost*100) : 0;
     if(sum) sum.innerHTML=
-      `<div class="mh-card"><div class="v">${fmtMoney(totalV)}</div><div class="l">总市值</div></div>`+
-      `<div class="mh-card"><div class="v ${totalP>=0?'pos':'neg'}">${fmtMoney(totalP)}</div><div class="l">总盈亏</div></div>`+
-      `<div class="mh-card"><div class="v ${totalP>=0?'pos':'neg'}">${rate.toFixed(2)}%</div><div class="l">收益率</div></div>`+
-      `<div class="mh-card"><div class="v">${d.count||0}</div><div class="l">持仓数</div></div>`;
-    const rows=(d.items||[]).map(it=>{
-      const p=it.profit||0;
-      const r= (it.profit_rate!=null)? it.profit_rate
-             : (it.cost&&it.current)? ((it.current-it.cost)/it.cost*100) : null;
-      return `<tr>
-        <td>${esc(it.symbol||'')}</td>
-        <td>${esc(it.name||'')}</td>
-        <td class="num">${fmtMoney(it.value)}</td>
-        <td class="num">${it.weight!=null?Number(it.weight).toFixed(1)+'%':''}</td>
-        <td class="num">${fmtMoney(it.current)}</td>
-        <td class="num">${fmtMoney(it.cost)}</td>
-        <td class="num ${p>=0?'pos':'neg'}">${fmtMoney(p)}</td>
-        <td class="num ${p>=0?'pos':'neg'}">${r!=null?Number(r).toFixed(2)+'%':''}</td>
-      </tr>`;
-    }).join("");
-    if(tbl) tbl.innerHTML=`<table class="mh-tbl"><thead><tr>
-      <th>代码</th><th>名称</th><th class="num">市值</th><th class="num">仓位</th>
-      <th class="num">现价</th><th class="num">成本</th><th class="num">盈亏额</th><th class="num">盈亏率</th>
-    </tr></thead><tbody>${rows}</tbody></table>`;
+      mhCard(fmtMoney(tv), "持仓总市值(本组)") +
+      mhCard(fmtMoney(tp), "浮动盈亏", tp>=0?"pos":"neg") +
+      mhCard((tp>=0?"+":"")+rate.toFixed(2)+"%", "收益率", tp>=0?"pos":"neg") +
+      mhCard(fmtMoney(td), "今日盈亏", td>=0?"pos":"neg") +
+      mhCard(fmtMoney(ta), "累计盈亏", ta>=0?"pos":"neg") +
+      mhCard(d.count||0, "持仓数");
+
+    // 账户总览（ALL 段，含其他组合的聚合口径）
+    const s=d.summary||{};
+    if(ov && s.market_value!=null){
+      ov.innerHTML=`我的资产总览：总资产 <b>${fmtMoney(s.assets)}</b> · 现金 <b>${fmtMoney(s.cash)}</b> · `
+        +`本金 <b>${fmtMoney(s.principal)}</b> · 账户总市值 <b>${fmtMoney(s.market_value)}</b> · `
+        +`账户今日 <b class="${s.day_float_amount>=0?'pos':'neg'}">${fmtMoney(s.day_float_amount)}</b>`
+        +` <span class="mh-note">（账户总市值含其他模拟组合，故高于上方「本组」持仓市值）</span>`;
+    }
+
+    const segs=d.segments||[];
+    const items=d.items||[];
+    // 市场 tab
+    if(tabs){
+      const opts=[{key:"ALL",name:"全部",count:items.length}]
+        .concat(segs.map(sg=>({key:sg.market,name:sg.name,count:sg.count})));
+      tabs.innerHTML=opts.map(o=>`<button class="mh-tab" data-mk="${o.key}">${esc(o.name)} <span class="c">${o.count}</span></button>`).join("");
+      tabs.querySelectorAll(".mh-tab").forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          tabs.querySelectorAll(".mh-tab").forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+          drawTable(items, segs, btn.dataset.mk);
+        });
+      });
+    }
+    drawTable(items, segs, "ALL");
+  }
+
+  function drawTable(items, segs, mk){
+    const tbl=$("#mh-table"); if(!tbl) return;
+    const list = (mk==="ALL") ? items : items.filter(it=>it.market===mk);
+    let body="";
+    if(mk==="ALL" && segs.length){
+      // 按市场分组
+      for(const sg of segs){
+        const rows=items.filter(it=>it.market===sg.market);
+        const smv=rows.reduce((a,b)=>a+(b.value||0),0);
+        const sf=rows.reduce((a,b)=>a+(b.profit||0),0);
+        const sdy=rows.reduce((a,b)=>a+(b.day_profit||0),0);
+        body+=`<tr class="mh-grp"><td colspan="12">${esc(sg.name)} · ${rows.length} 只 · 市值 ${fmtMoney(smv)} · 浮动 ${fmtMoney(sf)} · 今日 ${fmtMoney(sdy)}</td></tr>`;
+        body+=rows.map(r=>rowHtml(r)).join("");
+      }
+    } else {
+      body=list.map(r=>rowHtml(r)).join("");
+    }
+    tbl.innerHTML=`<table class="mh-tbl"><thead><tr>
+      <th>代码</th><th>名称</th><th>市场</th><th class="num">现价</th><th class="num">成本</th>
+      <th class="num">股数</th><th class="num">市值</th><th class="num">仓位</th>
+      <th class="num">浮动盈亏</th><th class="num">盈亏率</th><th class="num">今日</th><th class="num">累计盈亏</th>
+    </tr></thead><tbody>${body}</tbody></table>`;
+  }
+
+  function rowHtml(it){
+    const p=it.profit||0;
+    const r=(it.profit_rate!=null)? it.profit_rate
+           : (it.cost&&it.current)? ((it.current-it.cost)/it.cost*100) : null;
+    const ap=it.accum_profit||0;
+    const dy=it.day_profit||0;
+    const cur=it.currency==="HKD"?"港":(it.currency==="USD"?"美":"¥");
+    return `<tr>
+      <td>${esc(it.symbol||'')}</td>
+      <td class="nm">${esc(it.name||'')}</td>
+      <td class="mk">${cur}</td>
+      <td class="num">${fmtMoney(it.current)}</td>
+      <td class="num">${fmtMoney(it.cost)}</td>
+      <td class="num">${fmtMoney(it.amount)}</td>
+      <td class="num">${fmtMoney(it.value)}</td>
+      <td class="num">${it.weight!=null?Number(it.weight).toFixed(1)+'%':''}</td>
+      <td class="num ${p>=0?'pos':'neg'}">${fmtMoney(p)}</td>
+      <td class="num ${p>=0?'pos':'neg'}">${r!=null?Number(r).toFixed(2)+'%':''}</td>
+      <td class="num ${dy>=0?'pos':'neg'}">${fmtMoney(dy)}</td>
+      <td class="num ${ap>=0?'pos':'neg'}">${fmtMoney(ap)}</td>
+    </tr>`;
   }
 
   // 密码门事件绑定（DOM 已就绪，script 位于 body 末尾）
