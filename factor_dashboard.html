@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>持仓 × 宏观因子 · 看盘</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#ffffff; --ink:#0f172a; --sub:#64748b; --line:#e2e8f0;
+    --up:#e0413e; --down:#16a34a; --accent:#6366f1; --accent2:#0ea5e9;
+    --shadow:0 1px 3px rgba(15,23,42,.06),0 8px 24px rgba(15,23,42,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+  header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+  .title{font-size:22px;font-weight:700;letter-spacing:-.3px}
+  .title .dot{color:var(--accent)}
+  .meta{font-size:12.5px;color:var(--sub)}
+  a.back{color:var(--accent);text-decoration:none;font-size:13px}
+  .grid{display:grid;gap:14px}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)}
+  .card .k{font-size:12.5px;color:var(--sub);margin-bottom:6px}
+  .card .v{font-size:22px;font-weight:700;letter-spacing:-.5px}
+  .card .s{font-size:12.5px;margin-top:4px;font-weight:600}
+  .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--sub)}
+  section{margin-top:28px}
+  h2{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  h2::before{content:"";width:4px;height:15px;background:var(--accent);border-radius:3px;display:inline-block}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+  .chart-box{position:relative;height:300px}
+  .chart-box.tall{height:340px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--sub);font-weight:600;font-size:12px}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+  .note{font-size:12px;color:var(--sub);margin-top:8px}
+  .pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11.5px;font-weight:600;
+    background:#eef2ff;color:var(--accent)}
+  .loading{padding:40px;text-align:center;color:var(--sub)}
+  .flex{display:flex;gap:14px;flex-wrap:wrap}
+  .flex>.panel{flex:1;min-width:320px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="title">📊 持仓 <span class="dot">×</span> 宏观因子 · 看盘</div>
+      <div class="meta" id="updated">加载中…</div>
+    </div>
+    <a class="back" href="index.html">← 返回雪球药神监控主页</a>
+  </header>
+
+  <div id="content">
+    <div class="loading">正在读取 data/factor_history.json …</div>
+  </div>
+</div>
+
+<script>
+const FACTOR_ORDER = [
+  ['brent','布伦特原油','美元/桶'],
+  ['wti','WTI原油','美元/桶'],
+  ['gold','黄金','美元/盎司'],
+  ['dxy','美元指数',''],
+  ['hsi','恒生指数','点'],
+  ['n225','日经225','点'],
+  ['us10y','美债10年','%'],
+  ['us30y','美债30年','%'],
+  ['southbound','南向净买入','亿港元'],
+];
+const NAV_SERIES = ['brent','us10y','dxy','hsi']; // 归一化对比曲线
+
+function fmt(v,d=2){ if(v===null||v===undefined||isNaN(v)) return '—'; return Number(v).toLocaleString('zh-CN',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function cls(v){ return v>0?'up':(v<0?'down':'flat'); }
+function sign(v){ return v>0?'+':''; }
+
+async function load(){
+  let data;
+  try{
+    const r = await fetch('data/factor_history.json?_='+Date.now(), {cache:'no-store'});
+    data = await r.json();
+  }catch(e){
+    document.getElementById('content').innerHTML =
+      '<div class="loading">读取失败：请通过 GitHub Pages 打开本页（本地 file:// 受 CORS 限制）。<br>错误：'+e+'</div>';
+    return;
+  }
+  if(!Array.isArray(data) || data.length===0){
+    document.getElementById('content').innerHTML =
+      '<div class="loading">暂无数据。请先运行 <code>scripts/factor_snapshot.py</code> 生成快照。</div>';
+    return;
+  }
+  render(data);
+}
+
+function render(data){
+  const last = data[data.length-1];
+  const prev = data.length>1 ? data[data.length-2] : null;
+  const h = last.holdings||{};
+  const f = last.factors||{};
+  const meta = last.meta||{};
+
+  document.getElementById('updated').textContent =
+    '最新快照：'+last.date+' '+last.time+'　|　共 '+data.length+' 条记录　|　数据：Yahoo Finance';
+
+  const mv = h.market_value||0, assets = h.assets||0;
+  const posPct = assets? (mv/assets*100):0;
+
+  // 持仓概览卡片
+  const holdCards = [
+    ['总资产', fmt(assets,0), '', ''],
+    ['市值', fmt(mv,0), '', ''],
+    ['现金', fmt(h.cash||0,0), '', ''],
+    ['仓位', fmt(posPct,1)+'%', '', ''],
+    ['浮动盈亏', fmt(h.float_amount||0,0), sign(h.float_amount||0)+fmt((h.float_rate||0)*100,2)+'%', (h.float_amount||0)],
+    ['今日', fmt(h.day_float_amount||0,0), sign(h.day_float_amount||0)+fmt((h.day_float_rate||0)*100,2)+'%', (h.day_float_amount||0)],
+    ['累计盈亏', fmt(h.accum_amount||0,0), sign(h.accum_amount||0)+fmt((h.accum_rate||0)*100,2)+'%', (h.accum_amount||0)],
+    ['活跃持仓', (h.active_count||0)+' 只', '', ''],
+  ];
+
+  // 宏观因子卡片
+  let facHtml = '';
+  FACTOR_ORDER.forEach(([key,zh,unit])=>{
+    const v = f[key];
+    let chg=null;
+    if(meta[key] && typeof meta[key].chg==='number') chg=meta[key].chg;
+    else if(prev && typeof prev.factors[key]==='number' && typeof v==='number') chg=v-prev.factors[key];
+    const vTxt = (v===null||v===undefined)? '待接入' : fmt(v, key==='southbound'?1:2)+(unit?' '+unit:'');
+    const chgTxt = (chg===null||isNaN(chg))? '' : sign(chg)+fmt(chg,2);
+    facHtml += `<div class="card">
+      <div class="k">${zh}</div>
+      <div class="v ${v===null?'flat':''}">${vTxt}</div>
+      <div class="s ${chg>0?'up':(chg<0?'down':'flat')}">${chgTxt||(v===null?'免费源待接':'')}</div>
+    </div>`;
+  });
+
+  // 分段
+  let segHtml = '';
+  (h.segments||[]).forEach(s=>{
+    segHtml += `<span class="pill" style="margin-right:6px">${s.name} ${fmt(s.mv,0)}（${sign(s.float||0)}${fmt(s.float||0,0)}）</span>`;
+  });
+
+  document.getElementById('content').innerHTML = `
+    <div class="grid cards" style="margin-bottom:14px">${holdCards.map(c=>
+      `<div class="card"><div class="k">${c[0]}</div><div class="v">${c[1]}</div>
+       <div class="s ${c[3]>0?'up':(c[3]<0?'down':'flat')}">${c[2]}</div></div>`).join('')}</div>
+
+    <section><h2>宏观因子实时卡片</h2>
+      <div class="grid cards">${facHtml}</div>
+      <div class="note">涨=红 / 跌=绿（A股习惯）。南向净买入需接入数据源后显示。美债、油价、指数来自 Yahoo Finance 公开接口。</div>
+    </section>
+
+    <section><h2>持仓净值走势</h2>
+      <div class="panel"><div class="chart-box"><canvas id="navChart"></canvas></div></div>
+    </section>
+
+    <section><h2>宏观因子归一化对比（首点=100）</h2>
+      <div class="panel"><div class="chart-box tall"><canvas id="facChart"></canvas></div>
+        <div class="note">不同量纲归一到同一基准，便于看"节奏同步/背离"。油价上行 vs 美债收益率上行，往往是组合的主要拉扯。</div>
+      </div>
+    </section>
+
+    ${segHtml?`<section><h2>分市场快照</h2><div class="panel">${segHtml}</div></section>`:''}
+
+    <section><h2>最新快照明细</h2>
+      <div class="panel"><table id="detail"><thead><tr>
+        <th>因子</th><th class="num">最新值</th><th class="num">日变动</th><th class="num">单位</th>
+      </tr></thead><tbody>
+        ${FACTOR_ORDER.map(([key,zh,unit])=>{
+          const v=f[key]; let chg=null;
+          if(meta[key]&&typeof meta[key].chg==='number')chg=meta[key].chg;
+          else if(prev&&typeof prev.factors[key]==='number'&&typeof v==='number')chg=v-prev.factors[key];
+          return `<tr><td>${zh}</td><td class="num">${v===null?'—':fmt(v,2)}</td>
+            <td class="num ${chg>0?'up':(chg<0?'down':'flat')}">${chg===null||isNaN(chg)?'—':sign(chg)+fmt(chg,2)}</td>
+            <td class="num">${unit}</td></tr>`;
+        }).join('')}
+      </tbody></table></div>
+    </section>
+  `;
+
+  drawNav(data);
+  drawFactors(data);
+}
+
+function drawNav(data){
+  const labels = data.map(r=>r.date+' '+r.time);
+  const assets = data.map(r=>r.holdings&&r.holdings.assets);
+  const mv = data.map(r=>r.holdings&&r.holdings.market_value);
+  new Chart(document.getElementById('navChart'),{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'总资产',data:assets,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.08)',fill:true,tension:.25,pointRadius:2},
+      {label:'市值',data:mv,borderColor:'#0ea5e9',backgroundColor:'rgba(14,165,233,.06)',fill:true,tension:.25,pointRadius:2},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},
+      scales:{y:{ticks:{callback:v=>v.toLocaleString()}}}}
+  });
+}
+
+function drawFactors(data){
+  const labels = data.map(r=>r.date+' '+r.time);
+  const series = NAV_SERIES.map(key=>{
+    const raw = data.map(r=>r.factors&&r.factors[key]);
+    const base = raw.find(v=>typeof v==='number');
+    const norm = raw.map(v=> (typeof v==='number'&&base)? +(v/base*100).toFixed(2):null);
+    return {key,raw,norm};
+  });
+  const colors={'brent':'#e0413e','us10y':'#6366f1','dxy':'#0ea5e9','hsi':'#16a34a'};
+  const names={'brent':'布伦特','us10y':'美债10Y','dxy':'美元指数','hsi':'恒生'};
+  new Chart(document.getElementById('facChart'),{
+    type:'line',
+    data:{labels,datasets:series.map(s=>({
+      label:names[s.key],data:s.norm,borderColor:colors[s.key],tension:.25,pointRadius:2,borderWidth:2
+    }))},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y}}},
+      scales:{y:{suggestedMin:95,suggestedMax:105}}}
+  });
+}
+
+load();
+</script>
+</body>
+</html>

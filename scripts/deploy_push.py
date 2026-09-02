@@ -68,6 +68,7 @@ DATA_FILES = [
     "daily_review.md", "daily_review.json", "backtest.json",
     "my_notes.json", "my_notes_backtest.json",
     "my_holdings.enc.json",
+    "factor_history.json",
 ]
 
 
@@ -129,7 +130,8 @@ def sync_files():
 
     # 根目录文件（含云端运行所需：requirements.txt / 上云指南）
     for f in ["index.html", "summary.md", "README.md", ".gitignore",
-              "requirements.txt", "CLOUDSTUDIO_SETUP_xueqiu.md"]:
+              "requirements.txt", "CLOUDSTUDIO_SETUP_xueqiu.md",
+              "factor_dashboard.html"]:
         s = os.path.join(WORKSPACE, f)
         if os.path.exists(s):
             shutil.copy2(s, os.path.join(DEPLOY, f))
