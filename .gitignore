@@ -13,6 +13,7 @@ data/xq_cookies.txt
 data/my_xq_cookie.txt
 data/.holdings_pwd
 data/my_holdings.json
+data/my_trades.json
 
 # GitHub PAT（本地推送用，绝不入库）
 .github_token
