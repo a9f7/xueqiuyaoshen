@@ -1311,6 +1311,91 @@
    ],
    "active_count": 26,
    "fetched_at": 1788358976117
+  },
+  "etf_flow": {
+   "source": "china-etf-flow-premarket (AkShare)",
+   "akshare_version": "1.18.94",
+   "trade_date": "20260902",
+   "previous_trade_date": "20260901",
+   "direction": "净申购",
+   "net_flow_yi": 3.2268,
+   "gross_subscription_yi": 124.8989,
+   "gross_redemption_yi": 121.6721,
+   "stock_net_flow_yi": -23.6226,
+   "subscription_count": 504,
+   "redemption_count": 423,
+   "unchanged_count": 695,
+   "quality": {
+    "included_etfs": 1622,
+    "excluded_money_etfs": 3,
+    "unvalued_changed_etfs": 0,
+    "nav_priced_etfs": 1581,
+    "market_price_priced_etfs": 41
+   },
+   "top_subscriptions": [
+    {
+     "code": "159915.SZ",
+     "name": "易方达创业板ETF",
+     "type": "股票型",
+     "flow_yi": 14.5201
+    },
+    {
+     "code": "511380.SH",
+     "name": "博时可转债ETF",
+     "type": "债券型",
+     "flow_yi": 6.742
+    },
+    {
+     "code": "588000.SH",
+     "name": "华夏上证科创板50成份ETF",
+     "type": "股票型",
+     "flow_yi": 4.6637
+    },
+    {
+     "code": "513130.SH",
+     "name": "华泰柏瑞南方东英恒生科技指数ETF(QDII)",
+     "type": "股票型",
+     "flow_yi": 4.2005
+    },
+    {
+     "code": "511180.SH",
+     "name": "海富通上证投资级可转债ETF",
+     "type": "债券型",
+     "flow_yi": 2.8797
+    }
+   ],
+   "top_redemptions": [
+    {
+     "code": "510500.SH",
+     "name": "南方中证500ETF",
+     "type": "股票型",
+     "flow_yi": -9.7644
+    },
+    {
+     "code": "515220.SH",
+     "name": "国泰中证煤炭ETF",
+     "type": "股票型",
+     "flow_yi": -9.2165
+    },
+    {
+     "code": "588170.SH",
+     "name": "华夏上证科创板半导体材料设备主题ETF",
+     "type": "股票型",
+     "flow_yi": -5.688
+    },
+    {
+     "code": "512100.SH",
+     "name": "南方中证1000ETF",
+     "type": "股票型",
+     "flow_yi": -5.2924
+    },
+    {
+     "code": "563300.SH",
+     "name": "华泰柏瑞中证2000ETF",
+     "type": "股票型",
+     "flow_yi": -4.9045
+    }
+   ]
   }
  }
 ]
