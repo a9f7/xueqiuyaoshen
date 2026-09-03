@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-03T10:22:05Z",
-  "total_tagged": 29375,
+  "updated": "2026-09-03T14:24:16Z",
+  "total_tagged": 29377,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,7 +10,7 @@
     },
     {
       "tag": "答疑",
-      "count": 9296,
+      "count": 9297,
       "dim": "ctype"
     },
     {
@@ -25,7 +25,7 @@
     },
     {
       "tag": "股票",
-      "count": 7198,
+      "count": 7199,
       "dim": "asset"
     },
     {
@@ -35,12 +35,12 @@
     },
     {
       "tag": "看多",
-      "count": 5773,
+      "count": 5774,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5444,
+      "count": 5445,
       "dim": "region"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3876,
+      "count": 3877,
       "dim": "industry"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "复盘",
-      "count": 2260,
+      "count": 2261,
       "dim": "stance"
     },
     {
