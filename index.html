@@ -571,6 +571,8 @@
   .dash .dash-card .c { font-size:12px; font-variant-numeric:tabular-nums; margin-top:2px; }
   .dash .dash-card .spark { display:block; width:100%; height:24px; margin-top:6px; }
   .dash .dash-card .dash-desc { font-size:11px; color:var(--ink-3); line-height:1.5; margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .dash .etf-chart { width:100%; background:#fafbfc; border:1px solid var(--line-2); border-radius:8px; padding:6px 4px 2px; overflow:hidden; }
+  .dash .etf-chart svg { display:block; width:100%; height:240px; }
   .dash .pos { color:#0a8f3c; }
   .dash .neg { color:#c0392b; }
   .dash .flat { color:var(--ink-3); }
@@ -1224,6 +1226,99 @@
       + '<polyline points="' + pts.join(" ") + '" fill="none" stroke="' + (up ? "#0a8f3c" : "#c0392b") + '" stroke-width="1.5"/></svg>';
   }
 
+  // ETF 历史时序：上柱状（每日净）+ 下折线（累计净）+ 申/赎辅助线
+  function renderEtfHistory(e) {
+    const H = e.history;
+    if (!H || H.length < 2) return '';
+    const W = 1000, H_TOP = 130, H_BOT = 90, GAP = 10, BASE_TOP = 50, PAD_L = 38, PAD_R = 8;
+    const innerW = W - PAD_L - PAD_R;
+    const barGap = 2;
+    const barW = (innerW - barGap * (H.length - 1)) / H.length;
+    const maxAbs = Math.max.apply(null, H.map(h => Math.abs(h.net))) || 1;
+    const maxAbs2 = Math.max.apply(null, H.map(h => Math.abs(h.cum))) || 1;
+    const cumAll = H[H.length - 1].cum;
+    const cumMin = Math.min.apply(null, H.map(h => h.cum));
+    const cumMax = Math.max.apply(null, H.map(h => h.cum));
+    const cumRange = (cumMax - cumMin) || 1;
+
+    // 上半：柱状
+    let bars = '';
+    H.forEach((h, i) => {
+      const x = PAD_L + i * (barW + barGap);
+      const hgt = Math.abs(h.net) / maxAbs * BASE_TOP;
+      const y = h.net >= 0 ? BASE_TOP - hgt : BASE_TOP;
+      const fill = h.net >= 0 ? '#0a8f3c' : '#c0392b';
+      bars += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + hgt.toFixed(1) + '" fill="' + fill + '" opacity="0.85">'
+        + '<title>' + h.d + '　净 ' + (h.net >= 0 ? '+' : '') + h.net.toFixed(2) + ' 亿 (申 ' + h.sub.toFixed(0) + ' / 赎 ' + h.red.toFixed(0) + ')</title></rect>';
+    });
+    // 申/赎细线
+    const subMax = Math.max.apply(null, H.map(h => h.sub)) || 1;
+    const redMax = Math.max.apply(null, H.map(h => h.red)) || 1;
+    const subPts = H.map((h, i) => {
+      const x = PAD_L + i * (barW + barW/2 + barGap/2);
+      const y = GAP + (1 - h.sub / subMax) * (BASE_TOP - GAP);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    const redPts = H.map((h, i) => {
+      const x = PAD_L + i * (barW + barW/2 + barGap/2);
+      const y = GAP + (1 - h.red / redMax) * (BASE_TOP - GAP);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+
+    // 下半：累计折线
+    const lineY0 = H_TOP + 50;
+    const linePts = H.map((h, i) => {
+      const x = PAD_L + i * (barW + barW/2 + barGap/2);
+      const y = lineY0 + (1 - (h.cum - cumMin) / cumRange) * (H_BOT - 4);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    const lastX = PAD_L + (H.length - 1) * (barW + barW/2 + barGap/2);
+    const lastY = lineY0 + (1 - (H[H.length-1].cum - cumMin) / cumRange) * (H_BOT - 4);
+
+    // X 轴标签（首中尾）
+    const firstDate = H[0].d.slice(5);
+    const lastDate = H[H.length-1].d.slice(5);
+    const midDate = H[Math.floor(H.length/2)].d.slice(5);
+    const svgH = H_TOP + H_BOT + 30;
+    const upDown = cumAll >= 0 ? '#0a8f3c' : '#c0392b';
+
+    return '<div class="etf-chart">'
+      + '<svg viewBox="0 0 ' + W + ' ' + svgH + '" preserveAspectRatio="none" aria-label="ETF历史申赎走势">'
+      // 上半背景
+      + '<rect x="0" y="0" width="' + W + '" height="' + (H_TOP + 10) + '" fill="#fafbfc"/>'
+      // 上半 Y 轴刻度
+      + '<text x="' + (PAD_L - 4) + '" y="' + (GAP + 4) + '" text-anchor="end" font-size="11" fill="#8b94a3">+' + Math.round(maxAbs) + '</text>'
+      + '<text x="' + (PAD_L - 4) + '" y="' + (BASE_TOP + 4) + '" text-anchor="end" font-size="11" fill="#8b94a3">0</text>'
+      + '<text x="' + (PAD_L - 4) + '" y="' + (BASE_TOP + BASE_TOP + 4) + '" text-anchor="end" font-size="11" fill="#8b94a3">-' + Math.round(maxAbs) + '</text>'
+      // 0 轴
+      + '<line x1="' + PAD_L + '" y1="' + BASE_TOP + '" x2="' + (W - PAD_R) + '" y2="' + BASE_TOP + '" stroke="#d3d1c7" stroke-width="1"/>'
+      // 申/赎曲线（淡色）
+      + '<polyline points="' + subPts + '" fill="none" stroke="#1f6feb" stroke-width="0.7" opacity="0.35"/>'
+      + '<polyline points="' + redPts + '" fill="none" stroke="#e67e22" stroke-width="0.7" opacity="0.35"/>'
+      // 柱
+      + bars
+      // 上半标题
+      + '<text x="6" y="' + (H_TOP + 4) + '" font-size="11" fill="#5f6776">每日净申赎(柱,亿元)</text>'
+      + '<text x="170" y="' + (H_TOP + 4) + '" font-size="10" fill="#8b94a3">— 申 · — 赎 (右轴无量纲)</text>'
+      // 下半背景
+      + '<rect x="0" y="' + H_TOP + '" width="' + W + '" height="' + (H_BOT + 30) + '" fill="#f5f7fa"/>'
+      // 累计折线
+      + '<polyline points="' + linePts + '" fill="none" stroke="' + upDown + '" stroke-width="1.6"/>'
+      // 终点
+      + '<circle cx="' + lastX.toFixed(1) + '" cy="' + lastY.toFixed(1) + '" r="3" fill="' + upDown + '">'
+      + '<title>累计 ' + (cumAll >= 0 ? '+' : '') + cumAll.toFixed(2) + ' 亿元</title></circle>'
+      // 下半标题
+      + '<text x="6" y="' + (H_TOP + 14) + '" font-size="11" fill="#5f6776">累计净申赎(亿元)</text>'
+      + '<text x="' + (W - PAD_R) + '" y="' + (H_TOP + 14) + '" text-anchor="end" font-size="11" font-weight="600" fill="' + upDown + '">'
+      + (cumAll >= 0 ? '+' : '') + cumAll.toFixed(0) + '</text>'
+      // X 轴日期
+      + '<text x="' + PAD_L + '" y="' + (svgH - 6) + '" font-size="11" fill="#8b94a3">' + firstDate + '</text>'
+      + '<text x="' + (W / 2) + '" y="' + (svgH - 6) + '" text-anchor="middle" font-size="11" fill="#8b94a3">' + midDate + '</text>'
+      + '<text x="' + (W - PAD_R) + '" y="' + (svgH - 6) + '" text-anchor="end" font-size="11" fill="#8b94a3">' + lastDate + '</text>'
+      + '</svg></div>'
+      + '<div class="dash-note">柱：每日净申赎（正绿/负红）；折线：近 ' + H.length + ' 个交易日累计净申赎；细线：申/赎回总规模（右轴无量纲）。所有值均为 ETF 全市场合计。</div>';
+  }
+
   function dashSec(title, note, inner) {
     return '<div class="dash-sec">' + esc(title) + (note ? '<small>' + esc(note) + '</small>' : '') + '</div>' + inner;
   }
@@ -1335,6 +1430,13 @@
           '<div class="dash-tblwrap"><table><thead><tr><th>名称</th><th>类型</th><th>估算净流(亿元)</th><th>份额变动</th></tr></thead><tbody>'
           + sub + red + '</tbody></table></div>'
           + '<div class="dash-note">口径：交易所披露份额变动 × 单位净值估算；货币型 ETF 已剔除。数据源 AkShare 公开接口。</div>'));
+      }
+
+      // 历史时序曲线
+      if (e.history && e.history.length > 1) {
+        const chartHtml = renderEtfHistory(e);
+        const rangeNote = '近 ' + e.history.length + ' 个交易日 · 截止 ' + esc(String(e.trade_date || ""));
+        parts.push(dashSec("历史申赎走势", rangeNote, chartHtml));
       }
     }
 

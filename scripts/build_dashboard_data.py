@@ -8,7 +8,7 @@
   2. 中国宏观   data/cn_macro_raw.csv
                 （PMI / PPI / 社融 / 用电量 / 焦煤 / 螺纹钢 等最新值与近 12 月走势）
   3. 驱动关系   data/factor_backtest/beta_neutral.csv（仅取 |t| >= 3 的强信号）
-  4. ETF 申赎   data/etf_flow/etf_flow_YYYYMMDD.json（最新一期）
+  4. ETF 申赎   data/etf_flow/etf_flow_YYYYMMDD.json（最新一期 + 历史时序）
 
 用法：python scripts/build_dashboard_data.py
 """
@@ -134,6 +134,46 @@ def load_etf():
         return [{k: it.get(k) for k in keys if k in it} for it in (lst or [])]
     keys = ["ts_code", "name", "fund_type", "share_change_wan",
             "share_change_pct", "unit_nav", "estimated_flow_yi"]
+
+    # 历史时序：扫描所有 etf_flow_*.json，提取每日 summary
+    history = []
+    type_history = {}  # fund_type -> [(date, net_flow_yi)]
+    for fp in files:
+        try:
+            dd = json.load(open(fp, encoding="utf-8"))
+        except Exception:
+            continue
+        ds = dd.get("trade_date")
+        sm = dd.get("summary") or {}
+        if not ds or sm.get("net_flow_yi") is None:
+            continue
+        history.append({
+            "d": ds,
+            "net": round(float(sm.get("net_flow_yi") or 0), 2),
+            "sub": round(float(sm.get("gross_subscription_yi") or 0), 2),
+            "red": round(float(sm.get("gross_redemption_yi") or 0), 2),
+            "stock": round(float(sm.get("stock_net_flow_yi") or 0), 2),
+            "dir": sm.get("direction", ""),
+        })
+        for ft in (dd.get("by_fund_type") or []):
+            t = ft.get("fund_type")
+            v = ft.get("net_flow_yi")
+            if t and v is not None:
+                type_history.setdefault(t, []).append((ds, round(float(v), 2)))
+    history.sort(key=lambda x: x["d"])
+    # 累计净流（基线=0）
+    cum = []
+    s = 0.0
+    for h in history:
+        s += h["net"]
+        cum.append(round(s, 2))
+    for h, c in zip(history, cum):
+        h["cum"] = c
+    # 类型时序对齐到日期轴（缺失日期填空）
+    type_series = {}
+    for t, pts in type_history.items():
+        pts.sort()
+        type_series[t] = pts
     return {
         "trade_date": td,
         "prev_trade_date": d.get("previous_trade_date"),
@@ -143,6 +183,9 @@ def load_etf():
         "by_fund_type": d.get("by_fund_type"),
         "top_subscriptions": slim(d.get("top_subscriptions"), keys),
         "top_redemptions": slim(d.get("top_redemptions"), keys),
+        "history": history,
+        "cum_net": cum,
+        "type_history": type_series,
     }
 
 
