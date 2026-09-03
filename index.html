@@ -581,12 +581,12 @@
   .dash .etf-stats { display:flex; gap:14px; font-size:12px; color:var(--ink-3); flex-wrap:wrap; }
   .dash .etf-stats .es b { color:var(--ink-2); font-weight:500; margin-right:4px; }
   .dash .etf-stats .es i { font-style:normal; color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
-  .dash .etf-bars { position:relative; display:flex; align-items:center; height:130px; border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2); margin-top:4px; padding:0 1px; }
+  .dash .etf-bars { position:relative; height:130px; margin-top:4px; }
   .dash .etf-zero { position:absolute; left:0; right:0; top:50%; border-top:1px dashed #d3d1c7; pointer-events:none; z-index:1; }
-  .dash .etf-bar { flex:1; min-width:1px; cursor:help; transition:opacity .15s; }
+  .dash .etf-bar { position:absolute; min-width:1px; cursor:help; transition:opacity .15s; }
   .dash .etf-bar:hover { opacity:1 !important; }
-  .dash .etf-bar.pos { align-self:flex-start; margin-top:auto; background:#0a8f3c; opacity:.82; }
-  .dash .etf-bar.neg { align-self:flex-end; margin-bottom:auto; background:#c0392b; opacity:.82; }
+  .dash .etf-bar.pos { background:#c0392b; opacity:.82; bottom:50%; }  /* 正红：底边贴 0 轴向上长 */
+  .dash .etf-bar.neg { background:#0a8f3c; opacity:.82; top:50%; }     /* 负绿：顶边贴 0 轴向下长 */
   .dash .etf-line-wrap { height:80px; padding:4px 0 0; }
   .dash .etf-line-wrap svg { display:block; width:100%; height:100%; }
   .dash .etf-xaxis { position:relative; height:18px; font-size:11px; color:var(--ink-3); }
@@ -1294,7 +1294,7 @@
       +   '<svg id="etfLineSvg" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-label="累计净申赎折线"></svg>'
       + '</div>'
       + '<div class="etf-xaxis" id="etfXaxis"></div>'
-      + '<div class="dash-note">上方按钮快速切换；下方滑动条可精细调整窗口大小。柱：每日净申赎（正绿/负红）；折线：累计净申赎。鼠标悬停柱体看当日详情。</div>'
+      + '<div class="dash-note">上方按钮快速切换；下方滑动条可精细调整窗口大小。柱：每日净申赎（正红/负绿，共享同一 0 轴，正向上长、负向下长）；折线：累计净申赎。鼠标悬停柱体看当日详情。</div>'
       + '</div>';
   }
   function paintEtfChart(e, k, customN) {
@@ -1331,13 +1331,22 @@
     const bars = document.getElementById("etfBars");
     if (bars) {
       const maxAbs = Math.max.apply(null, H.map(h => Math.abs(h.net))) || 1;
-      const halfPct = 48;
+      const n = H.length;
+      const barGap = 1;
+      const totalGapPx = barGap * (n - 1);
+      // 用绝对定位：正柱 bottom:50% 向上长；负柱 top:50% 向下长；共享同一 0 轴
       let html = '<div class="etf-zero"></div>';
-      H.forEach(h => {
-        const pct = Math.abs(h.net) / maxAbs * halfPct;
+      H.forEach((h, i) => {
+        const wPct = ((100 - totalGapPx / bars.clientWidth * 100) / n);
+        const left = (i * (wPct + (barGap / bars.clientWidth * 100))).toFixed(2);
+        const width = wPct.toFixed(2);
+        const hgt = (Math.abs(h.net) / maxAbs * 62).toFixed(1);
         const tip = h.d + '  净 ' + (h.net>=0?"+":"") + h.net.toFixed(2) + ' 亿\n申 ' + h.sub.toFixed(0) + ' / 赎 ' + h.red.toFixed(0) + ' 亿\n股票型 ' + (h.stock>=0?"+":"") + h.stock.toFixed(1) + ' 亿';
-        if (h.net >= 0) html += '<div class="etf-bar pos" style="height:' + pct.toFixed(2) + '%" title="' + esc(tip) + '"></div>';
-        else html += '<div class="etf-bar neg" style="height:' + pct.toFixed(2) + '%" title="' + esc(tip) + '"></div>';
+        if (h.net >= 0) {
+          html += '<div class="etf-bar pos" style="left:' + left + '%;width:calc(' + width + '% - 1px);height:' + hgt + 'px" title="' + esc(tip) + '"></div>';
+        } else {
+          html += '<div class="etf-bar neg" style="left:' + left + '%;width:calc(' + width + '% - 1px);height:' + hgt + 'px" title="' + esc(tip) + '"></div>';
+        }
       });
       bars.innerHTML = html;
     }
@@ -1353,7 +1362,7 @@
         return x.toFixed(1) + ',' + y.toFixed(1);
       }).join(' ');
       const last = H[n-1];
-      const lastCumColor = last.cum >= 0 ? '#0a8f3c' : '#c0392b';
+      const lastCumColor = last.cum >= 0 ? '#c0392b' : '#0a8f3c';
       let svgInner = '<line x1="0" y1="50" x2="1000" y2="50" stroke="#e7e9ee" stroke-width="0.5" stroke-dasharray="2 3" vector-effect="non-scaling-stroke"/>'
         + '<polyline points="' + pts + '" fill="none" stroke="' + lastCumColor + '" stroke-width="1.6" vector-effect="non-scaling-stroke"/>';
       if (cumMin < 0 && cumMax > 0) {
