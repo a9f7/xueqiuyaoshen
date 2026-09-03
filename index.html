@@ -593,6 +593,15 @@
   .dash .etf-xaxis .xa-l { position:absolute; left:0; }
   .dash .etf-xaxis .xa-m { position:absolute; left:50%; transform:translateX(-50%); }
   .dash .etf-xaxis .xa-r { position:absolute; right:0; }
+  .dash .etf-slider-wrap { margin:6px 2px 2px; }
+  .dash .etf-slider { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px;
+    background:linear-gradient(90deg,var(--accent,#2b6cb0),#90cdf4); outline:none; cursor:pointer; }
+  .dash .etf-slider::-webkit-slider-thumb { -webkit-appearance:none; appearance:none;
+    width:16px; height:16px; border-radius:50%; background:#fff; border:2px solid var(--accent,#2b6cb0);
+    box-shadow:0 1px 3px rgba(0,0,0,.25); cursor:grab; }
+  .dash .etf-slider::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:#fff;
+    border:2px solid var(--accent,#2b6cb0); cursor:grab; }
+  .dash .etf-slider-tip { text-align:center; font-size:12px; color:var(--ink-2); margin-top:4px; }
   .dash .pos { color:#0a8f3c; }
   .dash .neg { color:#c0392b; }
   .dash .flat { color:var(--ink-3); }
@@ -1263,27 +1272,40 @@
   function renderEtfChart(e) {
     const H = e.history;
     if (!H || H.length < 2) return '<div class="dash-empty">历史数据不足</div>';
+    const total = H.length;
     const ranges = ETF_RANGES.map(r => {
-      const cnt = r.k === "all" ? H.length : Math.min(r.n, H.length);
-      return '<button type="button" class="etf-rng' + (r.k === "3m" ? " active" : "") + '" data-k="' + r.k + '">' + r.label + ' <span class="ct">' + cnt + '</span></button>';
+      const cnt = r.k === "all" ? total : Math.min(r.n, total);
+      return '<button type="button" class="etf-rng" data-k="' + r.k + '" data-n="' + cnt + '">' + r.label + ' <span class="ct">' + cnt + '</span></button>';
     }).join("");
+    // 滑动条：max=total, value=total (默认全部)
+    const sliderHtml =
+      '<div class="etf-slider-wrap">'
+      +   '<input type="range" id="etfSlider" class="etf-slider" min="2" max="' + total + '" step="1" value="' + total + '">'
+      +   '<div class="etf-slider-tip" id="etfSliderTip">近 ' + total + ' 个交易日</div>'
+      + '</div>';
     return '<div class="etf-chart" id="etfChartRoot">'
       + '<div class="etf-head">'
       +   '<div class="etf-ranges">' + ranges + '</div>'
       +   '<div class="etf-stats" id="etfStats"></div>'
       + '</div>'
+      + sliderHtml
       + '<div class="etf-bars" id="etfBars"></div>'
       + '<div class="etf-line-wrap">'
       +   '<svg id="etfLineSvg" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-label="累计净申赎折线"></svg>'
       + '</div>'
       + '<div class="etf-xaxis" id="etfXaxis"></div>'
-      + '<div class="dash-note">柱：每日净申赎（正绿/负红）；折线：累计净申赎。鼠标悬停柱体看当日详情。</div>'
+      + '<div class="dash-note">上方按钮快速切换；下方滑动条可精细调整窗口大小。柱：每日净申赎（正绿/负红）；折线：累计净申赎。鼠标悬停柱体看当日详情。</div>'
       + '</div>';
   }
-  function paintEtfChart(e, k) {
+  function paintEtfChart(e, k, customN) {
     const root = document.getElementById("etfChartRoot");
     if (!root) return;
-    const H = filterEtfRange(e.history, k);
+    let H;
+    if (customN && customN >= 2) {
+      H = e.history.slice(-Math.min(customN, e.history.length));
+    } else {
+      H = filterEtfRange(e.history, k || "all");
+    }
     if (H.length < 1) return;
     const netSum = H.reduce((a, h) => a + h.net, 0);
     const posDays = H.filter(h => h.net > 0).length;
@@ -1299,8 +1321,13 @@
         + '<span class="es"><b>净赎回日</b>' + negDays + ' 天</span>';
     }
     root.querySelectorAll(".etf-rng").forEach(btn => {
-      btn.classList.toggle("active", btn.getAttribute("data-k") === k);
+      btn.classList.toggle("active", btn.getAttribute("data-k") === k && !customN);
     });
+    // 同步滑动条（如有）
+    const slider = document.getElementById("etfSlider");
+    if (slider && !customN) slider.value = H.length;
+    const tip = document.getElementById("etfSliderTip");
+    if (tip) tip.textContent = "近 " + H.length + " 个交易日";
     const bars = document.getElementById("etfBars");
     if (bars) {
       const maxAbs = Math.max.apply(null, H.map(h => Math.abs(h.net))) || 1;
@@ -1351,6 +1378,15 @@
     root.querySelectorAll(".etf-rng").forEach(btn => {
       btn.addEventListener("click", () => paintEtfChart(e, btn.getAttribute("data-k")));
     });
+    const slider = document.getElementById("etfSlider");
+    if (slider) {
+      slider.addEventListener("input", () => {
+        const n = Number(slider.value);
+        const tip = document.getElementById("etfSliderTip");
+        if (tip) tip.textContent = "近 " + n + " 个交易日";
+        paintEtfChart(e, null, n);
+      });
+    }
   }
 
   function dashSec(title, note, inner) {
