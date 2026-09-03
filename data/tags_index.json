@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-03T14:24:16Z",
-  "total_tagged": 29377,
+  "updated": "2026-09-03T18:21:43Z",
+  "total_tagged": 29378,
   "distinct_tags": 45,
   "tags": [
     {
@@ -85,7 +85,7 @@
     },
     {
       "tag": "其他",
-      "count": 2119,
+      "count": 2120,
       "dim": "other"
     },
     {

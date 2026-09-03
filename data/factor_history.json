@@ -1397,5 +1397,224 @@
     }
    ]
   }
+ },
+ {
+  "ts": 1788451256123,
+  "date": "2026-09-04",
+  "time": "00:00",
+  "factors": {
+   "brent": 95.89,
+   "wti": 91.55,
+   "gold": 4536.2,
+   "dxy": 99.008,
+   "hsi": 25213.31,
+   "n225": 64214.48,
+   "us10y": 4.746,
+   "us30y": 5.231,
+   "southbound": null
+  },
+  "meta": {
+   "brent": {
+    "zh": "布伦特原油",
+    "unit": "美元/桶",
+    "prev": 95.63,
+    "chg": 0.2600000000000051
+   },
+   "wti": {
+    "zh": "WTI原油",
+    "unit": "美元/桶",
+    "prev": 91.01,
+    "chg": 0.539999999999992
+   },
+   "gold": {
+    "zh": "黄金",
+    "unit": "美元/盎司",
+    "prev": 4414.6,
+    "chg": 121.59999999999945
+   },
+   "dxy": {
+    "zh": "美元指数",
+    "unit": "",
+    "prev": 99.596,
+    "chg": -0.5880000000000081
+   },
+   "hsi": {
+    "zh": "恒生指数",
+    "unit": "点",
+    "prev": 25329.7,
+    "chg": -116.38999999999942
+   },
+   "n225": {
+    "zh": "日经225",
+    "unit": "点",
+    "prev": 64325.64,
+    "chg": -111.15999999999622
+   },
+   "us10y": {
+    "zh": "美债10年",
+    "unit": "%",
+    "prev": 4.796,
+    "chg": -0.04999999999999982
+   },
+   "us30y": {
+    "zh": "美债30年",
+    "unit": "%",
+    "prev": 5.2669997,
+    "chg": -0.03599970000000052
+   },
+   "southbound": {
+    "zh": "南向净买入",
+    "unit": "亿港元",
+    "prev": null,
+    "chg": null
+   }
+  },
+  "holdings": {
+   "assets": 1647725.36,
+   "principal": 903755.07,
+   "cash": 267539.93,
+   "market_value": 1380185.43,
+   "float_amount": -36987.54,
+   "float_rate": -0.0261,
+   "accum_amount": 743970.01,
+   "accum_rate": 0.618,
+   "day_float_amount": 3170.32,
+   "day_float_rate": 0.0019,
+   "segments": [
+    {
+     "name": "A股",
+     "count": 90,
+     "mv": 133674.0,
+     "day_float": 1717.48,
+     "float": 5830.34
+    },
+    {
+     "name": "港股",
+     "count": 169,
+     "mv": 933760.5,
+     "day_float": 590.96,
+     "float": -51771.36
+    },
+    {
+     "name": "美股",
+     "count": 79,
+     "mv": 66440.38,
+     "day_float": 140.88,
+     "float": 230.19
+    }
+   ],
+   "top": [
+    {
+     "name": "中国海洋石油",
+     "market": "港股",
+     "value": 321620.0,
+     "weight": 28.36,
+     "profit": 4590.3,
+     "profit_rate": 0.0145,
+     "day_profit": -3640.0
+    },
+    {
+     "name": "中国宏桥",
+     "market": "港股",
+     "value": 151190.0,
+     "weight": 13.33,
+     "profit": -60974.55,
+     "profit_rate": -0.2874,
+     "day_profit": 4030.0
+    },
+    {
+     "name": "中国神华",
+     "market": "港股",
+     "value": 134340.0,
+     "weight": 11.85,
+     "profit": -3247.5,
+     "profit_rate": -0.0236,
+     "day_profit": -2280.0
+    },
+    {
+     "name": "药明合联",
+     "market": "港股",
+     "value": 73100.0,
+     "weight": 6.45,
+     "profit": 3200.0,
+     "profit_rate": 0.0458,
+     "day_profit": 2000.0
+    },
+    {
+     "name": "神火股份",
+     "market": "A股",
+     "value": 72410.0,
+     "weight": 6.39,
+     "profit": 6564.22,
+     "profit_rate": 0.0997,
+     "day_profit": 1820.0
+    },
+    {
+     "name": "汇丰控股",
+     "market": "港股",
+     "value": 65400.0,
+     "weight": 5.77,
+     "profit": 54.72,
+     "profit_rate": 0.0008,
+     "day_profit": 360.0
+    },
+    {
+     "name": "会稽山",
+     "market": "A股",
+     "value": 61264.0,
+     "weight": 5.4,
+     "profit": -733.88,
+     "profit_rate": -0.0118,
+     "day_profit": -733.94
+    },
+    {
+     "name": "美的集团",
+     "market": "港股",
+     "value": 60300.0,
+     "weight": 5.32,
+     "profit": -300.54,
+     "profit_rate": -0.005,
+     "day_profit": -300.54
+    },
+    {
+     "name": "科伦博泰生物",
+     "market": "港股",
+     "value": 49680.0,
+     "weight": 4.38,
+     "profit": -3873.5,
+     "profit_rate": -0.0723,
+     "day_profit": 380.0
+    },
+    {
+     "name": "中芯国际",
+     "market": "港股",
+     "value": 34025.0,
+     "weight": 3.0,
+     "profit": -634.6,
+     "profit_rate": -0.0183,
+     "day_profit": -100.0
+    },
+    {
+     "name": "南方日经225",
+     "market": "港股",
+     "value": 24975.5,
+     "weight": 2.2,
+     "profit": 8682.71,
+     "profit_rate": 0.5329,
+     "day_profit": 351.5
+    },
+    {
+     "name": "建设银行",
+     "market": "港股",
+     "value": 19130.0,
+     "weight": 1.69,
+     "profit": 731.6,
+     "profit_rate": 0.0398,
+     "day_profit": -210.0
+    }
+   ],
+   "active_count": 27,
+   "fetched_at": 1788445520046
+  }
  }
 ]
