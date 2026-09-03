@@ -563,12 +563,14 @@
   .dash .dash-sub { font-size:12px; color:var(--ink-3); margin-bottom:16px; line-height:1.6; }
   .dash .dash-sec { font-size:14px; font-weight:700; color:var(--ink); margin:24px 0 10px; padding-left:10px; border-left:4px solid #0c8599; }
   .dash .dash-sec small { font-weight:500; color:var(--ink-3); font-size:12px; margin-left:8px; }
-  .dash .dash-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:12px; }
-  .dash .dash-card { background:#f8f9fc; border:1px solid var(--line-2); border-radius:12px; padding:12px 14px; }
+  .dash .dash-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; width:100%; min-width:0; }
+  .dash .dash-card { background:#f8f9fc; border:1px solid var(--line-2); border-radius:10px; padding:10px 12px; min-width:0; overflow:hidden; }
   .dash .dash-card .k { font-size:12px; color:var(--ink-3); display:flex; justify-content:space-between; gap:6px; align-items:baseline; }
   .dash .dash-card .k .u { opacity:.75; font-size:11px; }
-  .dash .dash-card .v { font-size:21px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; margin-top:3px; }
+  .dash .dash-card .v { font-size:20px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; margin-top:2px; }
   .dash .dash-card .c { font-size:12px; font-variant-numeric:tabular-nums; margin-top:2px; }
+  .dash .dash-card .spark { display:block; width:100%; height:24px; margin-top:6px; }
+  .dash .dash-card .dash-desc { font-size:11px; color:var(--ink-3); line-height:1.5; margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .dash .pos { color:#0a8f3c; }
   .dash .neg { color:#c0392b; }
   .dash .flat { color:var(--ink-3); }
@@ -1283,7 +1285,8 @@
           + '<div class="v">' + num2(it.latest) + '</div>'
           + '<div class="c ' + clsS(ch) + '">' + (ch >= 0 ? "+" : "") + ch.toFixed(2) + ' 环比</div>'
           + sparkline(it.series)
-          + (it.desc ? '<div class="c flat" style="font-size:11px">' + esc(it.desc) + '</div>' : '');
+          + (it.desc ? '<div class="c dash-desc">' + esc(it.desc) + '</div>' : '')
+          + '</div>';
       }).join("");
       parts.push(dashSec("中国宏观指标", "截至 " + (m.asof || ""), '<div class="dash-cards">' + cards + '</div>'));
     }
