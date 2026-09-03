@@ -1,36 +1,36 @@
 {
-  "updated": "2026-09-03T06:23:01Z",
-  "total_tagged": 29355,
+  "updated": "2026-09-03T10:22:05Z",
+  "total_tagged": 29375,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9529,
+      "count": 9533,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9291,
+      "count": 9296,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8503,
+      "count": 8505,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8410,
+      "count": 8414,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7197,
+      "count": 7198,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6966,
+      "count": 6969,
       "dim": "perspective"
     },
     {
@@ -40,12 +40,12 @@
     },
     {
       "tag": "中国",
-      "count": 5443,
+      "count": 5444,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5184,
+      "count": 5187,
       "dim": "perspective"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "tag": "消费",
-      "count": 3859,
+      "count": 3876,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3689,
+      "count": 3691,
       "dim": "ctype"
     },
     {
@@ -70,17 +70,17 @@
     },
     {
       "tag": "看空",
-      "count": 3105,
+      "count": 3106,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 3011,
+      "count": 3016,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2259,
+      "count": 2260,
       "dim": "stance"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1380,
+      "count": 1384,
       "dim": "industry"
     },
     {
@@ -215,7 +215,7 @@
     },
     {
       "tag": "教育",
-      "count": 108,
+      "count": 110,
       "dim": "industry"
     },
     {
