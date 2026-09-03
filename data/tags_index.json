@@ -1,11 +1,11 @@
 {
-  "updated": "2026-09-02T14:21:46Z",
-  "total_tagged": 29333,
+  "updated": "2026-09-03T00:42:55Z",
+  "total_tagged": 29334,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9517,
+      "count": 9518,
       "dim": "region"
     },
     {
@@ -20,12 +20,12 @@
     },
     {
       "tag": "科技",
-      "count": 8395,
+      "count": 8396,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7195,
+      "count": 7196,
       "dim": "asset"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 5180,
+      "count": 5181,
       "dim": "perspective"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "看空",
-      "count": 3103,
+      "count": 3104,
       "dim": "stance"
     },
     {
