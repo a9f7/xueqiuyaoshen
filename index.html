@@ -556,6 +556,35 @@
   .mynotes-holdings .mh-tbl .nt { color:var(--ink-3); font-size:12px; }
   .mynotes-holdings .mh-empty { padding:24px; text-align:center; color:var(--ink-3); font-size:13px; }
   .mynotes-holdings .mh-tbl .mk { color:var(--ink-3); font-size:12px; }
+
+  /* ===== 我的看板 ===== */
+  .dash .dash-h { font-size:16px; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:9px; margin-bottom:4px; }
+  .dash .dash-h .badge { font-size:11px; padding:2px 10px; border-radius:20px; color:#fff; background:#0c8599; font-weight:600; letter-spacing:.5px; }
+  .dash .dash-sub { font-size:12px; color:var(--ink-3); margin-bottom:16px; line-height:1.6; }
+  .dash .dash-sec { font-size:14px; font-weight:700; color:var(--ink); margin:24px 0 10px; padding-left:10px; border-left:4px solid #0c8599; }
+  .dash .dash-sec small { font-weight:500; color:var(--ink-3); font-size:12px; margin-left:8px; }
+  .dash .dash-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(158px,1fr)); gap:12px; }
+  .dash .dash-card { background:#f8f9fc; border:1px solid var(--line-2); border-radius:12px; padding:12px 14px; }
+  .dash .dash-card .k { font-size:12px; color:var(--ink-3); display:flex; justify-content:space-between; gap:6px; align-items:baseline; }
+  .dash .dash-card .k .u { opacity:.75; font-size:11px; }
+  .dash .dash-card .v { font-size:21px; font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; margin-top:3px; }
+  .dash .dash-card .c { font-size:12px; font-variant-numeric:tabular-nums; margin-top:2px; }
+  .dash .pos { color:#0a8f3c; }
+  .dash .neg { color:#c0392b; }
+  .dash .flat { color:var(--ink-3); }
+  .dash .spark { margin-top:6px; height:26px; width:100%; display:block; }
+  .dash .dash-tblwrap { overflow-x:auto; border:1px solid var(--line-2); border-radius:10px; }
+  .dash table { width:100%; border-collapse:collapse; font-size:13px; }
+  .dash th, .dash td { padding:8px 10px; border-bottom:1px solid var(--line-2); text-align:left; white-space:nowrap; }
+  .dash th { color:var(--ink-3); font-weight:600; background:#fafbfd; }
+  .dash td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .dash .bar { display:inline-block; height:9px; border-radius:4px; vertical-align:middle; }
+  .dash .bar.pos { background:#0a8f3c; }
+  .dash .bar.neg { background:#c0392b; }
+  .dash .dash-note { font-size:11.5px; color:var(--ink-3); margin-top:10px; line-height:1.7; }
+  .dash .dash-empty { padding:24px; text-align:center; color:var(--ink-3); font-size:13px; }
+  .dash .pill { font-size:11px; padding:1px 8px; border-radius:20px; background:var(--tag); color:var(--tag-ink); margin-left:6px; }
+  .dash .stars { color:var(--accent); font-size:11px; margin-left:3px; }
 </style>
 </head>
 <body>
@@ -593,6 +622,10 @@
       <details class="sn-group" open>
         <summary>💰 我的持仓</summary>
         <a class="sn-link" href="#mn-holdings" data-target="mn-holdings">模拟盈亏</a>
+      </details>
+      <details class="sn-group" open>
+        <summary>📊 我的看板</summary>
+        <a class="sn-link" href="#mn-dash" data-target="mn-dash">监测总览</a>
       </details>
     </nav>
     <div class="sn-foot">
@@ -814,6 +847,15 @@
     <div id="mh-history" class="mh-table" style="display:none"></div>
     <h3 id="mh-trades-title" class="mh-sec" style="display:none"></h3>
     <div id="mh-trades" class="mh-table" style="display:none"></div>
+  </section>
+
+  <section class="dash view" id="mn-dash" data-view="mn-dash" hidden>
+    <div class="dash-h"><span class="badge">看板</span> 我的监测看板</div>
+    <div class="dash-sub">
+      汇总四类外部监测：因子周度变动与对仓位的推算影响、中国宏观指标、持仓驱动关系、全市场 ETF 申赎。
+      数据由自动化任务生成，非实时行情。
+    </div>
+    <div id="dash-body"><div class="dash-empty">加载中…</div></div>
   </section>
 
   <footer>
@@ -1110,7 +1152,7 @@
   }
 
   // 支持的视图 ID（与侧栏链接 / section.data-view 一一对应）
-  const VIEWS = ["daily", "analyst", "backtest", "posts", "mn-form", "mn-result", "mn-holdings"];
+  const VIEWS = ["daily", "analyst", "backtest", "posts", "mn-form", "mn-result", "mn-holdings", "mn-dash"];
   const DEFAULT_VIEW = "posts";
 
   // 单视图切换：只保留目标可见，其它全部隐藏
@@ -1160,6 +1202,142 @@
     switchView(initial, { updateHash: false });
   }
 
+  // ===== 我的看板：因子监控 / 中国宏观 / 驱动关系 / ETF 申赎 =====
+  const num2 = v => (v == null || isNaN(v)) ? "-" : Number(v).toFixed(2);
+  const pctS = v => (v == null || isNaN(v)) ? "-" : (v >= 0 ? "+" : "") + (v * 100).toFixed(2) + "%";
+  const ptS = v => (v == null || isNaN(v)) ? "-" : (v >= 0 ? "+" : "") + Number(v).toFixed(2) + "pt";
+  const clsS = v => (v > 0 ? "pos" : v < 0 ? "neg" : "flat");
+
+  function sparkline(series, w, h) {
+    if (!series || series.length < 2) return "";
+    w = w || 160; h = h || 26;
+    const vs = series.map(d => Number(d.v)).filter(v => !isNaN(v));
+    if (vs.length < 2) return "";
+    const mn = Math.min.apply(null, vs), mx = Math.max.apply(null, vs);
+    const rng = (mx - mn) || 1;
+    const step = w / (vs.length - 1);
+    const pts = vs.map((v, i) => (i * step).toFixed(1) + "," + (h - ((v - mn) / rng) * (h - 3) - 1.5).toFixed(1));
+    const up = vs[vs.length - 1] >= vs[0];
+    return '<svg class="spark" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" aria-hidden="true">'
+      + '<polyline points="' + pts.join(" ") + '" fill="none" stroke="' + (up ? "#0a8f3c" : "#c0392b") + '" stroke-width="1.5"/></svg>';
+  }
+
+  function dashSec(title, note, inner) {
+    return '<div class="dash-sec">' + esc(title) + (note ? '<small>' + esc(note) + '</small>' : '') + '</div>' + inner;
+  }
+
+  async function loadDashboard() {
+    const box = $("#dash-body");
+    if (!box) return;
+    try {
+      const d = await fetch("data/dashboard.json", { cache: "no-cache" }).then(r => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      });
+      renderDashboard(d, box);
+    } catch (e) {
+      box.innerHTML = '<div class="dash-empty">看板数据加载失败：' + esc(String((e && e.message) || e)) + '</div>';
+    }
+  }
+
+  function renderDashboard(d, box) {
+    const parts = [];
+
+    // 1) 因子周度变动 + 对仓位的推算影响
+    const f = d.factors;
+    if (f && f.changes && f.changes.length) {
+      const cards = f.changes.map(c => {
+        const v = c.kind === "ret" ? pctS(c.change) : ptS(c.change);
+        return '<div class="dash-card"><div class="k"><span>' + esc(c.name) + '</span><span class="u">' + esc(c.asof || "") + '</span></div>'
+          + '<div class="v ' + clsS(c.change) + '">' + v + '</div>'
+          + '<div class="c">最新 ' + num2(c.last) + '</div></div>';
+      }).join("");
+      parts.push(dashSec("因子周度变动", "回看 " + (f.weeks || 1) + " 周 · 生成于 " + String(f.generated || "").slice(0, 16),
+        '<div class="dash-cards">' + cards + '</div>'));
+
+      if (f.by_asset && f.by_asset.length) {
+        const mx = Math.max.apply(null, f.by_asset.map(a => Math.abs(a.impact || 0))) || 1;
+        const rows = f.by_asset.map(a => {
+          const imp = a.impact || 0;
+          const w = Math.max(2, Math.abs(imp) / mx * 70);
+          const drv = (a.drivers || []).map(x => esc(x.factor) + " " + pctS(x.impact)).join("，");
+          return '<tr><td>' + esc(a.asset) + '</td>'
+            + '<td class="num ' + clsS(imp) + '">' + pctS(imp) + '</td>'
+            + '<td><span class="bar ' + clsS(imp) + '" style="width:' + w.toFixed(1) + 'px"></span></td>'
+            + '<td class="num">' + (a.n || "") + '</td>'
+            + '<td>' + drv + '</td></tr>';
+        }).join("");
+        parts.push(dashSec("对仓位的推算影响", "按 |t|≥3 的强显著敏感度推算",
+          '<div class="dash-tblwrap"><table><thead><tr><th>仓位</th><th>推算影响</th><th>强度</th><th>因子数</th><th>主要贡献</th></tr></thead><tbody>'
+          + rows + '</tbody></table></div>'
+          + '<div class="dash-note">敏感度来自月频、控制恒生+标普后的回归，因子变动为周度。数值只反映方向与相对强弱，不是收益预测。</div>'));
+      }
+    }
+
+    // 2) 中国宏观
+    const m = d.macro;
+    if (m && m.items && m.items.length) {
+      const cards = m.items.map(it => {
+        const ch = Number(it.change || 0);
+        return '<div class="dash-card"><div class="k"><span>' + esc(String(it.name).replace(/^CN_/, "")) + '</span><span class="u">' + esc(it.unit || "") + '</span></div>'
+          + '<div class="v">' + num2(it.latest) + '</div>'
+          + '<div class="c ' + clsS(ch) + '">' + (ch >= 0 ? "+" : "") + ch.toFixed(2) + ' 环比</div>'
+          + sparkline(it.series)
+          + (it.desc ? '<div class="c flat" style="font-size:11px">' + esc(it.desc) + '</div>' : '');
+      }).join("");
+      parts.push(dashSec("中国宏观指标", "截至 " + (m.asof || ""), '<div class="dash-cards">' + cards + '</div>'));
+    }
+
+    // 3) 驱动关系
+    const dr = d.drivers;
+    if (dr && dr.assets && dr.assets.length) {
+      const rows = dr.assets.map(a =>
+        '<tr><td>' + esc(a.asset) + '</td><td>' + (a.drivers || []).map(x =>
+          esc(x.factor) + '<span class="stars">' + esc(x.stars || "") + '</span> t=' + Number(x.t).toFixed(1)
+        ).join("，") + '</td></tr>').join("");
+      parts.push(dashSec("持仓驱动关系", "|t| ≥ " + dr.min_t + " 的强信号",
+        '<div class="dash-tblwrap"><table><thead><tr><th>标的</th><th>显著驱动因子（按强度排序）</th></tr></thead><tbody>' + rows + '</tbody></table></div>'
+        + '<div class="dash-note">已控制恒生+标普市场 beta，此处为个股基本面/估值层面的独立驱动。t 值越大越可信。</div>'));
+    }
+
+    // 4) ETF 申赎
+    const e = d.etf;
+    if (e && e.summary) {
+      const s = e.summary;
+      const net = Number(s.net_flow_yi || 0);
+      const cards = [
+        '<div class="dash-card"><div class="k"><span>全市场方向</span></div><div class="v ' + clsS(net) + '">' + esc(s.direction || "-") + '</div><div class="c">成交日 ' + esc(String(e.trade_date || "")) + '</div></div>',
+        '<div class="dash-card"><div class="k"><span>净流合计</span><span class="u">亿元</span></div><div class="v ' + clsS(net) + '">' + num2(net) + '</div><div class="c ' + clsS(s.stock_net_flow_yi) + '">股票型 ' + num2(s.stock_net_flow_yi) + ' 亿</div></div>',
+        '<div class="dash-card"><div class="k"><span>申购 / 赎回</span><span class="u">亿元</span></div><div class="v"><span class="pos">' + num2(s.gross_subscription_yi) + '</span> / <span class="neg">' + num2(s.gross_redemption_yi) + '</span></div><div class="c">申购 ' + (s.subscription_count || 0) + ' 只 / 赎回 ' + (s.redemption_count || 0) + ' 只</div></div>'
+      ].join("");
+      parts.push(dashSec("全市场 ETF 申赎", "成交日 " + esc(String(e.trade_date || "")) + " · 对比 " + esc(String(e.prev_trade_date || "")),
+        '<div class="dash-cards">' + cards + '</div>'));
+
+      if (e.by_fund_type && e.by_fund_type.length) {
+        const ft = e.by_fund_type.map(x =>
+          '<tr><td>' + esc(x.fund_type) + '</td><td class="num">' + (x.etf_count || "") + '</td>'
+          + '<td class="num ' + clsS(x.net_flow_yi) + '">' + num2(x.net_flow_yi) + '</td></tr>').join("");
+        parts.push(dashSec("分类型净流", "", '<div class="dash-tblwrap"><table><thead><tr><th>类型</th><th>只数</th><th>净流(亿元)</th></tr></thead><tbody>' + ft + '</tbody></table></div>'));
+      }
+      const etfRow = x => {
+        const v = Number(x.estimated_flow_yi || 0);
+        return '<tr><td>' + esc(x.name || "") + '</td><td>' + esc(x.fund_type || "") + '</td>'
+          + '<td class="num ' + clsS(v) + '">' + num2(v) + '</td>'
+          + '<td class="num">' + pctS(x.share_change_pct) + '</td></tr>';
+      };
+      const sub = (e.top_subscriptions || []).map(etfRow).join("");
+      const red = (e.top_redemptions || []).map(etfRow).join("");
+      if (sub || red) {
+        parts.push(dashSec("净申购 TOP / 净赎回 TOP", "按估算资金流(亿元)",
+          '<div class="dash-tblwrap"><table><thead><tr><th>名称</th><th>类型</th><th>估算净流(亿元)</th><th>份额变动</th></tr></thead><tbody>'
+          + sub + red + '</tbody></table></div>'
+          + '<div class="dash-note">口径：交易所披露份额变动 × 单位净值估算；货币型 ETF 已剔除。数据源 AkShare 公开接口。</div>'));
+      }
+    }
+
+    box.innerHTML = parts.length ? parts.join("") : '<div class="dash-empty">暂无看板数据</div>';
+  }
+
   async function load() {
     try {
       postIndex = await fetch("data/posts_index.json", { cache: "no-cache" }).then(r => r.json());
@@ -1172,6 +1350,7 @@
       loadBacktest();   // 非阻塞：观点回测面板
       loadMyNotes();   // 非阻塞：我的投资笔记面板
       loadHoldings();  // 非阻塞：预取加密持仓密文
+      loadDashboard(); // 非阻塞：我的看板（因子变动 / 中国宏观 / 驱动关系 / ETF 申赎）
       const months = postIndex.months || [];
       // 先加载最新 1 个月（首屏最快），渲染后再后台补齐第 2 个月
       if (months[0]) await loadMonth(months[0].file);

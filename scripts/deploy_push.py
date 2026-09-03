@@ -69,6 +69,9 @@ DATA_FILES = [
     "my_notes.json", "my_notes_backtest.json",
     "my_holdings.enc.json",
     "my_trades.enc.json",
+    "dashboard.json",
+    "cn_macro_raw.csv",
+    "cn_macro_factors.csv",
     "factor_history.json",
 ]
 
