@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-04T00:38:57Z",
-  "total_tagged": 29378,
+  "updated": "2026-09-04T02:29:59Z",
+  "total_tagged": 29382,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,12 +10,12 @@
     },
     {
       "tag": "答疑",
-      "count": 9297,
+      "count": 9298,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8505,
+      "count": 8506,
       "dim": "ctype"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 6969,
+      "count": 6970,
       "dim": "perspective"
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 5187,
+      "count": 5189,
       "dim": "perspective"
     },
     {
@@ -55,17 +55,17 @@
     },
     {
       "tag": "消费",
-      "count": 3877,
+      "count": 3881,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3691,
+      "count": 3692,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3288,
+      "count": 3289,
       "dim": "industry"
     },
     {
@@ -75,12 +75,12 @@
     },
     {
       "tag": "中观",
-      "count": 3016,
+      "count": 3017,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2261,
+      "count": 2263,
       "dim": "stance"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 927,
+      "count": 928,
       "dim": "asset"
     },
     {
