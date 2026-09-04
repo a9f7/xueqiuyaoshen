@@ -1616,5 +1616,224 @@
    "active_count": 27,
    "fetched_at": 1788445520046
   }
+ },
+ {
+  "ts": 1788537645462,
+  "date": "2026-09-05",
+  "time": "00:00",
+  "factors": {
+   "brent": 95.35,
+   "wti": 90.77,
+   "gold": 4492.6,
+   "dxy": 99.073,
+   "hsi": 25650.87,
+   "n225": 65020.94,
+   "us10y": 4.768,
+   "us30y": 5.237,
+   "southbound": null
+  },
+  "meta": {
+   "brent": {
+    "zh": "布伦特原油",
+    "unit": "美元/桶",
+    "prev": 95.52,
+    "chg": -0.1700000000000017
+   },
+   "wti": {
+    "zh": "WTI原油",
+    "unit": "美元/桶",
+    "prev": 91.3,
+    "chg": -0.5300000000000011
+   },
+   "gold": {
+    "zh": "黄金",
+    "unit": "美元/盎司",
+    "prev": 4539.9,
+    "chg": -47.29999999999927
+   },
+   "dxy": {
+    "zh": "美元指数",
+    "unit": "",
+    "prev": 98.908,
+    "chg": 0.16499999999999204
+   },
+   "hsi": {
+    "zh": "恒生指数",
+    "unit": "点",
+    "prev": 25311.2,
+    "chg": 339.66999999999825
+   },
+   "n225": {
+    "zh": "日经225",
+    "unit": "点",
+    "prev": 64214.48,
+    "chg": 806.4599999999991
+   },
+   "us10y": {
+    "zh": "美债10年",
+    "unit": "%",
+    "prev": 4.762,
+    "chg": 0.006000000000000227
+   },
+   "us30y": {
+    "zh": "美债30年",
+    "unit": "%",
+    "prev": 5.243,
+    "chg": -0.006000000000000227
+   },
+   "southbound": {
+    "zh": "南向净买入",
+    "unit": "亿港元",
+    "prev": null,
+    "chg": null
+   }
+  },
+  "holdings": {
+   "assets": 1667497.05,
+   "principal": 903328.03,
+   "cash": 267367.65,
+   "market_value": 1400129.4,
+   "float_amount": -16251.36,
+   "float_rate": -0.0115,
+   "accum_amount": 764168.87,
+   "accum_rate": 0.635,
+   "day_float_amount": 15396.85,
+   "day_float_rate": 0.0093,
+   "segments": [
+    {
+     "name": "A股",
+     "count": 90,
+     "mv": 138532.0,
+     "day_float": 4858.0,
+     "float": 10688.34
+    },
+    {
+     "name": "港股",
+     "count": 169,
+     "mv": 942551.5,
+     "day_float": 8791.0,
+     "float": -42980.35
+    },
+    {
+     "name": "美股",
+     "count": 79,
+     "mv": 67680.07,
+     "day_float": 448.36,
+     "float": 1469.88
+    }
+   ],
+   "top": [
+    {
+     "name": "中国海洋石油",
+     "market": "港股",
+     "value": 325780.0,
+     "weight": 28.36,
+     "profit": 8750.3,
+     "profit_rate": 0.0276,
+     "day_profit": 4160.0
+    },
+    {
+     "name": "中国宏桥",
+     "market": "港股",
+     "value": 152100.0,
+     "weight": 13.24,
+     "profit": -60064.55,
+     "profit_rate": -0.2831,
+     "day_profit": 910.0
+    },
+    {
+     "name": "中国神华",
+     "market": "港股",
+     "value": 137220.0,
+     "weight": 11.95,
+     "profit": -367.5,
+     "profit_rate": -0.0027,
+     "day_profit": 2880.0
+    },
+    {
+     "name": "药明合联",
+     "market": "港股",
+     "value": 72800.0,
+     "weight": 6.34,
+     "profit": 2900.0,
+     "profit_rate": 0.0415,
+     "day_profit": -300.0
+    },
+    {
+     "name": "神火股份",
+     "market": "A股",
+     "value": 71136.0,
+     "weight": 6.19,
+     "profit": 5290.22,
+     "profit_rate": 0.0803,
+     "day_profit": -1274.0
+    },
+    {
+     "name": "会稽山",
+     "market": "A股",
+     "value": 67396.0,
+     "weight": 5.87,
+     "profit": 5398.12,
+     "profit_rate": 0.0871,
+     "day_profit": 6132.0
+    },
+    {
+     "name": "汇丰控股",
+     "market": "港股",
+     "value": 66680.0,
+     "weight": 5.8,
+     "profit": 1334.72,
+     "profit_rate": 0.0204,
+     "day_profit": 1280.0
+    },
+    {
+     "name": "美的集团",
+     "market": "港股",
+     "value": 60480.0,
+     "weight": 5.26,
+     "profit": -120.54,
+     "profit_rate": -0.002,
+     "day_profit": 180.0
+    },
+    {
+     "name": "科伦博泰生物",
+     "market": "港股",
+     "value": 48940.0,
+     "weight": 4.26,
+     "profit": -4613.5,
+     "profit_rate": -0.0861,
+     "day_profit": -740.0
+    },
+    {
+     "name": "中芯国际",
+     "market": "港股",
+     "value": 33600.0,
+     "weight": 2.92,
+     "profit": -1059.6,
+     "profit_rate": -0.0306,
+     "day_profit": -425.0
+    },
+    {
+     "name": "南方日经225",
+     "market": "港股",
+     "value": 25431.5,
+     "weight": 2.21,
+     "profit": 9138.72,
+     "profit_rate": 0.5609,
+     "day_profit": 456.0
+    },
+    {
+     "name": "美光科技",
+     "market": "美股",
+     "value": 19992.0,
+     "weight": 1.74,
+     "profit": 420.43,
+     "profit_rate": 0.0215,
+     "day_profit": 828.8
+    }
+   ],
+   "active_count": 27,
+   "fetched_at": 1788531784192
+  }
  }
 ]
