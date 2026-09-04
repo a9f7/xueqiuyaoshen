@@ -118,6 +118,41 @@ def s_rebar():
     return s.groupby(level=0).last().sort_index()
 
 
+def s_retail():
+    """社会消费品零售总额当月同比：消费景气度核心指标。
+
+    面向食品饮料/黄酒类持仓（如会稽山）——消费复苏/疲软直接映射终端需求。
+    """
+    df = ak.macro_china_consumer_goods_retail()
+    s = _series(df, "月份", "同比增长")
+    return s
+
+
+def s_cpi():
+    """CPI 当月同比（月度）：通胀与终端消费价格。
+
+    食品饮料企业的成本传导与提价能力受 CPI（尤其食品类）影响。
+    """
+    df = ak.macro_china_cpi_monthly()
+    idx = pd.to_datetime(df["日期"]).dt.to_period("M").dt.to_timestamp()
+    s = pd.Series(pd.to_numeric(df["今值"], errors="coerce").values, index=idx).dropna()
+    return s.groupby(level=0).last().sort_index()
+
+
+def s_margin():
+    """沪市融资融券余额（日频转月末，单位换算为亿元）：杠杆资金情绪的高频代理。
+
+    两融余额上升 = 市场风险偏好抬升、杠杆资金入场；对中小市值消费股尤为敏感。
+    注：交易所原始数据单位为元，这里除以 1e8 换算为亿元以便阅读与展示。
+    """
+    df = ak.stock_margin_sse(start_date="20190101",
+                             end_date=pd.Timestamp.today().strftime("%Y%m%d"))
+    idx = pd.to_datetime(df["信用交易日期"].astype(str)).dt.to_period("M").dt.to_timestamp()
+    s = pd.Series(pd.to_numeric(df["融资融券余额"], errors="coerce").values, index=idx).dropna()
+    s = s.groupby(level=0).last().sort_index()
+    return s / 1e8   # 元 -> 亿元
+
+
 # (名称, 取值函数, 变换)  diff=水平差分  ret=收益率  asis=数据本身已是变化率
 SPEC = [
     ("CN_焦煤", s_coal, "ret"),
@@ -130,6 +165,10 @@ SPEC = [
     ("CN_房地产开发", s_realestate, "asis"),
     ("CN_社融同比", s_shrzgm, "diff"),
     ("CN_LPR1Y", s_lpr, "diff"),
+    # --- 消费 / 高频资金流（面向食品饮料类持仓，如新进的会稽山）---
+    ("CN_社零同比", s_retail, "diff"),
+    ("CN_CPI同比", s_cpi, "diff"),
+    ("CN_两融余额(沪)", s_margin, "ret"),
 ]
 
 
