@@ -1,41 +1,41 @@
 {
-  "updated": "2026-09-07T10:21:50Z",
-  "total_tagged": 29437,
+  "updated": "2026-09-07T14:21:48Z",
+  "total_tagged": 29449,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9555,
+      "count": 9564,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9316,
+      "count": 9324,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8525,
+      "count": 8527,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8442,
+      "count": 8451,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7212,
+      "count": 7216,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6977,
+      "count": 6982,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5782,
+      "count": 5783,
       "dim": "stance"
     },
     {
@@ -50,42 +50,42 @@
     },
     {
       "tag": "医药",
-      "count": 4957,
+      "count": 4958,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3891,
+      "count": 3893,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3694,
+      "count": 3695,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3294,
+      "count": 3295,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 3110,
+      "count": 3115,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 3021,
+      "count": 3022,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2266,
+      "count": 2267,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2124,
+      "count": 2125,
       "dim": "other"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 609,
+      "count": 611,
       "dim": "ctype"
     },
     {
