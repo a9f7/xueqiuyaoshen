@@ -1,61 +1,61 @@
 {
-  "updated": "2026-09-04T14:22:07Z",
-  "total_tagged": 29391,
+  "updated": "2026-09-07T02:30:21Z",
+  "total_tagged": 29416,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9536,
+      "count": 9548,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9300,
+      "count": 9308,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8510,
+      "count": 8515,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8418,
+      "count": 8432,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7199,
+      "count": 7205,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6972,
+      "count": 6974,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5776,
+      "count": 5777,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5448,
+      "count": 5453,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5189,
+      "count": 5192,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4951,
+      "count": 4953,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3884,
+      "count": 3891,
       "dim": "industry"
     },
     {
@@ -65,37 +65,37 @@
     },
     {
       "tag": "金融",
-      "count": 3290,
+      "count": 3291,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 3106,
+      "count": 3109,
       "dim": "stance"
     },
     {
       "tag": "中观",
-      "count": 3018,
+      "count": 3020,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2263,
+      "count": 2266,
       "dim": "stance"
     },
     {
       "tag": "其他",
-      "count": 2121,
+      "count": 2123,
       "dim": "other"
     },
     {
       "tag": "数据",
-      "count": 1606,
+      "count": 1607,
       "dim": "ctype"
     },
     {
       "tag": "随笔",
-      "count": 1481,
+      "count": 1482,
       "dim": "ctype"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "tag": "商品",
-      "count": 930,
+      "count": 931,
       "dim": "asset"
     },
     {
@@ -130,12 +130,12 @@
     },
     {
       "tag": "外汇",
-      "count": 820,
+      "count": 821,
       "dim": "asset"
     },
     {
       "tag": "黄金有色",
-      "count": 819,
+      "count": 820,
       "dim": "industry"
     },
     {
@@ -155,12 +155,12 @@
     },
     {
       "tag": "风险提示",
-      "count": 491,
+      "count": 492,
       "dim": "stance"
     },
     {
       "tag": "债券",
-      "count": 451,
+      "count": 452,
       "dim": "asset"
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "tag": "ETF",
-      "count": 363,
+      "count": 366,
       "dim": "asset"
     },
     {
