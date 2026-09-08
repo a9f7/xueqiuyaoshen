@@ -1,11 +1,11 @@
 {
-  "updated": "2026-09-08T14:22:33Z",
-  "total_tagged": 29489,
+  "updated": "2026-09-08T18:22:22Z",
+  "total_tagged": 29491,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9588,
+      "count": 9589,
       "dim": "region"
     },
     {
@@ -15,12 +15,12 @@
     },
     {
       "tag": "行情点评",
-      "count": 8549,
+      "count": 8551,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8473,
+      "count": 8474,
       "dim": "industry"
     },
     {
@@ -35,7 +35,7 @@
     },
     {
       "tag": "看多",
-      "count": 5786,
+      "count": 5788,
       "dim": "stance"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4971,
+      "count": 4972,
       "dim": "industry"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3698,
+      "count": 3699,
       "dim": "ctype"
     },
     {
