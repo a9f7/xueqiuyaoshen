@@ -1,11 +1,11 @@
 {
-  "updated": "2026-09-08T02:29:44Z",
-  "total_tagged": 29459,
+  "updated": "2026-09-08T06:21:54Z",
+  "total_tagged": 29460,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9568,
+      "count": 9569,
       "dim": "region"
     },
     {
@@ -45,12 +45,12 @@
     },
     {
       "tag": "微观",
-      "count": 5195,
+      "count": 5196,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4962,
+      "count": 4963,
       "dim": "industry"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "tag": "个股分析",
-      "count": 3696,
+      "count": 3697,
       "dim": "ctype"
     },
     {
@@ -129,14 +129,14 @@
       "dim": "industry"
     },
     {
+      "tag": "外汇",
+      "count": 823,
+      "dim": "asset"
+    },
+    {
       "tag": "黄金有色",
       "count": 822,
       "dim": "industry"
-    },
-    {
-      "tag": "外汇",
-      "count": 822,
-      "dim": "asset"
     },
     {
       "tag": "能源",
