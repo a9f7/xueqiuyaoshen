@@ -1,31 +1,31 @@
 {
-  "updated": "2026-09-09T10:22:40Z",
-  "total_tagged": 29511,
+  "updated": "2026-09-09T14:22:02Z",
+  "total_tagged": 29521,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9594,
+      "count": 9597,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9346,
+      "count": 9349,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8559,
+      "count": 8563,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8487,
+      "count": 8491,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7226,
+      "count": 7229,
       "dim": "asset"
     },
     {
@@ -35,37 +35,37 @@
     },
     {
       "tag": "看多",
-      "count": 5791,
+      "count": 5794,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5460,
+      "count": 5465,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5200,
+      "count": 5205,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4972,
+      "count": 4974,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3907,
+      "count": 3914,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3700,
+      "count": 3701,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3296,
+      "count": 3297,
       "dim": "industry"
     },
     {
@@ -80,7 +80,7 @@
     },
     {
       "tag": "复盘",
-      "count": 2271,
+      "count": 2272,
       "dim": "stance"
     },
     {
@@ -95,12 +95,12 @@
     },
     {
       "tag": "随笔",
-      "count": 1491,
+      "count": 1492,
       "dim": "ctype"
     },
     {
       "tag": "互联网",
-      "count": 1387,
+      "count": 1388,
       "dim": "industry"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 496,
+      "count": 497,
       "dim": "stance"
     },
     {
