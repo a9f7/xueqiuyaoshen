@@ -1,51 +1,51 @@
 {
-  "updated": "2026-09-09T02:31:16Z",
-  "total_tagged": 29501,
+  "updated": "2026-09-09T06:21:34Z",
+  "total_tagged": 29511,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9592,
+      "count": 9594,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9342,
+      "count": 9346,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8556,
+      "count": 8559,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8480,
+      "count": 8487,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7224,
+      "count": 7226,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 6996,
+      "count": 6997,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5790,
+      "count": 5791,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5459,
+      "count": 5460,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5199,
+      "count": 5200,
       "dim": "perspective"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "tag": "消费",
-      "count": 3904,
+      "count": 3907,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3699,
+      "count": 3700,
       "dim": "ctype"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 3031,
+      "count": 3032,
       "dim": "perspective"
     },
     {
@@ -95,7 +95,7 @@
     },
     {
       "tag": "随笔",
-      "count": 1489,
+      "count": 1491,
       "dim": "ctype"
     },
     {
@@ -129,14 +129,14 @@
       "dim": "industry"
     },
     {
+      "tag": "黄金有色",
+      "count": 824,
+      "dim": "industry"
+    },
+    {
       "tag": "外汇",
       "count": 823,
       "dim": "asset"
-    },
-    {
-      "tag": "黄金有色",
-      "count": 822,
-      "dim": "industry"
     },
     {
       "tag": "能源",
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 612,
+      "count": 613,
       "dim": "ctype"
     },
     {
