@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-11T06:22:21Z",
-  "total_tagged": 29547,
+  "updated": "2026-09-11T10:21:49Z",
+  "total_tagged": 29550,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,17 +10,17 @@
     },
     {
       "tag": "答疑",
-      "count": 9359,
+      "count": 9360,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8571,
+      "count": 8572,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8498,
+      "count": 8499,
       "dim": "industry"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 5476,
+      "count": 5477,
       "dim": "region"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4977,
+      "count": 4978,
       "dim": "industry"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "看空",
-      "count": 3127,
+      "count": 3128,
       "dim": "stance"
     },
     {
@@ -95,7 +95,7 @@
     },
     {
       "tag": "随笔",
-      "count": 1492,
+      "count": 1493,
       "dim": "ctype"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 499,
+      "count": 500,
       "dim": "stance"
     },
     {
