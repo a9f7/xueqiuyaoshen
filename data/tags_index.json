@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-11T14:22:13Z",
-  "total_tagged": 29550,
+  "updated": "2026-09-11T18:21:43Z",
+  "total_tagged": 29551,
   "distinct_tags": 45,
   "tags": [
     {
@@ -45,7 +45,7 @@
     },
     {
       "tag": "微观",
-      "count": 5206,
+      "count": 5207,
       "dim": "perspective"
     },
     {
@@ -75,12 +75,12 @@
     },
     {
       "tag": "中观",
-      "count": 3040,
+      "count": 3041,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2272,
+      "count": 2273,
       "dim": "stance"
     },
     {
@@ -124,13 +124,13 @@
       "dim": "asset"
     },
     {
-      "tag": "黄金有色",
+      "tag": "传媒游戏",
       "count": 828,
       "dim": "industry"
     },
     {
-      "tag": "传媒游戏",
-      "count": 827,
+      "tag": "黄金有色",
+      "count": 828,
       "dim": "industry"
     },
     {
