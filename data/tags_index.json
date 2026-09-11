@@ -1,31 +1,31 @@
 {
-  "updated": "2026-09-11T02:31:38Z",
-  "total_tagged": 29542,
+  "updated": "2026-09-11T06:22:21Z",
+  "total_tagged": 29547,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9603,
+      "count": 9605,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9357,
+      "count": 9359,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8569,
+      "count": 8571,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8497,
+      "count": 8498,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7241,
+      "count": 7244,
       "dim": "asset"
     },
     {
@@ -35,12 +35,12 @@
     },
     {
       "tag": "看多",
-      "count": 5801,
+      "count": 5802,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5475,
+      "count": 5476,
       "dim": "region"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4975,
+      "count": 4977,
       "dim": "industry"
     },
     {
@@ -140,7 +140,7 @@
     },
     {
       "tag": "能源",
-      "count": 794,
+      "count": 795,
       "dim": "industry"
     },
     {
