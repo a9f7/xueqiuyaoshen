@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-10T22:22:01Z",
-  "total_tagged": 29523,
+  "updated": "2026-09-11T00:37:51Z",
+  "total_tagged": 29524,
   "distinct_tags": 45,
   "tags": [
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 5466,
+      "count": 5467,
       "dim": "region"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3915,
+      "count": 3916,
       "dim": "industry"
     },
     {
@@ -65,12 +65,12 @@
     },
     {
       "tag": "金融",
-      "count": 3297,
+      "count": 3298,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 3125,
+      "count": 3126,
       "dim": "stance"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 497,
+      "count": 498,
       "dim": "stance"
     },
     {
