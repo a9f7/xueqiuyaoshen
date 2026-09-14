@@ -54,6 +54,9 @@ YF_MAP = {
     "中概互联网": ("KWEB", "ret"),
 }
 
+# 主代码失效时的替代代码（Brent 的 BZ=F 在 Yahoo 上常返回空，用 WTI 顶上）
+FALLBACK = {"BZ=F": "CL=F"}
+
 # 月频发布、周度无新数据的中国宏观因子
 CN_MONTHLY = ["CN_PMI", "CN_PPI同比", "CN_用电量同比", "CN_工业增加值同比",
               "CN_固定资产投资同比", "CN_房地产开发", "CN_社融同比", "CN_LPR1Y",
@@ -105,12 +108,21 @@ def main():
     for f in sorted(sig["factor"].unique()):
         sym, kind = YF_MAP[f]
         lv, pv, chg, d = latest_change(sym, kind, args.weeks)
+        note = ""
+        if chg is None and sym in FALLBACK:
+            # 主代码无数据，改用替代代码（口径不同，报告中需标注）
+            alt = FALLBACK[sym]
+            lv, pv, chg, d = latest_change(alt, kind, args.weeks)
+            if chg is not None:
+                note = f"{alt}代理"
         if chg is None:
             print(f"  {f:<18} {d}")
             continue
-        changes[f] = {"change": chg, "last": lv, "prev": pv, "asof": d, "kind": kind}
+        changes[f] = {"change": chg, "last": lv, "prev": pv, "asof": d,
+                      "kind": kind, "note": note}
         unit = "%" if kind == "ret" else "pt"
-        print(f"  {f:<18} {chg*100 if kind=='ret' else chg:+8.2f}{unit}  (截至 {d})")
+        tag = f" [{note}]" if note else ""
+        print(f"  {f:<18} {chg*100 if kind=='ret' else chg:+8.2f}{unit}  (截至 {d}){tag}")
 
     rows = []
     for _, r in sig.iterrows():
@@ -149,6 +161,8 @@ def main():
     md += ["", "## 因子变动明细", "", "| 因子 | 变动 | 类型 | 截至 |", "|---|---|---|---|"]
     for f, c in changes.items():
         v = f"{c['change']*100:+.2f}%" if c["kind"] == "ret" else f"{c['change']:+.2f}pt"
+        if c.get("note"):
+            v += f"（{c['note']}）"
         md.append(f"| {f} | {v} | {c['kind']} | {c['asof']} |")
     md += ["", "## 中国宏观因子", "",
            "以下为月度发布数据，周度监控中不会更新，需运行 `scripts/fetch_cn_macro.py`：", ""]
