@@ -3368,5 +3368,224 @@
    "active_count": 27,
    "fetched_at": 1789309367730
   }
+ },
+ {
+  "ts": 1789488047869,
+  "date": "2026-09-16",
+  "time": "00:00",
+  "factors": {
+   "brent": null,
+   "wti": null,
+   "gold": null,
+   "dxy": null,
+   "hsi": null,
+   "n225": null,
+   "us10y": null,
+   "us30y": null,
+   "southbound": null
+  },
+  "meta": {
+   "brent": {
+    "zh": "布伦特原油",
+    "unit": "美元/桶",
+    "prev": null,
+    "chg": null
+   },
+   "wti": {
+    "zh": "WTI原油",
+    "unit": "美元/桶",
+    "prev": null,
+    "chg": null
+   },
+   "gold": {
+    "zh": "黄金",
+    "unit": "美元/盎司",
+    "prev": null,
+    "chg": null
+   },
+   "dxy": {
+    "zh": "美元指数",
+    "unit": "",
+    "prev": null,
+    "chg": null
+   },
+   "hsi": {
+    "zh": "恒生指数",
+    "unit": "点",
+    "prev": null,
+    "chg": null
+   },
+   "n225": {
+    "zh": "日经225",
+    "unit": "点",
+    "prev": null,
+    "chg": null
+   },
+   "us10y": {
+    "zh": "美债10年",
+    "unit": "%",
+    "prev": null,
+    "chg": null
+   },
+   "us30y": {
+    "zh": "美债30年",
+    "unit": "%",
+    "prev": null,
+    "chg": null
+   },
+   "southbound": {
+    "zh": "南向净买入",
+    "unit": "亿港元",
+    "prev": null,
+    "chg": null
+   }
+  },
+  "holdings": {
+   "assets": 1634209.84,
+   "principal": 902803.55,
+   "cash": 277806.94,
+   "market_value": 1356402.89,
+   "float_amount": -59068.58,
+   "float_rate": -0.0417,
+   "accum_amount": 731406.0,
+   "accum_rate": 0.6081,
+   "day_float_amount": -5956.58,
+   "day_float_rate": -0.0036,
+   "segments": [
+    {
+     "name": "A股",
+     "count": 90,
+     "mv": 141806.0,
+     "day_float": 6448.0,
+     "float": 13962.34
+    },
+    {
+     "name": "港股",
+     "count": 169,
+     "mv": 913873.0,
+     "day_float": -10088.5,
+     "float": -71658.86
+    },
+    {
+     "name": "美股",
+     "count": 79,
+     "mv": 64464.45,
+     "day_float": -562.09,
+     "float": -1745.75
+    }
+   ],
+   "top": [
+    {
+     "name": "中国海洋石油",
+     "market": "港股",
+     "value": 318240.0,
+     "weight": 28.41,
+     "profit": 1210.3,
+     "profit_rate": 0.0038,
+     "day_profit": 260.0
+    },
+    {
+     "name": "中国宏桥",
+     "market": "港股",
+     "value": 139620.0,
+     "weight": 12.46,
+     "profit": -72544.55,
+     "profit_rate": -0.3419,
+     "day_profit": -4680.0
+    },
+    {
+     "name": "中国神华",
+     "market": "港股",
+     "value": 136440.0,
+     "weight": 12.18,
+     "profit": -1147.5,
+     "profit_rate": -0.0083,
+     "day_profit": 120.0
+    },
+    {
+     "name": "药明合联",
+     "market": "港股",
+     "value": 75150.0,
+     "weight": 6.71,
+     "profit": 5250.0,
+     "profit_rate": 0.0751,
+     "day_profit": -650.0
+    },
+    {
+     "name": "会稽山",
+     "market": "A股",
+     "value": 72100.0,
+     "weight": 6.44,
+     "profit": 10102.12,
+     "profit_rate": 0.1629,
+     "day_profit": 6552.0
+    },
+    {
+     "name": "神火股份",
+     "market": "A股",
+     "value": 69706.0,
+     "weight": 6.22,
+     "profit": 3860.22,
+     "profit_rate": 0.0586,
+     "day_profit": -104.0
+    },
+    {
+     "name": "汇丰控股",
+     "market": "港股",
+     "value": 63840.0,
+     "weight": 5.7,
+     "profit": -1505.28,
+     "profit_rate": -0.023,
+     "day_profit": -2120.0
+    },
+    {
+     "name": "美的集团",
+     "market": "港股",
+     "value": 59820.0,
+     "weight": 5.34,
+     "profit": -780.54,
+     "profit_rate": -0.0129,
+     "day_profit": -180.0
+    },
+    {
+     "name": "科伦博泰生物",
+     "market": "港股",
+     "value": 46240.0,
+     "weight": 4.13,
+     "profit": -7313.5,
+     "profit_rate": -0.1366,
+     "day_profit": -1880.0
+    },
+    {
+     "name": "中芯国际",
+     "market": "港股",
+     "value": 30375.0,
+     "weight": 2.71,
+     "profit": -4284.6,
+     "profit_rate": -0.1236,
+     "day_profit": -275.0
+    },
+    {
+     "name": "南方日经225",
+     "market": "港股",
+     "value": 24928.0,
+     "weight": 2.23,
+     "profit": 8635.21,
+     "profit_rate": 0.53,
+     "day_profit": -123.5
+    },
+    {
+     "name": "建设银行",
+     "market": "港股",
+     "value": 19220.0,
+     "weight": 1.72,
+     "profit": 821.6,
+     "profit_rate": 0.0447,
+     "day_profit": -560.0
+    }
+   ],
+   "active_count": 27,
+   "fetched_at": 1789482198043
+  }
  }
 ]
