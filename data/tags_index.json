@@ -1,51 +1,51 @@
 {
-  "updated": "2026-09-15T02:30:53Z",
-  "total_tagged": 29582,
+  "updated": "2026-09-15T06:21:27Z",
+  "total_tagged": 29595,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9610,
+      "count": 9614,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9366,
+      "count": 9371,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8576,
+      "count": 8579,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8505,
+      "count": 8507,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7257,
+      "count": 7264,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 7015,
+      "count": 7018,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5815,
+      "count": 5818,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5489,
+      "count": 5492,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5208,
+      "count": 5210,
       "dim": "perspective"
     },
     {
@@ -55,17 +55,17 @@
     },
     {
       "tag": "消费",
-      "count": 3949,
+      "count": 3958,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3704,
+      "count": 3705,
       "dim": "ctype"
     },
     {
       "tag": "金融",
-      "count": 3303,
+      "count": 3305,
       "dim": "industry"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 3044,
+      "count": 3047,
       "dim": "perspective"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1611,
+      "count": 1612,
       "dim": "ctype"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 1007,
+      "count": 1008,
       "dim": "industry"
     },
     {
