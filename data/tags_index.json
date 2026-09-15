@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-15T10:22:31Z",
-  "total_tagged": 29602,
+  "updated": "2026-09-15T14:22:14Z",
+  "total_tagged": 29603,
   "distinct_tags": 45,
   "tags": [
     {
@@ -10,7 +10,7 @@
     },
     {
       "tag": "答疑",
-      "count": 9376,
+      "count": 9377,
       "dim": "ctype"
     },
     {
@@ -40,12 +40,12 @@
     },
     {
       "tag": "中国",
-      "count": 5492,
+      "count": 5493,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5211,
+      "count": 5212,
       "dim": "perspective"
     },
     {
@@ -115,7 +115,7 @@
     },
     {
       "tag": "新能源",
-      "count": 1008,
+      "count": 1009,
       "dim": "industry"
     },
     {
@@ -175,7 +175,7 @@
     },
     {
       "tag": "汽车",
-      "count": 287,
+      "count": 288,
       "dim": "industry"
     },
     {
