@@ -80,7 +80,8 @@ def fetch_yahoo(symbol):
         except Exception as e:  # noqa: BLE001
             last_err = e
             continue
-    return None, last_err
+    # 失败：不把异常对象塞进 meta（无法 JSON 序列化），prev 置 None
+    return None, None
 
 
 def fetch_southbound():
