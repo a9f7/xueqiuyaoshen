@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-17T10:21:46Z",
-  "total_tagged": 29660,
+  "updated": "2026-09-17T14:21:57Z",
+  "total_tagged": 29661,
   "distinct_tags": 45,
   "tags": [
     {
@@ -15,7 +15,7 @@
     },
     {
       "tag": "行情点评",
-      "count": 8599,
+      "count": 8600,
       "dim": "ctype"
     },
     {
