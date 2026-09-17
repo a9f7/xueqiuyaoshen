@@ -1,11 +1,11 @@
 {
-  "updated": "2026-09-17T18:21:59Z",
-  "total_tagged": 29661,
+  "updated": "2026-09-17T22:22:03Z",
+  "total_tagged": 29663,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9644,
+      "count": 9645,
       "dim": "region"
     },
     {
@@ -15,12 +15,12 @@
     },
     {
       "tag": "行情点评",
-      "count": 8600,
+      "count": 8601,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8544,
+      "count": 8545,
       "dim": "industry"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 7043,
+      "count": 7044,
       "dim": "perspective"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 5510,
+      "count": 5511,
       "dim": "region"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3988,
+      "count": 3989,
       "dim": "industry"
     },
     {
@@ -75,12 +75,12 @@
     },
     {
       "tag": "中观",
-      "count": 3055,
+      "count": 3056,
       "dim": "perspective"
     },
     {
       "tag": "复盘",
-      "count": 2279,
+      "count": 2280,
       "dim": "stance"
     },
     {
