@@ -1,11 +1,11 @@
 {
-  "updated": "2026-09-16T22:21:58Z",
-  "total_tagged": 29643,
+  "updated": "2026-09-17T00:38:45Z",
+  "total_tagged": 29645,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9633,
+      "count": 9634,
       "dim": "region"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 8534,
+      "count": 8535,
       "dim": "industry"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "tag": "宏观",
-      "count": 7041,
+      "count": 7042,
       "dim": "perspective"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "tag": "消费",
-      "count": 3981,
+      "count": 3982,
       "dim": "industry"
     },
     {
       "tag": "个股分析",
-      "count": 3707,
+      "count": 3709,
       "dim": "ctype"
     },
     {
@@ -70,7 +70,7 @@
     },
     {
       "tag": "看空",
-      "count": 3131,
+      "count": 3133,
       "dim": "stance"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 500,
+      "count": 501,
       "dim": "stance"
     },
     {
