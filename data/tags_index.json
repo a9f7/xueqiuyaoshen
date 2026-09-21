@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-20T00:39:10Z",
-  "total_tagged": 29666,
+  "updated": "2026-09-21T10:46:30Z",
+  "total_tagged": 29668,
   "distinct_tags": 45,
   "tags": [
     {
@@ -30,12 +30,12 @@
     },
     {
       "tag": "宏观",
-      "count": 7045,
+      "count": 7046,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5830,
+      "count": 5832,
       "dim": "stance"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "tag": "消费",
-      "count": 3991,
+      "count": 3992,
       "dim": "industry"
     },
     {
@@ -110,7 +110,7 @@
     },
     {
       "tag": "地产",
-      "count": 1284,
+      "count": 1285,
       "dim": "industry"
     },
     {
@@ -145,7 +145,7 @@
     },
     {
       "tag": "政策解读",
-      "count": 613,
+      "count": 614,
       "dim": "ctype"
     },
     {
