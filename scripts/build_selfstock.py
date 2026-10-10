@@ -91,6 +91,23 @@ def main():
     else:
         print(f"[build_selfstock] 已有基线（{baseline.get('date')}，{len(baseline.get('items', []))} 项）；对比当前 {len(items)} 项")
 
+    # ---- 不完整快照保护（防 WAF 截断导致假「移除」）-----------------------
+    # 雪球自选股接口被 WAF 拦截时，fetch_selfstock 只能取到零星 watchlist
+    # （常仅 2~4 项），远少于真实基线（~129 项）。若直接对比，会算出海量
+    # 假「移除」。因此当当前快照 < 基线 50% 时，判定为不完整抓取：隔离 raw
+    # 并跳过本版更新，保持 selfstock.json 上一版（真实）状态不变。
+    base_items = baseline.get("items", [])
+    if base_items and len(items) < 0.5 * len(base_items):
+        broken = RAW + ".broken_" + datetime.now(TZ).strftime("%Y%m%d")
+        try:
+            if os.path.exists(RAW):
+                os.rename(RAW, broken)
+                print(f"[build_selfstock] 已隔离不完整 raw -> {os.path.basename(broken)}")
+        except OSError as e:
+            print(f"[build_selfstock] 隔离 raw 失败: {e}")
+        print(f"[build_selfstock] 当前快照 {len(items)} 项 << 基线 {len(base_items)} 项，疑似 WAF 截断/不完整；跳过更新，保持 selfstock.json 上一版不变")
+        return
+
     base_syms = {i["symbol"] for i in baseline.get("items", [])}
     cur_syms = {i["symbol"] for i in items}
     added = [i for i in items if i["symbol"] not in base_syms]
