@@ -1,61 +1,61 @@
 {
-  "updated": "2026-10-10T00:41:45Z",
-  "total_tagged": 29668,
+  "updated": "2026-10-10T01:54:39Z",
+  "total_tagged": 29676,
   "distinct_tags": 45,
   "tags": [
     {
       "tag": "美国",
-      "count": 9646,
+      "count": 9658,
       "dim": "region"
     },
     {
       "tag": "答疑",
-      "count": 9406,
+      "count": 9423,
       "dim": "ctype"
     },
     {
       "tag": "行情点评",
-      "count": 8601,
+      "count": 8606,
       "dim": "ctype"
     },
     {
       "tag": "科技",
-      "count": 8545,
+      "count": 8556,
       "dim": "industry"
     },
     {
       "tag": "股票",
-      "count": 7275,
+      "count": 7267,
       "dim": "asset"
     },
     {
       "tag": "宏观",
-      "count": 7046,
+      "count": 7042,
       "dim": "perspective"
     },
     {
       "tag": "看多",
-      "count": 5832,
+      "count": 5821,
       "dim": "stance"
     },
     {
       "tag": "中国",
-      "count": 5511,
+      "count": 5501,
       "dim": "region"
     },
     {
       "tag": "微观",
-      "count": 5213,
+      "count": 5212,
       "dim": "perspective"
     },
     {
       "tag": "医药",
-      "count": 4986,
+      "count": 4993,
       "dim": "industry"
     },
     {
       "tag": "消费",
-      "count": 3992,
+      "count": 3985,
       "dim": "industry"
     },
     {
@@ -65,12 +65,12 @@
     },
     {
       "tag": "金融",
-      "count": 3312,
+      "count": 3313,
       "dim": "industry"
     },
     {
       "tag": "看空",
-      "count": 3135,
+      "count": 3137,
       "dim": "stance"
     },
     {
@@ -90,7 +90,7 @@
     },
     {
       "tag": "数据",
-      "count": 1613,
+      "count": 1615,
       "dim": "ctype"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "tag": "互联网",
-      "count": 1391,
+      "count": 1390,
       "dim": "industry"
     },
     {
@@ -125,7 +125,7 @@
     },
     {
       "tag": "黄金有色",
-      "count": 832,
+      "count": 833,
       "dim": "industry"
     },
     {
@@ -155,7 +155,7 @@
     },
     {
       "tag": "风险提示",
-      "count": 502,
+      "count": 503,
       "dim": "stance"
     },
     {

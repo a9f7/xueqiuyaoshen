@@ -43,6 +43,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, ".."))
 COOKIE_POOL_FILE = os.path.join(ROOT, "data", "xq_cookies.txt")
 COOKIE_FILE = os.path.join(ROOT, "data", "xq_cookie.txt")
+# 与主抓取「我的持仓/交易」共用的 cdcs cookie（data/my_xq_cookie.txt）。
+# 主域 xueqiu.com 有 JS 挑战页（cookie 无关），但 api 子域备份用有效 cookie 可直出数据；
+# 故把这条已知可用的 cdcs cookie 提到仅次于 XQ_COOKIE 环境变量的优先级，避免一直卡在失效的旧账号 cookie#0。
+MY_COOKIE_FILE = os.path.join(ROOT, "data", "my_xq_cookie.txt")
 # 默认仍是本机 Windows 路径（本地行为不变）。
 # 云端 Linux 部署时，export XQ_CHROME_PATH="" 即可改用 playwright 自带的 chromium。
 CHROME_PATH = os.environ.get("XQ_CHROME_PATH", r"C:\Users\d\AppData\Local\ms-playwright\chromium-1234\chrome-win64\chrome.exe")
@@ -64,6 +68,11 @@ def load_cookie_pool():
     pool = []
     if os.environ.get("XQ_COOKIE"):
         pool.append(os.environ["XQ_COOKIE"].strip())
+    if os.path.exists(MY_COOKIE_FILE):
+        with open(MY_COOKIE_FILE, encoding="utf-8") as f:
+            s = f.read().strip()
+            if s:
+                pool.append(s)
     if os.path.exists(COOKIE_POOL_FILE):
         with open(COOKIE_POOL_FILE, encoding="utf-8") as f:
             for line in f:
@@ -271,8 +280,8 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
                         print(f"  page={pno}: {len(j['statuses'])} statuses, total={total}, maxPage={maxpage}", flush=True)
                         saved += 1
                         saved_this = True
-                    elif '访问验证' in text or 'aliyun_waf' in text:
-                        # 主路径被 WAF：尝试 api 子域直连备份
+                    elif _is_waf(text):
+                        # 主路径被 WAF（含 renderData 挑战页 / 访问验证 / aliyun_waf）：尝试 api 子域直连备份
                         j = fetch_page_api(api_type, pno, cookie_str)
                         if j and 'statuses' in j:
                             with open(out_file, 'w', encoding='utf-8') as f:
@@ -289,7 +298,7 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
                 else:
                     print(f"  page={pno}: FAIL status={status} {text[:80]}", flush=True)
                     # status==0 多为 WAF 拦截导致 fetch 超时/报错；尝试 api 子域直连备份
-                    if status == 0 or '访问验证' in text or 'aliyun_waf' in text:
+                    if status == 0 or _is_waf(text):
                         j = fetch_page_api(api_type, pno, cookie_str)
                         if j and 'statuses' in j:
                             with open(out_file, 'w', encoding='utf-8') as f:
