@@ -77,7 +77,16 @@ DATA_FILES = [
 
 
 def run_git(args, cwd):
-    r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True)
+    env = dict(os.environ)
+    # 绕过全局 git config 中可能失效的 http.proxy（如 socks5h://127.0.0.1:7890 未运行），
+    # 直接用直连；经验证本沙箱直连 github.com 可用。
+    env["GIT_CONFIG_COUNT"] = "1"
+    env["GIT_CONFIG_KEY_0"] = "http.proxy"
+    env["GIT_CONFIG_VALUE_0"] = ""
+    # 同时清掉可能指向死代理的环境变量
+    for k in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
+        env.pop(k, None)
+    r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True, env=env)
     return r.returncode, (r.stdout + r.stderr).strip()
 
 
@@ -154,6 +163,13 @@ def push(message):
     code, out = run_git(["add", "-A"], DEPLOY)
     code, out = run_git(["status", "--porcelain"], DEPLOY)
     if not out.strip():
+        # 没有文件变更，但仍可能有上一轮「提交成功却推送失败」的悬空 commit，补推一次
+        code_u, out_u = run_git(["rev-list", "--count", "origin/main..HEAD"], DEPLOY)
+        if code_u == 0 and out_u.strip() not in ("", "0"):
+            print(f"no file changes, but {out_u.strip()} unpushed commit(s); pushing...")
+            code, out = run_git(["push", "origin", "main"], DEPLOY)
+            print("push:", redact(out))
+            return code == 0
         print("no changes to commit.")
         return True
 
