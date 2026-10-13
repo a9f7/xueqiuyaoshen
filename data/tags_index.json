@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-13T00:43:16Z",
-  "total_tagged": 29676,
+  "updated": "2026-10-13T14:23:42Z",
+  "total_tagged": 29677,
   "distinct_tags": 45,
   "tags": [
     {
@@ -40,7 +40,7 @@
     },
     {
       "tag": "中国",
-      "count": 5501,
+      "count": 5502,
       "dim": "region"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "tag": "医药",
-      "count": 4993,
+      "count": 4994,
       "dim": "industry"
     },
     {
