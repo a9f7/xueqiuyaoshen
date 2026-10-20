@@ -114,7 +114,8 @@ def capture_trades(cookie):
     diag = {"steps": []}
     launch_kwargs = dict(headless=True,
                          args=["--no-sandbox", "--disable-dev-shm-usage",
-                               "--disable-blink-features=AutomationControlled"])
+                               "--disable-blink-features=AutomationControlled",
+                               "--no-zygote", "--disable-gpu"])
     if os.path.exists(CHROME_PATH):
         launch_kwargs["executable_path"] = CHROME_PATH
 

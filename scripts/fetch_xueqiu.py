@@ -204,6 +204,8 @@ def fetch_batch(start, end, cookie_str, api_type, out_dir, force=False):
                 '--disable-features=IsolateOrigins,site-per-process',
                 '--disable-setuid-sandbox',
                 '--lang=zh-CN',
+                '--no-zygote',
+                '--disable-gpu',
             ],
             chromium_sandbox=False,
         )

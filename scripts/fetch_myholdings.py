@@ -83,7 +83,8 @@ def capture_performances(cookie):
     # 本地有固定 chromium 路径就用它；CI/其他环境回退到 playwright 托管的浏览器
     launch_kwargs = dict(headless=True,
                          args=["--no-sandbox", "--disable-dev-shm-usage",
-                               "--disable-blink-features=AutomationControlled"])
+                               "--disable-blink-features=AutomationControlled",
+                               "--no-zygote", "--disable-gpu"])
     if os.path.exists(CHROME_PATH):
         launch_kwargs["executable_path"] = CHROME_PATH
     with sync_playwright() as p:
