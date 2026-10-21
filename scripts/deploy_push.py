@@ -151,9 +151,31 @@ def sync_files():
     print("sync done.")
 
 
+def git_reachable():
+    """探测 git 协议是否可达（本环境 github.com 常被 GFW reset）。"""
+    code, out = run_git(["ls-remote", "--heads", "origin", "main"], DEPLOY)
+    return code == 0 and "main" in out
+
+
 def push(message):
     if not ensure_repo():
         return False
+
+    # 先探测 git 是否可达。不可达（GFW reset / 网络断）时跳过 git，直接走 Contents
+    # API 兜底推送（按 1MB 上限推小文件），避免 pull --rebase 卡死 19+ 分钟。
+    if not git_reachable():
+        print("git 不可达（GFW/网络）-> 跳过 git，直接走 Contents API 兜底推送")
+        return contents_api_fallback(message)
+
+    # git 可达：先 fetch；若本地有悬挂提交(领先 origin/main)——例如本自动化或其他
+    # 自动化留下的未推提交、或与 origin/main 已分叉——直接 reset --hard origin/main
+    # 丢弃，避免 pull --rebase 与远端 300+ 提交冲突而卡死（交互式 rebase 等待输入）。
+    run_git(["fetch", "origin"], DEPLOY)
+    code_a, ahead = run_git(["rev-list", "--count", "origin/main..HEAD"], DEPLOY)
+    if code_a == 0 and ahead.strip() not in ("", "0"):
+        print(f"本地领先 origin/main {ahead.strip()} 个悬挂提交 -> reset --hard origin/main 丢弃，避免 rebase 冲突卡死")
+        run_git(["reset", "--hard", "origin/main"], DEPLOY)
+
     sync_files()
 
     code, out = run_git(["pull", "--rebase", "--autostash"], DEPLOY)
@@ -195,10 +217,40 @@ def push(message):
             out = out2
             code = r2.returncode
         if code != 0:
-            # 推送失败（偶发网络/权限）：保留本地提交，下一轮补推
+            # 推送失败（偶发网络/权限/代理不可达）：先尝试 Contents API 兜底小文件
+            if contents_api_fallback(message):
+                return True
+            # 兜底也失败：保留本地提交，下一轮由 deploy_push 自行 retry
             print("PUSH FAILED - local commit kept, will retry next run.")
             return False
     return True
+
+
+def contents_api_fallback(message):
+    """git push 不可达时的兜底：用 GitHub Contents API 推送小文件（daily/analysis）。
+
+    仅推送日常产物（daily_review.* / data/daily/* / analysis_recent.json），这些文件
+    体积极小、远低于 Contents API 的 1MB 限制；大文件（posts.json / xueqiu.db 等）
+    仍依赖 git，本兜底不碰。需要网络时（fetch）无法连通则跳过本地重置。
+    """
+    if not TOKEN:
+        print("contents fallback: 无 token，跳过")
+        return False
+    script = os.path.join(HERE, "contents_push.py")
+    if not os.path.exists(script):
+        print("contents fallback: 脚本缺失，跳过")
+        return False
+    print("git push 失败 -> 尝试 Contents API 兜底（小文件）")
+    env = dict(os.environ)
+    for k in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
+        env.pop(k, None)
+    r = subprocess.run([sys.executable, script, "--message", message, "--no-reconcile"],
+                       cwd=WORKSPACE, capture_output=True, text=True, env=env)
+    if r.stdout.strip():
+        print(r.stdout.strip())
+    if r.stderr.strip():
+        print(r.stderr.strip())
+    return r.returncode == 0
 
 
 def main():
