@@ -14,6 +14,7 @@
 """
 import os
 import sys
+import time
 import shutil
 import subprocess
 import argparse
@@ -76,7 +77,7 @@ DATA_FILES = [
 ]
 
 
-def run_git(args, cwd):
+def run_git(args, cwd, timeout=180):
     env = dict(os.environ)
     # 绕过全局 git config 中可能失效的 http.proxy（如 socks5h://127.0.0.1:7890 未运行），
     # 直接用直连；经验证本沙箱直连 github.com 可用。
@@ -86,21 +87,77 @@ def run_git(args, cwd):
     # 同时清掉可能指向死代理的环境变量
     for k in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "http_proxy", "https_proxy", "all_proxy"):
         env.pop(k, None)
-    r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True, env=env)
-    return r.returncode, (r.stdout + r.stderr).strip()
+    try:
+        r = subprocess.run(["git"] + args, cwd=cwd, capture_output=True, text=True,
+                           env=env, timeout=timeout)
+        return r.returncode, (r.stdout + r.stderr).strip()
+    except subprocess.TimeoutExpired:
+        return 124, f"timeout after {timeout}s: git {args[0]}"
+
+
+def repo_is_valid():
+    """实测 .git 是否为可用工作树，而不是只判断目录存在。
+
+    历史事故：Temp/xq_deploy/.git 只剩 objects/refs/logs，缺 HEAD/config/index，
+    os.path.isdir('.git') 仍为 True，导致 git ls-remote 报 origin 不存在、
+    git_reachable() 恒判不可达，每轮退化到 Contents API 兜底。
+    """
+    git_dir = os.path.join(DEPLOY, ".git")
+    if not os.path.isdir(git_dir):
+        return False
+    for required in ("HEAD", "config", "index"):
+        if not os.path.exists(os.path.join(git_dir, required)):
+            return False
+    code, out = run_git(["rev-parse", "--is-inside-work-tree"], DEPLOY)
+    return code == 0 and out.strip() == "true"
 
 
 def ensure_repo():
-    if os.path.isdir(os.path.join(DEPLOY, ".git")):
-        # 已存在：确保 remote 用 token，避免退回凭据管理器
-        run_git(["remote", "set-url", "origin", AUTH_REPO], DEPLOY)
+    if repo_is_valid():
+        # 已存在且有效：确保 remote 用 token，避免退回凭据管理器
+        code, out = run_git(["remote", "set-url", "origin", AUTH_REPO], DEPLOY)
+        if code != 0:
+            print("remote set-url 失败：", redact(out))
+            return False
         return True
+
+    # 残缺或不存在：把旧 .git 整体移到备份目录（不删除，可回滚），再重新 clone。
     os.makedirs(os.path.dirname(DEPLOY), exist_ok=True)
+    git_dir = os.path.join(DEPLOY, ".git")
+    if os.path.isdir(git_dir):
+        stamp = time.strftime("%Y%m%d%H%M%S")
+        backup = os.path.join(os.path.dirname(DEPLOY), f"xq_deploy_git_broken_{stamp}")
+        try:
+            shutil.move(git_dir, backup)
+            print(f"检测到残缺 .git，已备份到 {backup}（未删除，可回滚）")
+        except OSError as e:
+            print(f"备份残缺 .git 失败，中止以免破坏现场：{e}")
+            return False
+
+    # clone 要求目标目录为空。残缺 .git 移走后通常只剩 sync_files 建的空目录，
+    # 逐个清掉；一旦发现任何真实文件立即中止，避免覆盖未知内容。
+    if os.path.isdir(DEPLOY):
+        leftovers = []
+        for root, dirs, files in os.walk(DEPLOY, topdown=False):
+            for f in files:
+                leftovers.append(os.path.join(root, f))
+        if leftovers:
+            print(f"部署目录残留 {len(leftovers)} 个真实文件，中止以免覆盖："
+                  f"{leftovers[:3]}")
+            return False
+        for root, dirs, files in os.walk(DEPLOY, topdown=False):
+            for d in dirs:
+                try:
+                    os.rmdir(os.path.join(root, d))
+                except OSError:
+                    pass
     print(f"clone {redact(AUTH_REPO)} -> {DEPLOY}")
-    code, out = run_git(["clone", AUTH_REPO, DEPLOY], cwd=os.path.dirname(DEPLOY))
+    code, out = run_git(["clone", "--depth", "1", "--single-branch", "--branch", "main",
+                         AUTH_REPO, DEPLOY], cwd=os.path.dirname(DEPLOY), timeout=600)
     if code != 0:
         print("clone failed:\n", redact(out))
         return False
+    run_git(["remote", "set-url", "origin", AUTH_REPO], DEPLOY)
     return True
 
 
@@ -152,8 +209,14 @@ def sync_files():
 
 
 def git_reachable():
-    """探测 git 协议是否可达（本环境 github.com 常被 GFW reset）。"""
-    code, out = run_git(["ls-remote", "--heads", "origin", "main"], DEPLOY)
+    """探测 git 协议是否可达（本环境 github.com 常被 GFW reset）。
+
+    用带 token 的绝对 URL 而非 'origin'：残缺仓库里 origin 无法解析会被误判成
+    「网络不可达」，进而每轮错误地退化到 Contents API 兜底。
+    """
+    code, out = run_git(["ls-remote", "--heads", AUTH_REPO, "main"], DEPLOY, timeout=60)
+    if code != 0:
+        print("git 探测结果：", redact(out)[:200])
     return code == 0 and "main" in out
 
 
@@ -178,7 +241,7 @@ def push(message):
 
     sync_files()
 
-    code, out = run_git(["pull", "--rebase", "--autostash"], DEPLOY)
+    code, out = run_git(["pull", "--rebase", "--autostash"], DEPLOY, timeout=300)
     print("pull:", redact(out))
     # 即便 pull 失败也继续（可能无远程更新），但最终 push 会校验
 
@@ -189,7 +252,7 @@ def push(message):
         code_u, out_u = run_git(["rev-list", "--count", "origin/main..HEAD"], DEPLOY)
         if code_u == 0 and out_u.strip() not in ("", "0"):
             print(f"no file changes, but {out_u.strip()} unpushed commit(s); pushing...")
-            code, out = run_git(["push", "origin", "main"], DEPLOY)
+            code, out = run_git(["push", "origin", "main"], DEPLOY, timeout=600)
             print("push:", redact(out))
             return code == 0
         print("no changes to commit.")
@@ -200,7 +263,7 @@ def push(message):
     if code != 0:
         return False
 
-    code, out = run_git(["push", "origin", "main"], DEPLOY)
+    code, out = run_git(["push", "origin", "main"], DEPLOY, timeout=600)
     print("push:", redact(out))
     if code != 0:
         # 偶发网络：若 push 失败疑似 HTTPS 代理不可达，自动取消代理后重试一次

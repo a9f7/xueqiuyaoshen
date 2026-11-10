@@ -102,34 +102,77 @@ def api(method, path, data=None):
         return -1, str(e)
 
 
-def push_file(rel, message):
+def api_raw(path):
+    """任意 GitHub REST GET（用于 tree API，不下载文件内容）。"""
+    url = f"https://api.github.com/repos/{REPO}/{path}"
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"token {TOKEN}",
+        "User-Agent": "xq-contents-push",
+        "Accept": "application/vnd.github+json",
+    })
+    with urllib.request.urlopen(req, timeout=45) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+def blob_sha(raw):
+    import hashlib
+    return hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest()
+
+
+def fetch_remote_shas():
+    """一次性取回 main 全树 blob sha -> {path: sha}，无文件内容下载。
+
+    历史坑：逐文件 GET /contents/<file> 取 sha，大文件会 IncompleteRead(422 误报)，
+    且 232 个文件串行请求耗时十几分钟、易中途被杀。tree API 只取 sha，快且稳。
+    """
+    try:
+        root = api_raw("git/trees/main?recursive=1")
+        if not root.get("truncated"):
+            return {e["path"]: e["sha"] for e in root["tree"] if e["type"] == "blob"}
+        print("tree API truncated -> 回退分层遍历")
+    except Exception as e:  # noqa: BLE001
+        print(f"tree API 失败（{e}）-> 回退分层遍历")
+
+    # 分层：main -> data -> 各子目录（months / daily / corpus）
+    out = {}
+    def walk(tree_sha, prefix=""):
+        try:
+            t = api_raw(f"git/trees/{tree_sha}")
+        except Exception as e:  # noqa: BLE001
+            print(f"  tree {prefix or 'main'} 失败: {e}")
+            return
+        for e in t.get("tree", []):
+            p = f"{prefix}{e['path']}"
+            if e["type"] == "blob":
+                out[p] = e["sha"]
+            elif e["type"] == "tree":
+                walk(e["sha"], p + "/")
+    walk("main")
+    return out
+
+
+def push_file(rel, message, remote_sha):
+    """remote_sha 来自 tree API；与本地 blob sha 相同则跳过（不产生无谓提交）。"""
     local = os.path.join(WORKSPACE, rel)
     if not os.path.exists(local):
-        print(f"SKIP (missing): {rel}")
-        return False
+        return "missing"
     with open(local, "rb") as f:
         raw = f.read()
     if len(raw) > 900 * 1024:
         print(f"SKIP (too large {len(raw)//1024}KB): {rel}")
-        return False
+        return "skip"
+    if remote_sha == blob_sha(raw):
+        return "same"
     b64 = base64.b64encode(raw).decode("ascii")
-    status, resp = api("GET", rel)
-    sha = resp.get("sha") if status == 200 else None
-    if status == 200:
-        print(f"EXISTS {rel} sha={sha[:8] if sha else '?'}")
-    elif status == 404:
-        print(f"NEW   {rel}")
-    else:
-        print(f"GET {rel} -> {status}: {str(resp)[:160]}")
     payload = {"message": message, "content": b64, "branch": "main"}
-    if sha:
-        payload["sha"] = sha
+    if remote_sha:
+        payload["sha"] = remote_sha
     st, out = api("PUT", rel, payload)
     if st in (200, 201):
         print(f"OK    {rel} -> {st}")
-        return True
-    print(f"FAIL  {rel} -> {st}: {str(out)[:240]}")
-    return False
+        return "pushed"
+    print(f"FAIL  {rel} -> {st}: {str(out)[:200]}")
+    return "failed"
 
 
 def daily_files_for(date=None):
@@ -152,9 +195,7 @@ def reconcile_local_repo():
     """尝试把本地镜像重置到远端 main（需要网络 fetch，不可达时跳过）。"""
     if not os.path.isdir(os.path.join(DEPLOY, ".git")):
         return
-    # 先取远端 main 的 sha（通过 API，不需要 git 网络）
-    st, resp = api("GET", "", "")  # 列出根目录也可，但用 branches 更准
-    # 用 branches API 取 main sha
+    # 用 branches API 取 main sha（不需要 git 网络）
     url = f"https://api.github.com/repos/{REPO}/branches/main"
     try:
         req = urllib.request.Request(url, headers={
@@ -202,16 +243,44 @@ def main():
 
     msg = args.message or f"chore: 每日首席视角总结 {args.date or 'latest'} (contents api)"
     files = list(CORE_FILES) + daily_files_for(args.date) + SMALL_DATA_FILES + month_files()
-    print(f"== Contents API 兜底推送（{len(files)} 个文件）==")
-    ok = 0
-    for rel in files:
-        if push_file(rel, msg):
-            ok += 1
-    print(f"== 完成：{ok}/{len(files)} 成功 ==")
+    print(f"== Contents API 兜底推送（{len(files)} 个候选文件）==", flush=True)
+
+    remote_shas = fetch_remote_shas()
+    print(f"tree API 取回 {len(remote_shas)} 个远端 blob sha", flush=True)
+
+    stats = {"pushed": 0, "same": 0, "skip": 0, "missing": 0, "failed": []}
+    failed_rels = []
+    for i, rel in enumerate(files, 1):
+        res = push_file(rel, msg, remote_shas.get(rel))
+        if res in ("pushed", "same", "skip", "missing"):
+            stats[res if res in stats else "skip"] += 1
+        else:
+            failed_rels.append(rel)
+        if i % 50 == 0:
+            print(f"  进度 {i}/{len(files)}", flush=True)
+
+    # 失败重试：多为并发推送导致 sha 漂移(409)，重取该文件 sha 再试一次
+    if failed_rels:
+        print(f"重试 {len(failed_rels)} 个失败文件（重取 sha）...", flush=True)
+        fresh = fetch_remote_shas()
+        still_failed = []
+        for rel in failed_rels:
+            # 若重试期间远端已被别的提交更新成一致内容，直接判成功
+            res = push_file(rel, msg, fresh.get(rel))
+            if res in ("pushed", "same", "skip", "missing"):
+                stats[res if res in stats else "skip"] += 1
+            else:
+                still_failed.append(rel)
+        stats["failed"] = still_failed
+
+    print(f"== 完成：pushed={stats['pushed']} same={stats['same']} "
+          f"skip={stats['skip']} missing={stats['missing']} failed={len(stats['failed'])} ==")
+    if stats["failed"]:
+        print("失败文件：", ", ".join(stats["failed"][:20]))
 
     if not args.no_reconcile:
         reconcile_local_repo()
-    sys.exit(0 if ok == len(files) else 1)
+    sys.exit(0 if not stats["failed"] else 1)
 
 
 if __name__ == "__main__":

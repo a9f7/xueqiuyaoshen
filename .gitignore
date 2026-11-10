@@ -11,6 +11,8 @@ data/posts_raw_pretty.json
 data/xq_cookie.txt
 data/xq_cookies.txt
 data/my_xq_cookie.txt
+# cookie 备份（含明文凭据，同样绝不入库）
+data/*cookie*.bak*
 data/.holdings_pwd
 data/my_holdings.json
 data/my_trades.json
