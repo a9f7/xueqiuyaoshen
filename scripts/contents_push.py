@@ -85,6 +85,9 @@ TOKEN = load_token()
 
 
 def api(method, path, data=None):
+    # GitHub REST 路径必须是正斜杠；os.path.join 在 Windows 上会产生反斜杠，
+    # 与 tree API 返回的 key 不匹配，会导致 sha 查不到、PUT 报 422。
+    path = path.replace("\\", "/")
     url = f"https://api.github.com/repos/{REPO}/contents/{path}"
     headers = {
         "Authorization": f"token {TOKEN}",
@@ -161,7 +164,10 @@ def push_file(rel, message, remote_sha):
     if len(raw) > 900 * 1024:
         print(f"SKIP (too large {len(raw)//1024}KB): {rel}")
         return "skip"
-    if remote_sha == blob_sha(raw):
+    # 远端 blob 由 git 写入时可能做过 CRLF->LF 规范化；原始字节与 LF 版任一
+    # 命中都视为未变化，否则含 CRLF 的文件会每轮被误判并反复推送。
+    local_lf = raw.replace(b"\r\n", b"\n")
+    if remote_sha in (blob_sha(raw), blob_sha(local_lf)):
         return "same"
     b64 = base64.b64encode(raw).decode("ascii")
     payload = {"message": message, "content": b64, "branch": "main"}
@@ -242,7 +248,10 @@ def main():
         sys.exit(2)
 
     msg = args.message or f"chore: 每日首席视角总结 {args.date or 'latest'} (contents api)"
-    files = list(CORE_FILES) + daily_files_for(args.date) + SMALL_DATA_FILES + month_files()
+    # 统一成正斜杠：tree API 的 path 与 REST URL 都用 '/'，Windows 的 os.path.join
+    # 会产生 '\'，导致 sha 查不到、PUT 报 422。本地读文件用正斜杠在 Windows 上同样可用。
+    files = [f.replace("\\", "/") for f in
+             (list(CORE_FILES) + daily_files_for(args.date) + SMALL_DATA_FILES + month_files())]
     print(f"== Contents API 兜底推送（{len(files)} 个候选文件）==", flush=True)
 
     remote_shas = fetch_remote_shas()
