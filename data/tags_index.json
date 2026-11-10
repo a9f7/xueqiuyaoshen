@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-10T02:27:57Z",
+  "updated": "2026-11-10T06:21:52Z",
   "total_tagged": 29677,
   "distinct_tags": 45,
   "tags": [
@@ -20,7 +20,7 @@
     },
     {
       "tag": "科技",
-      "count": 8556,
+      "count": 8553,
       "dim": "industry"
     },
     {
@@ -75,7 +75,7 @@
     },
     {
       "tag": "中观",
-      "count": 3057,
+      "count": 3059,
       "dim": "perspective"
     },
     {
