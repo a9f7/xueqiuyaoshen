@@ -1167,7 +1167,7 @@
     ]
   },
   "current": {
-    "date": "2026-09-27",
+    "date": "2026-11-11",
     "items": [
       {
         "symbol": "ZH3389064",
@@ -1452,7 +1452,7 @@
         "symbol": "KHC",
         "name": "卡夫亨氏",
         "marketplace": "US",
-        "exchange": "NASDAQ",
+        "exchange": "NYSE",
         "watched": 1650474282407,
         "type": "stock",
         "mentioned": false
@@ -1504,7 +1504,7 @@
       },
       {
         "symbol": "MOS",
-        "name": "美国美盛公司",
+        "name": "美国美盛",
         "marketplace": "US",
         "exchange": "NYSE",
         "watched": 1654097980485,
@@ -1563,7 +1563,7 @@
         "exchange": "NYSE",
         "watched": 1656119700882,
         "type": "stock",
-        "mentioned": false
+        "mentioned": true
       },
       {
         "symbol": "MRK",
@@ -1594,7 +1594,7 @@
       },
       {
         "symbol": "AMD",
-        "name": "AMD",
+        "name": "超威半导体",
         "marketplace": "US",
         "exchange": "NASDAQ",
         "watched": 1657073563025,
@@ -1630,7 +1630,7 @@
       },
       {
         "symbol": "ISRG",
-        "name": "达芬奇手术机器人",
+        "name": "直觉外科",
         "marketplace": "US",
         "exchange": "NASDAQ",
         "watched": 1658461579426,
@@ -1738,7 +1738,7 @@
       },
       {
         "symbol": "FCX",
-        "name": "Freeport McMoRan",
+        "name": "麦克莫兰铜金",
         "marketplace": "US",
         "exchange": "NYSE",
         "watched": 1704818192300,
@@ -2152,7 +2152,7 @@
       },
       {
         "symbol": "SPOT",
-        "name": "Spotify",
+        "name": "Spotify Technology",
         "marketplace": "US",
         "exchange": "NYSE",
         "watched": 1748526831399,
@@ -2335,7 +2335,7 @@
   "changes": {
     "added": [],
     "removed": [],
-    "as_of": "2026-09-27"
+    "as_of": "2026-11-11"
   },
   "mentioned": [
     {
@@ -2433,6 +2433,5 @@
       "name": "西方石油",
       "mentions": 1
     }
-  ],
-  "note": "repaired 2026-09-27: previous run corrupted current via broken fetch artifact; restored to baseline (unverified=no-change) pending fresh fetch when cookies valid"
+  ]
 }
