@@ -208,6 +208,40 @@ def sync_files():
     print("sync done.")
 
 
+def find_conflict_files(paths=None):
+    """扫描 deploy 工作树里含 git 冲突标记（<<<<<<< / >>>>>>>）的文本文件。
+
+    2026-11-11 事故：pull --rebase --autostash 与远端同名文件冲突后，工作树残留
+    冲突标记，脚本仍 add -A + commit，把 5 个带 <<<<<<< 的 JSON 推上线，
+    前端 JSON.parse 直接崩。此函数用于提交前兜底检测。
+    """
+    # 只扫「数据文件」，不扫 .py/.js 等源码：本脚本自身的源码里就含有冲突标记
+    # 字面量（用于检测），扫源码会必然误报。git 冲突标记成对出现，需同时命中。
+    DATA_EXT = (".json", ".jsonl", ".csv", ".txt", ".md")
+    if paths is None:
+        paths = []
+        for root, dirs, files in os.walk(DEPLOY):
+            dirs[:] = [d for d in dirs if d != ".git"]
+            for fn in files:
+                if fn.endswith(DATA_EXT):
+                    paths.append(os.path.relpath(os.path.join(root, fn), DEPLOY).replace(os.sep, "/"))
+    hits = []
+    for rel in paths:
+        if not rel.endswith(DATA_EXT):
+            continue
+        p = os.path.join(DEPLOY, *rel.split("/"))
+        try:
+            if os.path.getsize(p) > 3_000_000:
+                continue
+            with open(p, "rb") as f:
+                b = f.read()
+        except OSError:
+            continue
+        if b"<<<<<<< " in b and b">>>>>>> " in b:
+            hits.append(rel)
+    return hits
+
+
 def git_reachable():
     """探测 git 协议是否可达（本环境 github.com 常被 GFW reset）。
 
@@ -239,11 +273,37 @@ def push(message):
         print(f"本地领先 origin/main {ahead.strip()} 个悬挂提交 -> reset --hard origin/main 丢弃，避免 rebase 冲突卡死")
         run_git(["reset", "--hard", "origin/main"], DEPLOY)
 
-    sync_files()
-
+    # 2026-11-11 修复：sync 必须放在 pull 之后。
+    # 旧顺序 sync -> pull --rebase --autostash 会把刚同步的本地未提交改动 stash 起来，
+    # 而远端若同期也改了同名文件（另一条自动化也推 posts_index/tags_index/
+    # analysis_recent），apply stash 冲突后工作树残留 <<<<<<< 标记，脚本仍
+    # add -A + commit 把污染 JSON 推上线。先 pull 到干净 HEAD、再同步即可根治。
     code, out = run_git(["pull", "--rebase", "--autostash"], DEPLOY, timeout=300)
     print("pull:", redact(out))
     # 即便 pull 失败也继续（可能无远程更新），但最终 push 会校验
+
+    # 双保险：pull 若留下未合并/冲突标记，先丢弃本地冲突态回到干净 HEAD，
+    # 避免把冲突标记写进提交。
+    code_u, unmerged = run_git(["diff", "--name-only", "--diff-filter=U"], DEPLOY)
+    conflicts = find_conflict_files()
+    if (code_u == 0 and unmerged.strip()) or conflicts:
+        print("检测到 pull 冲突残留 (未合并 %d / 标记文件 %d) -> reset --hard 回到干净 HEAD"
+              % (len(unmerged.split()), len(conflicts)))
+        if conflicts:
+            print("  冲突文件:", ", ".join(conflicts[:10]))
+        run_git(["reset", "--hard", "HEAD"], DEPLOY)
+        code_s, stash_list = run_git(["stash", "list"], DEPLOY)
+        if code_s == 0 and "autostash" in stash_list:
+            run_git(["stash", "drop"], DEPLOY)   # 丢弃过期的冲突 autostash，防止累积
+
+    sync_files()
+
+    # 提交前最后一道防线：同步后的工作树绝不能含冲突标记，否则中止本轮，
+    # 保留现场让下轮（或人工）处理，绝不把坏 JSON 推上线。
+    bad = find_conflict_files()
+    if bad:
+        print("ABORT: 同步后仍存在冲突标记文件，拒绝提交:", ", ".join(bad[:10]))
+        return False
 
     code, out = run_git(["add", "-A"], DEPLOY)
     code, out = run_git(["status", "--porcelain"], DEPLOY)
